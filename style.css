@@ -1,0 +1,98 @@
+:root {
+	--primary-dark:		#095256;	/* Темно-зеленый */
+	--primary-accent:	#087F8C;	/* Акцентный бирюзовый */
+	--secondary-green:	#5AAA95;	/* Светло-зеленый */
+	--secondary-olive:	#86A873;	/* Оливковый */
+	--accent-gold:		#BB9F06;	/* Золотой акцент */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    background-color: var(--primary-dark);
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+
+/*Шапка*/
+header {
+    width: 100%;
+    background-color: var(--secondary-green);
+    padding: 1rem;
+	position: fixed;
+	font-weight: bold;
+}
+.header-content > *{
+	margin-left: 10px;
+}
+.header-content {
+    width: 95%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+.image-button{
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+}
+.image-button > img{
+}
+img{
+	max-width:32px;
+	max-height:32px;
+}
+
+input[type="text"]{
+	flex-grow: 1;
+	padding: 5px;
+	border: 1px solid #ccc; /* Граница поля ввода */
+	border-radius: 0px;
+}
+a {
+    color: white;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+
+
+
+
+/*Основной контент*/
+.content-wrapper {
+    width: 80%;
+    margin: 0 auto;
+    flex: 1;
+    padding: 4rem 0;
+    background-color: var(--primary-accent);
+}
+.content-wrapper > *{
+	margin: 30px;
+}
+
+h1 {
+    text-align: center;
+	font-size: 2rem;
+	font-family: Montserrat, sans-serif;
+}
+
+
+p{
+	font-family: Lato, sans-serif;
+}
