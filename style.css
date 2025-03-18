@@ -43,6 +43,10 @@ header {
     display: flex;
     align-items: center;
 }
+.header-content > *:first-child { /* Первый элемент */
+	margin: 0;
+	padding: 0;
+}
 .image-button{
 	background: none;
 	border: none;
@@ -62,10 +66,11 @@ input[type="text"]{
 	border: 1px solid #ccc; /* Граница поля ввода */
 	border-radius: 0px;
 }
-a {
+a{
     color: white;
     text-decoration: none;
 }
+
 a:hover {
     text-decoration: underline;
 }
@@ -76,7 +81,7 @@ a:hover {
 
 /*Основной контент*/
 .content-wrapper {
-    width: 80%;
+    width: 85%;
     margin: 0 auto;
     flex: 1;
     padding: 4rem 0;
@@ -86,13 +91,34 @@ a:hover {
 	margin: 30px;
 }
 
-h1 {
-    text-align: center;
-	font-size: 2rem;
+h1,h2,h3,h4,h5,h6 {
 	font-family: Montserrat, sans-serif;
+	
+}
+h2,h3,h4,h5,h6 {
+	padding-left: 35px;
+}
+.content-wrapper > h2,.content-wrapper > h3,.content-wrapper > h4,.content-wrapper > h5,.content-wrapper > h6 {
+	margin-bottom:5px;
+}
+.content-wrapper > p{
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+h1{
+    text-align: center;
 }
 
 
-p{
-	font-family: Lato, sans-serif;
+p {
+	white-space: pre-wrap; /* Сохраняем переносы и печатаем табы*/
+}
+.content-wrapper p + p{
+	margin-top: 1.3em;
+}
+
+br {
+	display: inline-block;
+	margin-left: -30px;    /* Корректируовка отступа после <br> */
 }
