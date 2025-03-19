@@ -13,7 +13,8 @@
 
 html {
     height: 100%;
-    background-color: var(--primary-dark);
+	background: linear-gradient(140deg,var(--primary-dark),var(--secondary-green));
+	background-attachment: fixed;
 }
 
 body {
@@ -108,7 +109,7 @@ h1{
 }
 
 
-p {
+.content-wrapper p {
 	white-space: pre-wrap; /* Сохраняем переносы и печатаем табы*/
 }
 .content-wrapper p + p{
@@ -129,13 +130,14 @@ br {
 	max-width: 1200px; /* Ограничение максимальной ширины */
 	margin: 0 auto; /* Центрирование */
 }
-
 .image-grid img {
 	width: 100%;
 	height: auto;
 	object-fit: cover; /* Сохраняет пропорции и обрезает изображение */
 	aspect-ratio: 1; /* Квадратные ячейки (опционально) */
-	border-radius: 4px; /* Скругление углов */
+}
+.image-grid div{
+	border: solid var(--accent-gold);
 }
 
 
@@ -150,31 +152,49 @@ footer{
 	color: black;
 	padding-bottom:15px;
 	padding-top:10px;
-	text-align: center;
 	position: relative;
 	margin:0 auto;
 	bottom: 0px;
 	width:85%;
 	font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
 }
-footer > h2{
+footer > h2, 
+footer > h3,
+footer > h4,
+footer > h5,
+footer > h6
+{
 	padding-left: 0px;
 	margin-bottom: 20px;
+	text-align: center;
 }
 
 .contact p {
 	margin: 1px 0;
+	text-align: center;
 }
 
 .social+p{
 	margin-top: 1px;
+	text-align: center;
 }
 
 footer a {
 	color: #333;
 	margin: 0 1px;
 	text-decoration: none;
+	text-align: center;
+}
+.social{
+	text-align: center;
 }
 .social > a:hover {
     text-decoration: underline;
+}
+/*Описание проекта*/
+p + h2{
+	margin-top: 20px;
+}
+ol{
+	margin-left: 5rem;
 }
