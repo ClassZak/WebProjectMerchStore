@@ -9,7 +9,6 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
 html {
@@ -30,18 +29,18 @@ body {
 header {
     width: 100%;
     background-color: var(--secondary-green);
-    padding: 1rem;
 	position: fixed;
 	font-weight: bold;
+	z-index: 1000;
+}
+.header-content {
+    width: 90%;
+	margin: 10px auto;
+    display: flex;
+    align-items: center;
 }
 .header-content > *{
 	margin-left: 10px;
-}
-.header-content {
-    width: 95%;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
 }
 .header-content > *:first-child { /* Первый элемент */
 	margin: 0;
@@ -53,9 +52,7 @@ header {
 	cursor: pointer;
 	padding: 0;
 }
-.image-button > img{
-}
-img{
+.header-content > a > img, .header-content > button > img{
 	max-width:32px;
 	max-height:32px;
 }
@@ -82,6 +79,7 @@ a:hover {
 /*Основной контент*/
 .content-wrapper {
     width: 85%;
+	height: 100%;
     margin: 0 auto;
     flex: 1;
     padding: 4rem 0;
@@ -93,7 +91,6 @@ a:hover {
 
 h1,h2,h3,h4,h5,h6 {
 	font-family: Montserrat, sans-serif;
-	
 }
 h2,h3,h4,h5,h6 {
 	padding-left: 35px;
@@ -121,4 +118,63 @@ p {
 br {
 	display: inline-block;
 	margin-left: -30px;    /* Корректируовка отступа после <br> */
+}
+
+/*Новинки*/
+.image-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 8px; /* Расстояние между изображениями */
+	padding: 16px;
+	max-width: 1200px; /* Ограничение максимальной ширины */
+	margin: 0 auto; /* Центрирование */
+}
+
+.image-grid img {
+	width: 100%;
+	height: auto;
+	object-fit: cover; /* Сохраняет пропорции и обрезает изображение */
+	aspect-ratio: 1; /* Квадратные ячейки (опционально) */
+	border-radius: 4px; /* Скругление углов */
+}
+
+
+
+
+
+
+
+/*Подвал*/
+footer{
+	background-color: var(--secondary-olive);
+	color: black;
+	padding-bottom:15px;
+	padding-top:10px;
+	text-align: center;
+	position: relative;
+	margin:0 auto;
+	bottom: 0px;
+	width:85%;
+	font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
+}
+footer > h2{
+	padding-left: 0px;
+	margin-bottom: 20px;
+}
+
+.contact p {
+	margin: 1px 0;
+}
+
+.social+p{
+	margin-top: 1px;
+}
+
+footer a {
+	color: #333;
+	margin: 0 1px;
+	text-decoration: none;
+}
+.social > a:hover {
+    text-decoration: underline;
 }
