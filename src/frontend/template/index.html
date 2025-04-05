@@ -3,15 +3,15 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="style.css">
-		<link rel="icon" href="favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+		<link rel="icon" href="{{url_for('static',filename='favicon.ico')}}" type="image/x-icon">
 		<title>MStore</title>
 	</head>
 	<body>
 		<header>
 			<div class="header-content">
 				<a href="/">
-					<img src="Merch Store small.png" alt="MStore">
+					<img src="{{url_for('static',filename='Merch Store small.png')}}" alt="MStore">
 				</a>
 				<a href="/">Главная</a>
 				<a href="/">О нас</a>
@@ -19,10 +19,10 @@
 				<a href="/" target="_blank">Товары</a>
 				<input class="item" placeholder="Поиск..." type="text">
 				<button class="image-button">
-					<img alt="search" src="magnifyingglass.png">
+					<img alt="search" src="{{url_for('static', filename='magnifyingglass.png')}}">
 				</button>
 				<button class="image-button">
-					<img alt="basket" src="shopping cart.png" width="32" height="32">
+					<img alt="basket" src="{{url_for('static', filename='shopping cart.png')}}" width="32" height="32">
 				</button>
 			</div>
 		</header>
@@ -35,19 +35,19 @@
 			<h2>Наши новинки</h2>
 			<div class="image-grid">
 				<div>
-					<img src="Merch Store.png" alt="Описание">
+					<img src="{{url_for('static',filename='Merch Store.png')}}" alt="Описание">
 				</div>
 				<div>
-					<img src="Merch Store.png" alt="Описание">
+					<img src="{{url_for('static',filename='Merch Store.png')}}" alt="Описание">
 				</div>
 				<div>
-					<img src="Merch Store.png" alt="Описание">
+					<img src="{{url_for('static',filename='Merch Store.png')}}" alt="Описание">
 				</div>
 				<div>
-					<img src="Merch Store.png" alt="Описание">
+					<img src="{{url_for('static',filename='Merch Store.png')}}" alt="Описание">
 				</div>
 				<div>
-					<img src="Merch Store.png" alt="Описание">
+					<img src="{{url_for('static',filename='Merch Store.png')}}" alt="Описание">
 				</div>
 			</div>
 		</main>
