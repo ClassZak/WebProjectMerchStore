@@ -96,6 +96,10 @@ h1,h2,h3,h4,h5,h6 {
 h2,h3,h4,h5,h6 {
 	padding-left: 35px;
 }
+h1{
+    text-align: center;
+}
+
 .content-wrapper > h2,.content-wrapper > h3,.content-wrapper > h4,.content-wrapper > h5,.content-wrapper > h6 {
 	margin-bottom:5px;
 }
@@ -104,9 +108,6 @@ h2,h3,h4,h5,h6 {
 	margin-bottom: 0px;
 }
 
-h1{
-    text-align: center;
-}
 
 
 .content-wrapper p {
@@ -197,4 +198,19 @@ p + h2{
 }
 ol{
 	margin-left: 5rem;
+}
+
+
+/*Медиа запросы*/
+@media (width< 920px) {
+    h1, h2, h3, h4, h5, h6 {
+		text-align: center;
+		padding-left: 0%;
+    }
+    h1 { font-size: 1.5em; }
+    h2 { font-size: 1.4em; }
+    h3 { font-size: 1.3em; }
+    h4 { font-size: 1.2em; }
+    h5 { font-size: 1.1em; }
+    h6 { font-size: 1em; }
 }
