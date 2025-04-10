@@ -1,12 +1,19 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 import mysql.connector
 from mysql.connector import Error
 
+from aservice import AService
+from goodservice import GoodService
+
 
 def load_mysql_password():
-    with open('.password') as file:
+    with open('src/backend/.password') as file:
         return file.read()
+
+goodService=GoodService(
+    'localhost','root',load_mysql_password(),'merchstorewebpract'
+)
 
 def get_image_from_db(image_id):
     try:
@@ -39,6 +46,10 @@ app = Flask(
 	template_folder='../frontend/template'
 )
 
+
+
+
+
 @app.route('/')
 def root():
 	return render_template('index.html')
@@ -51,8 +62,23 @@ def get_good_image(good_id:int):
 def render_goods():
     return render_template('goods.html')
 
-@app.route('/api/goods/')
-def show_top_goods():
+@app.route('/api/goods/',methods=['GET', 'POST'])
+def goods_rout():
+    if request.method=='GET':
+        limit = request.args.get('limit', type=int)
+        ids=request.args.getlist('id')
+        if limit:
+            return goodService.get_goods_ids()
+        return goodService.get_goods(ids)
+    elif request.method=='POST':
+        good=request.get_json()
+        result=goodService.insert_good(
+            good['name'],good['description'],good['image'],good['price']
+        )
+        if result==0:
+            return jsonify({'Не удалось добавить новый товар',400})
+        else:
+            return jsonify({'Новый товар успешно добавлен',201})
     pass
 
 
