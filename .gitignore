@@ -1,5 +1,5 @@
 desktop.ini
-.password
+.password.json
 .vscode/
 __pycache__/
 tempCodeRunnerFile.py

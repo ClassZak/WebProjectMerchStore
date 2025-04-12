@@ -1,14 +1,21 @@
 import mysql.connector
 from mysql.connector import Error
+from abc import ABC, abstractmethod
+import json
 
-class AService:
-	def __init__(self,host:str,user:str,password:str,database:str):
+class AService(ABC):
+	def __init__(self,config_file:str):
 		self.connection=None
 		self.cursor=None
-		self.host=host
-		self.user=user
-		self.password=password
-		self.database=database
+		
+		with open(config_file, 'r', encoding='utf-8') as file:
+			config=json.load(file)
+		
+		self.host=config['host']
+		self.user=config['user']
+		self.password=config['password']
+		self.database=config['database']
+
 
 	def connect(self):
 		self.connection=mysql.connector.connect(
@@ -20,6 +27,15 @@ class AService:
 		self.cursor=self.connection.cursor(dictionary=True)
 	
 	def disconnect(self):
-		if self.connection.is_connected():
-			self.cursor.close()
-			self.connection.close()
+		if self.connection:
+			if self.connection.is_connected():
+				self.cursor.close()
+				self.connection.close()
+				
+	# Словарь со str ключами
+	def remove_keys_uppercase(dict:dict)->dict:
+		return {k.lower() : v for k, v in dict.items()}	
+	# Список из словарей со str ключами
+	def remove_keys_uppercase_in_dicts_list(list:list)->list:
+		return [AService.remove_keys_uppercase(d) for d in list]
+

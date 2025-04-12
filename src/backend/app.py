@@ -1,41 +1,9 @@
 import os
 from flask import Flask, render_template, request, jsonify
 import mysql.connector
-from mysql.connector import Error
+import base64
 
-from aservice import AService
 from goodservice import GoodService
-
-
-def load_mysql_password():
-    with open('src/backend/.password') as file:
-        return file.read()
-
-goodService=GoodService(
-    'localhost','root',load_mysql_password(),'merchstorewebpract'
-)
-
-def get_image_from_db(image_id):
-    try:
-        connection = mysql.connector.connect(
-            host='localhost',
-            user='root',
-            password=load_mysql_password(),
-            database='merchstorewebpract'
-        )
-        cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT data, mime_type FROM Good WHERE Id = %s", (image_id,))
-        result = cursor.fetchone()
-        if result:
-            return result['data'], result['mime_type']  # Данные в формате BLOB и MIME-тип
-        return None, None
-    except Error as e:
-        print(f"Database error: {e}")
-        return None, None
-    finally:
-        if connection.is_connected():
-            cursor.close()
-            connection.close()
 
 
 
@@ -47,6 +15,9 @@ app = Flask(
 )
 
 
+goodService=GoodService(
+    'src/backend/.password.json'
+)
 
 
 
@@ -54,32 +25,48 @@ app = Flask(
 def root():
 	return render_template('index.html')
 
-@app.route('/api/image/<int:good_id>')
-def get_good_image(good_id:int):
-	image_data, mime_type=get_image_from_db(good_id)
-
 @app.route('/goods/')
 def render_goods():
     return render_template('goods.html')
 
-@app.route('/api/goods/',methods=['GET', 'POST'])
-def goods_rout():
+@app.route('/api/goods/',methods=['GET','POST'])
+def goods_route():
     if request.method=='GET':
         limit = request.args.get('limit', type=int)
-        ids=request.args.getlist('id')
         if limit:
-            return goodService.get_goods_ids()
-        return goodService.get_goods(ids)
+            return goodService.get_goods_ids(limit)
+        ids=request.args.getlist('ids', type=int)
+        if ids and len(ids)!=0:
+            return goodService.get_goods_by_ids(ids)
     elif request.method=='POST':
         good=request.get_json()
-        result=goodService.insert_good(
+        result=goodService.create_good(
             good['name'],good['description'],good['image'],good['price']
         )
         if result==0:
-            return jsonify({'Не удалось добавить новый товар',400})
+            return jsonify({'error':'Не удалось добавить новый товар'}),500
         else:
-            return jsonify({'Новый товар успешно добавлен',201})
-    pass
+            return jsonify({'message':f'Новый товар успешно добавлен'}),201
+
+@app.route('/api/goods/<int:good_id>', methods=['UPDATE','GET'])
+def update_and_get_good(good_id:int):
+    if request.method=='UPDATE':
+        good=request.get_json()
+        result=goodService.update_good(
+            good['name'],good['description'],good['image'],good['price']
+        )
+        if result==0:
+            return jsonify({'error':'Не удалось обновить товар'}),400
+        else:
+            return jsonify({'message':f'Товар с id {good_id} обновлён'}),201
+    elif request.method=='GET':
+        result=goodService.get_good_by_id(good_id)
+        if result:
+            result['Image'] = result['Image'].decode('utf-8')
+            return jsonify(result),200
+        else:
+            return jsonify({'error':'Not Found'}),404
+
 
 
 

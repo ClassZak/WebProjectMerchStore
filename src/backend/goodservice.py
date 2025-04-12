@@ -7,45 +7,10 @@ from aservice import AService
 
 
 class GoodService(AService):
-	def __init__(self,host:str,user:str,password:str,database:str):
-		super().__init__(host,user,password,database)
+	def __init__(self,config_file:str):
+		super().__init__(config_file)
 
-	def get_goods_ids(self, limit=10):
-		try:
-			super().connect()
-			self.cursor.execute('SELECT Id FROM Good ORDER BY Id LIMIT %s',(limit,))
-			result=self.cursor.fetchall()
-			
-			return [row[0] for row in result],None
-		except Error as e:
-			return None, str(e)
-		finally:
-			super().disconnect()
-	
-	def get_goods(self, ids=[]):
-		try:
-			super().connect()
-			self.cursor.execute(
-				'SELECT * FROM Good WHERE Id IN (%s)' % ','.join(['%s']*len(ids)), ids
-			)
-			goods=[]
-			result=self.cursor.fetchall()
-			for row in result:
-				image_base64=base64.b64encode(row['Image']).decode('utf-8')
-				goods.append({
-					"id": row['Id'],
-					'name':row['Name'],
-					'description':row['Description'],
-					'image':f'data:image/png;base64, {image_base64}',
-					'price':float(row['Price'])
-				})
-			return jsonify({"goods",goods})
-		except Error as e:
-			return jsonify({"error":str(e)}),5
-		finally:
-			super().disconnect()
-	
-	def insert_good(self,name:str,description:str,base64_image:str,price:str):
+	def create_good(self,name:str,description:str,base64_image:str,price:str)->int:
 		result=0
 		try:
 			super().connect()
@@ -54,10 +19,88 @@ class GoodService(AService):
 				(name,description,base64_image,price)
 			)
 			self.connection.commit()
-			result=self.cursor.rowcount
+			result=self.cursor.lastrowid
+			return result
 		except Error as e:
 			self.connection.rollback()
-			return str(e),result
+			return result
 		finally:
 			super().disconnect()
-			return result
+	
+
+
+	def get_all_goods(self):
+		try:
+			super().connect()
+			self.cursor.execute('SELECT * FROM Good')
+			return super().remove_keys_uppercase_in_dicts_list(self.cursor.fetchall())
+		except Error as e:
+			return None
+		finally:
+			super().disconnect()
+	
+	def get_good_by_id(self, id:int):
+		try:
+			super().connect()
+			self.cursor.execute('SELECT * FROM Good WHERE Id=%s',(id,))
+			return super().remove_keys_uppercase_in_dicts_list(self.cursor.fetchone())
+		except Error as e:
+			return None
+		finally:
+			super().disconnect()
+
+	def get_goods_by_ids(self, ids=[]):
+		try:
+			super().connect()
+			self.cursor.execute(
+				'SELECT * FROM Good WHERE Id IN (%s)' % ','.join(['%s']*len(ids)), ids
+			)
+			goods=[]
+			result=self.cursor.fetchall()
+			for row in result:
+				image_base64=row['Image'].decode('utf-8')
+				goods.append({
+					'id': row['Id'],
+					'name':row['Name'],
+					'description':row['Description'],
+					'image':f'data:image/png;base64, {image_base64}',
+					'price':float(row['Price'])
+				})
+			return jsonify({"goods":goods})
+		except Error as e:
+			return jsonify({"error":str(e)}),5
+		finally:
+			super().disconnect()
+
+
+	def get_goods_ids(self, limit=10):
+		try:
+			super().connect()
+			self.cursor.execute('SELECT Id FROM Good LIMIT %s',(limit,))
+			result=self.cursor.fetchall()
+			
+			return AService.remove_keys_uppercase_in_dicts_list(result)
+		except Error as e:
+			return None, str(e)
+		finally:
+			super().disconnect()
+	
+
+
+	def update_good(self, id, name, description, image, price):
+		try:
+			super().connect()
+			self.cursor.execute(
+				'''
+				UPDATE Good
+				SET [Name] = %s, Description = %s, Image = %s, Price = %s
+				WHERE Id=%s
+				''',
+				(name,description,image,price,id)
+			)
+			self.connection.commit()
+			return self.cursor.rowcount
+		except Error as e:
+			return None, str(e)
+		finally:
+			super().disconnect()

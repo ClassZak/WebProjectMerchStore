@@ -1,33 +1,57 @@
+const goodsCache = new Map();
+
 async function loadGoods(){
+	let response=await fetch('/api/goods/?limit=4');
+
+	const container=document.getElementById('goods_grid');
+	container.innerHTML='';
+	
 	try{
-		const idsResponse = await fetch('/api/goods/?limit=10');
-		const idsData = await idsResponse.json();
-		const ids=idsData.ids;
+		if(!response.ok)
+			throw new Error(`Response status ${response.status}`);
 		
-		setTimeout(async ()=>{
-			const goodsResponse = await fetch(
-				`/api/goods/?${new URLSearchParams({ids: JSON.stringify(ids)})}`
-			);
-			const goodsData = await goodsResponse.json();
-			
-			const goodsGrid=document.getElementById('goods_grid');
-			goodsData.goods.array.forEach(element => {
-				const div = document.createElement('div');
-				div.innerHTML=`
-				<h4>${element.name}</h4>
-				<img src="${element.image}" alt="${element.name}">
-				<p>${element.description}</p>
-				<p>Цена: ${element.price}</p>
-				`;
-				goodsGrid.append(div);
-			});
-		},1000);
+		let goodsIds = await response.json();
+		response= await fetch(
+			`/api/goods/?${
+				goodsIds.filter(
+					id=>!goodsCache.has(id.id)
+				).map(
+					id=>`ids=${id.id}`
+				).join('&')
+			}`
+		);
+		let goodsData=await response.json()
+		goodsData.goods.forEach(element => {
+			createGoodCard(element);
+		});
 	}
-	catch (error){
-		console.error('Ошибка загрузки данных:',error)
+	catch(error){
+		console.error(error.message);
 	}
+}
+
+function createGoodCard(good) {
+	const container=document.getElementById('goods_grid')
+	
+	const formattedPrice = new Intl.NumberFormat('ru-RU', {
+		style: 'currency',
+		currency: 'RUB'
+	}).format(good.price);
+
+    container.innerHTML+=`
+	<div>
+		<div>
+			<img src="${good.image}" 
+				alt="${good.name}"
+			>
+			<div>
+				<h5 class="card-title">${good.name}</h5>
+				<p class="card-text">${good.description}</p>
+				<p class="card-text">${formattedPrice}</p>
+			</div>
+		</div>
+	</div>`;
 }
 
 
 loadGoods();
-
