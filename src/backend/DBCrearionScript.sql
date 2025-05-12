@@ -3,18 +3,19 @@ USE MerchStoreWebPract;
 
 
 CREATE TABLE Good(
-	Id			INT PRIMARY KEY AUTO_INCREMENT,
-    Name		VARCHAR(100) NOT NULL,
-    Description	LONGTEXT NOT NULL,
-    Image		LONGBLOB NOT NULL,
-    Price		DECIMAL NOT NULL
+	Id				INT PRIMARY KEY AUTO_INCREMENT,
+	Name			VARCHAR(100) NOT NULL,
+	Description		LONGTEXT NOT NULL,
+	Image			LONGBLOB NOT NULL,
+	Price			DECIMAL NOT NULL,
+    AppearanceDate	DATE
 );
 
 
 CREATE TABLE GoodAtStorage(
 	Id			INT PRIMARY KEY AUTO_INCREMENT,
-    IdGood		INT NOT NULL,
-    Quantity	INT UNSIGNED NOT NULL
+	IdGood		INT NOT NULL,
+	Quantity	INT UNSIGNED NOT NULL
 );
 
 ALTER TABLE GoodAtStorage
@@ -41,11 +42,11 @@ REFERENCES Bank(Id);
 
 CREATE TABLE OrderTable(
 	Id				INT PRIMARY KEY AUTO_INCREMENT,
-    IdGood			INT,
-    IdBankAccount	INT,
-    Quantity		INT UNSIGNED NOT NULL,
-    OrderDateTime	DATETIME
-);
+	IdGood			INT,
+	IdBankAccount	INT,
+	Quantity		INT UNSIGNED NOT NULL,
+	OrderDateTime	DATETIME
+); 
 ALTER TABLE OrderTable
 ADD CONSTRAINT bankAccountRef
 FOREIGN KEY(IdBankAccount)

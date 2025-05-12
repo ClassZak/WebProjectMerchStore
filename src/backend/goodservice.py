@@ -72,6 +72,17 @@ class GoodService(AService):
 		finally:
 			super().disconnect()
 
+	def get_new_goods(self):
+		try:
+			super().connect()
+			self.cursor.execute('SELECT Id FROM Good LIMIT %s',(limit,))
+			result=self.cursor.fetchall()
+			
+			return AService.remove_keys_uppercase_in_dicts_list(result)
+		except Error as e:
+			return None, str(e)
+		finally:
+			super().disconnect()
 
 	def get_goods_ids(self, limit=10):
 		try:
