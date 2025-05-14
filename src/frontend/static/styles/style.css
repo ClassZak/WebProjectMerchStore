@@ -113,14 +113,18 @@ h1{
 .content-wrapper p {
 	white-space: pre-wrap; /* Сохраняем переносы и печатаем табы*/
 }
-.content-wrapper p + p{
+/* .content-wrapper p + p{
 	margin-top: 1.3em;
-}
+} */
 
 br {
 	display: inline-block;
 	margin-left: -30px;    /* Корректируовка отступа после <br> */
 }
+
+
+
+
 
 /*Новинки*/
 .image-grid {
@@ -137,7 +141,7 @@ br {
 	object-fit: cover; /* Сохраняет пропорции и обрезает изображение */
 	aspect-ratio: 1; /* Квадратные ячейки (опционально) */
 }
-.image-grid div{
+.image-grid div:not(.good-info-block div){
 	border: solid var(--accent-gold);
 }
 

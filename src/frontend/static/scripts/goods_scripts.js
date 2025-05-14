@@ -41,14 +41,12 @@ function createGoodCard(good) {
     container.innerHTML+=`
 	<div>
 		<div>
-			<img src="${good.image}" 
-				alt="${good.name}"
-			>
-			<div>
-				<h5 class="card-title">${good.name}</h5>
-				<p class="card-text">${good.description}</p>
-				<p class="card-text">${formattedPrice}</p>
-			</div>
+			<img src="${good.image}" alt="${good.name}">
+		</div>
+		<div>
+			<h4 class="card-title">${good.name}</h5>
+			<p class="card-text">${formattedPrice}</p>
+			<p class="card-text">${good.description}</p>
 		</div>
 	</div>`;
 }

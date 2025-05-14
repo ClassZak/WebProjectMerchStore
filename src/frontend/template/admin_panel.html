@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="{{url_for('static', filename='styles/style.css')}}">
+		<link rel="stylesheet" href="{{url_for('static', filename='styles/good_frame.css')}}">
+		<link rel="stylesheet" href="{{url_for('static', filename='styles/admin_panel.css')}}">
+		<link rel="icon" href="{{url_for('static', filename='favicon.ico')}}" type="image/x-icon">
+		<script src="{{url_for('static',filename='scripts/goods_scripts.js')}}"></script>
+		<title>Панель админа</title>
+	</head>
+	<body>
+		<header>
+			<h1>Панель администратора</h1>
+		</header>
+
+		<main class="content-wrapper">
+			<main class="content-wrapper admin-data-grid-block">
+				<h1>Производители</h1>
+				<div class="image-grid admin-data-grid" id="manufacturers_grid">
+				</div>
+			</main>
+			<main class="content-wrapper good-info-grid">
+				<h1>Товары</h1>
+				<div class="image-grid admin-data-grid" id="goods_grid">
+				</div>
+			</main>
+		</main>
+	</body>
+</html>

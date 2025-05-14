@@ -4,6 +4,7 @@ from mysql.connector import Error
 import base64
 
 from aservice import AService
+from model.good import Good
 
 
 class GoodService(AService):
@@ -66,6 +67,8 @@ class GoodService(AService):
 					'image':f'data:image/png;base64, {image_base64}',
 					'price':float(row['Price'])
 				})
+			if len(goods)==0:
+				return "Not found", 404
 			return jsonify({"goods":goods})
 		except Error as e:
 			return jsonify({"error":str(e)}),5

@@ -20,6 +20,10 @@ goodService=GoodService(
 )
 
 
+@app.route('/admin/')
+def render_admin_panel():
+	return render_template('admin_panel.html')
+
 
 @app.route('/')
 def root():
@@ -38,6 +42,8 @@ def goods_route():
         ids=request.args.getlist('ids', type=int)
         if ids and len(ids)!=0:
             return goodService.get_goods_by_ids(ids)
+        else:
+            return 'Not Found', 404
     elif request.method=='POST':
         good=request.get_json()
         result=goodService.create_good(
@@ -48,9 +54,9 @@ def goods_route():
         else:
             return jsonify({'message':f'Новый товар успешно добавлен'}),201
 
-@app.route('/api/goods/<int:good_id>', methods=['UPDATE','GET'])
+@app.route('/api/goods/<int:good_id>', methods=['PUT','GET'])
 def update_and_get_good(good_id:int):
-    if request.method=='UPDATE':
+    if request.method=='PUT':
         good=request.get_json()
         result=goodService.update_good(
             good['name'],good['description'],good['image'],good['price']

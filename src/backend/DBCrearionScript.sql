@@ -1,6 +1,11 @@
 CREATE DATABASE MerchStoreWebPract;
 USE MerchStoreWebPract;
+#DROP DATABASE MerchStoreWebPract
 
+CREATE TABLE Manufacturer(
+	Id		INT PRIMARY KEY AUTO_INCREMENT,
+	Name	VARCHAR(100) NOT NULL
+)
 
 CREATE TABLE Good(
 	Id				INT PRIMARY KEY AUTO_INCREMENT,
@@ -8,8 +13,14 @@ CREATE TABLE Good(
 	Description		LONGTEXT NOT NULL,
 	Image			LONGBLOB NOT NULL,
 	Price			DECIMAL NOT NULL,
-    AppearanceDate	DATE
+    AppearanceDate	DATE,
+	IdManufacturer	INT
 );
+ALTER TABLE Good
+ADD CONSTRAINT ManufacturerRef
+FOREIGN KEY	(IdManufacturer)
+REFERENCES	Manufacturer(Id)
+
 
 
 CREATE TABLE GoodAtStorage(
@@ -17,11 +28,11 @@ CREATE TABLE GoodAtStorage(
 	IdGood		INT NOT NULL,
 	Quantity	INT UNSIGNED NOT NULL
 );
-
 ALTER TABLE GoodAtStorage
 ADD CONSTRAINT goodRef
 FOREIGN KEY(IdGood)
 REFERENCES Good(Id);
+
 
 
 CREATE TABLE Bank(

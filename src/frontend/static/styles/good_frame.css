@@ -1,0 +1,10 @@
+.admin-data-grid-block .admin-data-grid > div{
+	box-shadow: 1px 1px 10px #111;
+}
+/*Ячейка товара*/
+.admin-data-grid div:not(img){
+	border: 1px solid #ccc;
+}
+.admin-data-grid img{
+	border: 0;
+}
