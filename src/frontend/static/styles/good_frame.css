@@ -1,10 +1,13 @@
-.admin-data-grid-block .admin-data-grid > div{
+.data-grid-block .data-grid > div{
 	box-shadow: 1px 1px 10px #111;
 }
+.data-grid-block .data-grid > div:hover{
+	box-shadow: 1px 1px 30px #111;
+}
 /*Ячейка товара*/
-.admin-data-grid div:not(img){
+.data-grid div:not(img){
 	border: 1px solid #ccc;
 }
-.admin-data-grid img{
+.data-grid img{
 	border: 0;
 }
