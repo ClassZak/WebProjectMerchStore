@@ -11,6 +11,9 @@ async function loadGoods(){
 			throw new Error(`Response status ${response.status}`);
 		
 		let goodsIds = await response.json();
+		if(goodsIds.length==0)
+			return
+		
 		response= await fetch(
 			`/api/goods/?${
 				goodsIds.filter(
