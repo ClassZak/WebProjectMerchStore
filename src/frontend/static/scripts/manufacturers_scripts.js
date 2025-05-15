@@ -1,23 +1,23 @@
 // Объявляем функции глобально через window
 window.openModal = function() {
-	document.getElementById('overlay').style.display = 'flex';
+	document.getElementById('manufacturers_form_overlay').style.display = 'flex';
 	document.body.classList.add('no-scroll');
 };
 
 window.closeModal = function() {
-	document.getElementById('overlay').style.display = 'none';
+	document.getElementById('manufacturers_form_overlay').style.display = 'none';
 	document.body.classList.remove('no-scroll');
 };
 
 // Инициализация после загрузки DOM
 document.addEventListener('DOMContentLoaded', function() {
 	// Закрытие при клике вне модального окна
-	document.getElementById('overlay')?.addEventListener('click', function(e) {
+	document.getElementById('manufacturers_form_overlay')?.addEventListener('click', function(e) {
 		if (e.target === this) closeModal();
 	});
 
 	// Обработка отправки формы
-	document.getElementById('myForm')?.addEventListener('submit', function(e) {
+	document.getElementById('manufacturers_form')?.addEventListener('submit', function(e) {
 		e.preventDefault();
 		
 		/* Поля formData:

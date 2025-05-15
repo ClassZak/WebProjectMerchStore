@@ -9,7 +9,7 @@
   border: 0;
 }
 
-/*Ячейка товара*/
+/* Ячейка товара */
 .data-grid div:not(img){
 	border: 1px solid #ccc;
 }
@@ -18,7 +18,7 @@
 }
 
 
-/*Стиль для золотой рамки*/
+/* Стиль для золотой рамки */
 .gold-border{
 	border: solid var(--accent-gold);
 	z-index: 2

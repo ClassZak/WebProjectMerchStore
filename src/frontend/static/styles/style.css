@@ -26,7 +26,7 @@ body {
 }
 
 
-/*Шапка*/
+/* Шапка */
 header {
     width: 100%;
     background-color: var(--secondary-green);
@@ -77,7 +77,7 @@ a:hover {
 
 
 
-/*Основной контент*/
+/* Основной контент */
 .content-wrapper {
     width: 85%;
 	height: 100%;
@@ -114,9 +114,6 @@ h1{
 .content-wrapper p {
 	white-space: pre-wrap; /* Сохраняем переносы и печатаем табы*/
 }
-/* .content-wrapper p + p{
-	margin-top: 1.3em;
-} */
 
 br {
 	display: inline-block;
@@ -127,7 +124,7 @@ br {
 
 
 
-/*Новинки*/
+/* Новинки */
 .image-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -152,7 +149,7 @@ br {
 
 
 
-/*Подвал*/
+/* Подвал */
 footer{
 	background-color: var(--secondary-olive);
 	color: black;
@@ -197,7 +194,7 @@ footer a {
 .social > a:hover {
     text-decoration: underline;
 }
-/*Описание проекта*/
+/* Описание проекта */
 p + h2{
 	margin-top: 20px;
 }
@@ -206,7 +203,7 @@ ol{
 }
 
 
-/*Медиа запросы*/
+/* Медиа запросы */
 @media (width< 920px) {
     h1, h2, h3, h4, h5, h6 {
 		text-align: center;
@@ -220,7 +217,7 @@ ol{
     h6 { font-size: 1em; }
 }
 
-/*Квадратные кнопки*/
+/* Квадратные кнопки */
 .square-btn {
 	width:	2.4rem;
 	height:	2.4rem;
@@ -240,7 +237,7 @@ ol{
 	font-family: Arial, sans-serif;
 
 	box-shadow: 1px 1px 10px #111;
-	/*Гарантия квадратной формы*/
+	/* Гарантия квадратной формы */
 	aspect-ratio: 1/1;
 
 	margin-left: 5px;
@@ -256,7 +253,7 @@ ol{
 	transform: scale(0.7);
 }
 
-/*Адаптация для маленьких экранов*/
+/* Адаптация для маленьких экранов */
 @media (max-width: 400px) {
 	.square-btn {
 		min-width: 80px;
