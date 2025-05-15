@@ -85,6 +85,7 @@ a:hover {
     flex: 1;
     padding: 4rem 0;
     background-color: var(--primary-accent);
+	isolation: isolate; /* Создаем новый контекст наложения */
 }
 .content-wrapper > *{
 	margin: 30px;
@@ -217,4 +218,49 @@ ol{
     h4 { font-size: 1.2em; }
     h5 { font-size: 1.1em; }
     h6 { font-size: 1em; }
+}
+
+/*Квадратные кнопки*/
+.square-btn {
+	width:	2.4rem;
+	height:	2.4rem;
+	min-width: 10px;
+	min-height: 10px;
+	max-width: 200px;
+	max-height: 200px;
+
+	background: white;
+	border: none;
+	border-radius: 3px;
+	color: var(--primary-dark);
+	cursor: pointer;
+	transition: all 0.3s ease;
+
+	font-size: xx-large;
+	font-family: Arial, sans-serif;
+
+	box-shadow: 1px 1px 10px #111;
+	/*Гарантия квадратной формы*/
+	aspect-ratio: 1/1;
+
+	margin-left: 5px;
+	margin-bottom: 5px;
+}
+
+.square-btn:hover {
+	box-shadow: 1px 1px 15px #111;
+	background: #ccc;
+}
+
+.square-btn:active {
+	transform: scale(0.7);
+}
+
+/*Адаптация для маленьких экранов*/
+@media (max-width: 400px) {
+	.square-btn {
+		min-width: 80px;
+		min-height: 80px;
+		border-radius: 10px;
+	}
 }

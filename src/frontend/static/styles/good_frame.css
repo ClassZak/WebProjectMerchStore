@@ -2,12 +2,24 @@
 	box-shadow: 1px 1px 10px #111;
 }
 .data-grid-block .data-grid > div:hover{
-	box-shadow: 1px 1px 30px #111;
+	box-shadow: 1px 1px 15px #111;
 }
+/* Убираем рамку из старого стиля */
+.data-grid div:not(img) {
+  border: 0;
+}
+
 /*Ячейка товара*/
 .data-grid div:not(img){
 	border: 1px solid #ccc;
 }
 .data-grid img{
 	border: 0;
+}
+
+
+/*Стиль для золотой рамки*/
+.gold-border{
+	border: solid var(--accent-gold);
+	z-index: 2
 }
