@@ -203,32 +203,37 @@ ol{
 }
 
 
+
+
 /* Медиа запросы */
 @media (width< 920px) {
     h1, h2, h3, h4, h5, h6 {
 		text-align: center;
 		padding-left: 0%;
     }
-    h1 { font-size: 1.5em; }
-    h2 { font-size: 1.4em; }
-    h3 { font-size: 1.3em; }
-    h4 { font-size: 1.2em; }
-    h5 { font-size: 1.1em; }
+    h1 { font-size: 1.7em; }
+    h2 { font-size: 1.55em; }
+    h3 { font-size: 1.45em; }
+    h4 { font-size: 1.3em; }
+    h5 { font-size: 1.15em; }
     h6 { font-size: 1em; }
 }
 
+
+
+
 /* Квадратные кнопки */
 .square-btn {
-	width:	2.4rem;
-	height:	2.4rem;
-	min-width: 10px;
-	min-height: 10px;
-	max-width: 200px;
-	max-height: 200px;
+	width:	2.4em;
+	height:	2.4em;
+	min-width:	10px;
+	min-height:	10px;
+	max-width:	200px;
+	max-height:	200px;
 
 	background: white;
 	border: none;
-	border-radius: 3px;
+	border-radius: 15px;
 	color: var(--primary-dark);
 	cursor: pointer;
 	transition: all 0.3s ease;
@@ -244,9 +249,11 @@ ol{
 	margin-bottom: 5px;
 }
 
-.square-btn:hover {
-	box-shadow: 1px 1px 15px #111;
-	background: #ccc;
+@media (hover: hover) and (pointer: fine) {
+	.square-btn:hover {
+		box-shadow: 1px 1px 15px #111;
+		background: #ccc;
+	}
 }
 
 .square-btn:active {
@@ -256,8 +263,10 @@ ol{
 /* Адаптация для маленьких экранов */
 @media (max-width: 400px) {
 	.square-btn {
-		min-width: 80px;
-		min-height: 80px;
+		width:	.1em;
+		height:	.1em;
+		min-width:	1.3em;
+		min-height:	1.3em;
 		border-radius: 10px;
 	}
 }

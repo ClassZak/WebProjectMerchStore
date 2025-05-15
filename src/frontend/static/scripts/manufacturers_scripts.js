@@ -19,11 +19,15 @@ async function loadManufacturers(){
 }
 function createManufacturerCard(element){
 	return `
-	<div>
-	<div>
-		<h3>Название</h3>
-		<h4 class="card-title">${element.name}</h5>
-	</div>
+	<div class="manufacturer-card">
+		<div class="card-content">
+			<h4 class="card-title">${element.name}</h4>
+			<p>Название</p>
+		</div>
+		<div class="card-button-div">
+			<button class="square-btn"><strong>✎</strong></button>
+			<button class="square-btn"><strong>🗑</strong></button>
+		</div>
 	</div>
 	`;// Доп. div для стиля
 }

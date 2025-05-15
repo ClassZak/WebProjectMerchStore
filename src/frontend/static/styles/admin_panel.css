@@ -43,6 +43,9 @@ h1{
 	margin-top: 15px;
 }
 
+
+
+
 /* Стиль для производителей */
 .manufacturer-grid {
 	display: grid;
@@ -61,4 +64,53 @@ h1{
 .manufacturer-grid *{
 	overflow-wrap: break-word;
 	word-break: break-word;
+}
+
+
+/* Стили для карточки производителя */
+.manufacturer-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* Занимает всю высоту родителя */
+}
+.card-content {
+    flex-grow: 1; /* Занимает доступное пространство, прижимая кнопки вниз */
+}
+
+.card-button-div {
+    margin-top: auto; /* Прижимает кнопки к нижнему краю */
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+
+
+
+
+/* Кнопки внутри карточки объекта */
+.data-grid div{
+}
+.data-grid div{
+
+}
+.card-button-div{
+}
+.data-grid div .square-btn{
+	width:	1.4em;
+	height:	1.4em;
+	min-width:	20px;
+	min-height:	20px;
+	border-radius: 5px;
+	font-size: x-large;
+}
+@media (max-width: 400px) {
+	.data-grid div .square-btn {
+		width:	1em;
+		height:	1em;
+		min-width:	1.4em;
+		min-height:	1.4em;
+		border-radius: 10px;
+	}
 }

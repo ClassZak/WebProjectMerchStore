@@ -1,8 +1,10 @@
 .data-grid-block .data-grid > div{
 	box-shadow: 1px 1px 10px #111;
 }
-.data-grid-block .data-grid > div:hover{
-	box-shadow: 1px 1px 15px #111;
+@media (hover: hover) and (pointer: fine) {
+	.data-grid-block .data-grid > div:hover{
+		box-shadow: 1px 1px 15px #111;
+	}
 }
 /* Убираем рамку из старого стиля */
 .data-grid > div:not(img) {
