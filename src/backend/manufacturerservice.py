@@ -15,26 +15,49 @@ class ManufacturerService(AService):
 	
 	def create_manufacturer(self, data: dict) -> Tuple[str, int]:
 		try:
+			# Валидация по JSON-полям модели
 			validated = ModelValidator.validate(data, Manufacturer.FIELDS_META)
 			
 			self.connect()
-			fields = ', '.join(validated.keys())
-			placeholders = ', '.join(['%s'] * len(validated))
 			
-			self.cursor.execute(
-				f'INSERT INTO Manufacturer ({fields}) VALUES ({placeholders})',
-				tuple(validated.values())
-			)
+			# Преобразование полей модели в БД-столбцы
+			db_fields = [Manufacturer.DB_COLUMNS[field] for field in validated.keys()]
+			values = tuple(validated.values())
+			
+			query = f"""
+				INSERT INTO Manufacturer ({', '.join(db_fields)})
+				VALUES ({', '.join(['%s'] * len(values))})
+			"""
+			
+			self.cursor.execute(query, values)
 			self.connection.commit()
-			return jsonify({'id':self.cursor.lastrowid}), 201
+			
+			return jsonify({'id': self.cursor.lastrowid}), 201
 			
 		except ValueError as e:
 			return str(e), 400
 		except Error as e:
 			self.connection.rollback()
-			# Обработка SQL ошибок
-			if e.errno == 1062:  # Duplicate entry
+			if e.errno == 1062:
 				return "Производитель с таким именем уже существует", 409
+			return f"Ошибка БД: {str(e)}", 500
+		finally:
+			self.disconnect()
+	
+	def read_manufacturers(self) -> Tuple[str, int]:
+		try:
+			self.connect()
+			fields = ', '.join([v['db_column'] for v in Manufacturer.FIELDS_META.values()])
+			self.cursor.execute(f"SELECT {fields} FROM Manufacturer")
+			raw_data = self.cursor.fetchall()
+			
+			# Преобразуем данные БД в формат модели
+			return jsonify({'manufacturers': [
+				{k: row[v['db_column']] 
+				for k, v in Manufacturer.FIELDS_META.items()}
+				for row in raw_data
+			]}), 200
+		except Error as e:
 			return f"Ошибка БД: {str(e)}", 500
 		finally:
 			self.disconnect()

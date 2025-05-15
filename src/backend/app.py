@@ -60,8 +60,11 @@ def render_goods():
 def manufacturers_route():
 	try:
 		if request.method=='POST':
-			result=manufacturer_service.create_manufacturer({'name':request.form.get('name')})
-			return result
+			return manufacturer_service.create_manufacturer({'name':request.form.get('name')})
+		elif request.method=='GET':
+			return manufacturer_service.read_manufacturers()
+		else:
+			return jsonify({'error': 'Method Not Allowed'}), 405
 	except Exception as e:
 		return jsonify({'error': 'Internal Server Error'}), 500
 

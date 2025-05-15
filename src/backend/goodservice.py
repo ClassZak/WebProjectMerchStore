@@ -34,8 +34,6 @@ class GoodService(AService):
 		finally:
 			self.disconnect()
 	
-
-
 	def get_all_goods(self):
 		try:
 			super().connect()

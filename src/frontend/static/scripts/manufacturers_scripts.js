@@ -1,10 +1,41 @@
-// Объявляем функции глобально через window
-window.openModal = function() {
+async function loadManufacturers(){
+	let response = await fetch('/api/manufacturers/');
+	
+	const container=document.getElementById('manufacturers_grid');
+	container.innerHTML='';
+
+	try{
+		if(!response.ok)
+			throw new Error(`Response status ${response.status}`);
+
+		let elements = await response.json();
+		elements.manufacturers.forEach(element => {
+			container.innerHTML+=createManufacturerCard(element)
+		});
+	}
+	catch(error){
+		console.log(error.message);
+	}
+}
+function createManufacturerCard(element){
+	return `
+	<div>
+		<div>
+			<h4 class="card-title">${element.name}</h5>
+		</div>
+	</div>`;
+}
+
+
+
+
+// Функции добавления производителей
+function openModal() {
 	document.getElementById('manufacturers_form_overlay').style.display = 'flex';
 	document.body.classList.add('no-scroll');
 };
 
-window.closeModal = function() {
+function closeModal() {
 	document.getElementById('manufacturers_form_overlay').style.display = 'none';
 	document.body.classList.remove('no-scroll');
 };
@@ -37,11 +68,12 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (data.error) {
 				alert(data.error);
 			} else {
-				//TODO: добавить обновление списка производителей
+				//TODO: Доработать обновление списка производителей
 				if(data.id!=0)
-					alert(`Успешно добавлен новый производитель ${formData.get('name')}`);
+					alert(`Успешно добавлен новый производитель \"${formData.get('name')}\"`);
 				closeModal();
 				this.reset();
+				loadManufacturers()
 			}
 		})
 		.catch(error => {
@@ -49,4 +81,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			alert('Произошла ошибка при отправке формы');
 		});
 	});
+
+
+
+	// Загрузки данных при запуске страницы
+	loadManufacturers()
 });
