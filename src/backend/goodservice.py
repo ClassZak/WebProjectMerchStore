@@ -1,3 +1,4 @@
+from typing import Tuple, Union
 import mysql.connector
 from flask import jsonify, request, Flask
 from mysql.connector import Error
@@ -11,22 +12,27 @@ class GoodService(AService):
 	def __init__(self,config_file:str):
 		super().__init__(config_file)
 
-	def create_good(self,name:str,description:str,base64_image:str,price:str)->int:
-		result=0
+	def create_good(self, name: str, description: str, base64_image: str, price: str) -> Union[int, Tuple[str, int]]:
 		try:
-			super().connect()
+			self.connect()
 			self.cursor.execute(
 				'INSERT INTO Good (Name,Description,Image,Price) VALUES (%s,%s,%s,%s)',
-				(name,description,base64_image,price)
+				(name, description, base64_image, price)
 			)
 			self.connection.commit()
-			result=self.cursor.lastrowid
-			return result
+			return self.cursor.lastrowid
+			
 		except Error as e:
-			self.connection.rollback()
-			return result
+			if self.connection:
+				self.connection.rollback()
+			return f"Database error: {str(e)}", 500
+		except Exception as e:
+			if self.connection:
+				self.connection.rollback()
+			return "Internal server error", 500
+			
 		finally:
-			super().disconnect()
+			self.disconnect()
 	
 
 
@@ -94,8 +100,10 @@ class GoodService(AService):
 			result=self.cursor.fetchall()
 			
 			return AService.remove_keys_uppercase_in_dicts_list(result)
+		except mysql.connector.errors.DatabaseError as db_error:
+			return 'Data base error', 500
 		except Error as e:
-			return None, str(e)
+			return str(e), 500
 		finally:
 			super().disconnect()
 	

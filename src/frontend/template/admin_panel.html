@@ -1,37 +1,77 @@
 <!DOCTYPE html>
-<html lang="ru">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="{{url_for('static', filename='styles/style.css')}}">
-		<link rel="stylesheet" href="{{url_for('static', filename='styles/good_frame.css')}}">
-		<link rel="stylesheet" href="{{url_for('static', filename='styles/admin_panel.css')}}">
-		<link rel="icon" href="{{url_for('static', filename='favicon.ico')}}" type="image/x-icon">
-		<script src="{{url_for('static',filename='scripts/goods_scripts.js')}}"></script>
-		<title>Панель админа</title>
-	</head>
-	<body>
-		<header>
-			<h1>Панель администратора</h1>
-		</header>
+<html>
+<head>
+	<script src="{{url_for('static',filename='scripts/manufacturers_scripts.js')}}"></script>
+	<style>
+		body {
+			margin: 0;
+			padding: 20px;
+			font-family: Arial;
+		}
 
-		<main class="content-wrapper">
-			<main class="content-wrapper data-grid-block">
-				<h1>Производители</h1>
-				<div class="gold-border">
-					<div class="image-grid data-grid" id="manufacturers_grid">
-					</div>
-					<button class="square-btn"><strong>+</strong></button>
+		/* Затемнение фона */
+		.overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.5);
+			display: none;
+			justify-content: center;
+			align-items: center;
+			z-index: 999;
+		}
+
+		/* Модальное окно */
+		.modal {
+			background: white;
+			padding: 20px;
+			border-radius: 15px;
+			width: 300px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+		}
+
+		/* Форма */
+		.modal-form {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+		}
+
+		/* Кнопки формы */
+		.form-buttons {
+			display: flex;
+			gap: 10px;
+			margin-top: 15px;
+		}
+
+		button {
+			padding: 8px 16px;
+			cursor: pointer;
+		}
+
+		/* Запрет прокрутки при открытом модале */
+		body.no-scroll {
+			overflow: hidden;
+		}
+	</style>
+</head>
+<body>
+	<button onclick="openModal()">Добавить</button>
+	
+	<div class="overlay" id="overlay">
+		<div class="modal">
+			<form action="/api/manufacturers/" method="post" class="modal-form" id="myForm">
+				<input type="text" name="name" placeholder="Введите данные" required>
+				<!-- Добавьте hidden-поле с CSRF-токеном, если используется -->
+				<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+				<div class="form-buttons">
+					<button type="submit">Добавить</button>
+					<button type="button" onclick="closeModal()">Отмена</button>
 				</div>
-			</main>
-			<main class="content-wrapper good-info-grid">
-				<h1>Товары</h1>
-				<div class="gold-border">
-					<div class="image-grid data-grid" id="goods_grid">
-					</div>
-					<button class="square-btn"><strong>+</strong></button>
-				</div>
-			</main>
-		</main>
-	</body>
+			</form>
+		</div>
+	</div>
+</body>
 </html>

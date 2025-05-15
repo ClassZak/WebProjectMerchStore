@@ -1,6 +1,14 @@
 import os
 
 class Good:
+	FIELDS_META = {
+		'name': {'type': str, 'max_len': 100, 'required': True},
+		'description': {'type': str, 'required': True},
+		'image': {'type': str, 'required': True},  # base64
+		'price': {'type': float, 'required': True},
+		'id_manufacturer': {'type': int, 'fk': 'Manufacturer.Id'}
+	}
+	
 	def __init__(
 			self,
 			id:int,
