@@ -5,12 +5,12 @@
 	box-shadow: 1px 1px 15px #111;
 }
 /* Убираем рамку из старого стиля */
-.data-grid div:not(img) {
-  border: 0;
+.data-grid > div:not(img) {
+	border: 0;
 }
 
 /* Ячейка товара */
-.data-grid div:not(img){
+.data-grid > div:not(img){
 	border: 1px solid #ccc;
 }
 .data-grid img{

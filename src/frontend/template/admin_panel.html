@@ -19,7 +19,7 @@
 			<main class="content-wrapper data-grid-block">
 				<h1>Производители</h1>
 				<div class="gold-border">
-					<div class="image-grid data-grid" id="manufacturers_grid">
+					<div class="data-grid manufacturer-grid" id="manufacturers_grid">
 					</div>
 					<button onclick="openModal()" class="square-btn"><strong>+</strong></button>
 				</div>
@@ -33,7 +33,8 @@
 				</div>
 			</main>
 		</main>
-		
+
+		<!--Формы для ввода данных-->
 		<div class="overlay" id="manufacturers_form_overlay">
 			<div class="modal">
 				<form action="/api/manufacturers/" method="post" class="modal-form" id="manufacturers_form">

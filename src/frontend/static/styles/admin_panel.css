@@ -42,3 +42,23 @@ h1{
 	gap: 10px;
 	margin-top: 15px;
 }
+
+/* Стиль для производителей */
+.manufacturer-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 16px; /* Расстояние между изображениями */
+	padding: 16px;
+}
+.manufacturer-grid > div {
+	width: 100%;
+	height: 100%;
+	aspect-ratio: 2; /* Квадратные ячейки (опционально) */
+}
+.manufacturer-grid > div > div{
+	padding: 16px;
+}
+.manufacturer-grid *{
+	overflow-wrap: break-word;
+	word-break: break-word;
+}

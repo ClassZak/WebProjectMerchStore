@@ -20,10 +20,12 @@ async function loadManufacturers(){
 function createManufacturerCard(element){
 	return `
 	<div>
-		<div>
-			<h4 class="card-title">${element.name}</h5>
-		</div>
-	</div>`;
+	<div>
+		<h3>Название</h3>
+		<h4 class="card-title">${element.name}</h5>
+	</div>
+	</div>
+	`;// Доп. div для стиля
 }
 
 
