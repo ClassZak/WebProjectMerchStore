@@ -37,8 +37,9 @@
 		<!--Формы для ввода данных-->
 		<div class="overlay" id="manufacturers_form_overlay">
 			<div class="modal">
+				<h1>Новый производитель</h1>
 				<form action="/api/manufacturers/" method="post" class="modal-form" id="manufacturers_form">
-					<input type="text" name="name" placeholder="Введите данные" required>
+					<input type="text" name="name" placeholder="Имя производителя" required>
 					<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 					<div class="form-buttons">
 						<button type="submit">Добавить</button>
