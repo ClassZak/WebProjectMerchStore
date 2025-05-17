@@ -56,6 +56,15 @@ def render_goods():
 
 
 # API
+# Производители
+@app.route('/api/manufacturers/<int:id>', methods=['PUT', 'DELETE'])
+def handle_manufacturer(id):
+	if request.method == 'PUT':
+		data = request.get_json()
+		return manufacturer_service.update_manufacturer(data, id)
+	elif request.method == 'DELETE':
+		return manufacturer_service.delete_manufacturer(id)
+	return jsonify({'error': 'Method Not Allowed'}), 405
 @app.route('/api/manufacturers/', methods=['GET', 'POST'])
 def manufacturers_route():
 	try:
@@ -68,6 +77,7 @@ def manufacturers_route():
 	except Exception as e:
 		return jsonify({'error': 'Internal Server Error'}), 500
 
+# Товары
 @app.route('/api/goods/',methods=['GET','POST'])
 def goods_route():
 	if request.method=='GET':
