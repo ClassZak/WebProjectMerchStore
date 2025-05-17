@@ -1,6 +1,5 @@
 /*Основной контент*/
 .content-wrapper {
-    width: 85%;
 	height: auto;
     margin: 0 auto;
     flex: 1;
@@ -53,12 +52,22 @@ h1{
 	gap: 16px; /* Расстояние между изображениями */
 	padding: 16px;
 }
-.manufacturer-grid > div {
+@media screen and (width< 300px) {
+	.manufacturer-grid {
+		grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+	}
+}
+@media screen and (width< 170px) {
+	.manufacturer-grid {
+		grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+	}
+}
+.manufacturer-grid > .manufacturer-card {
 	width: auto;
 	height: auto;
 	aspect-ratio: auto; /* Квадратные ячейки (опционально) */
 }
-.manufacturer-grid > div > div{
+.manufacturer-grid > .manufacturer-card > div{
 	padding: 16px;
 }
 .manufacturer-grid *{
@@ -84,6 +93,12 @@ h1{
     gap: 8px;
     justify-content: flex-end;
 }
+@media screen and (width< 300px){
+	.card-button-div{
+		gap: 0;
+		margin: 0;
+	}
+}
 
 
 
@@ -105,5 +120,21 @@ h1{
 		min-width:	1.4em;
 		min-height:	1.4em;
 		border-radius: 10px;
+	}
+}
+
+@media (max-width: 300px) {
+	.data-grid div .square-btn {
+		font-size: 1rem;
+		border-radius: 3px;
+	}
+}
+/* Кнопка добавления */
+.add-btn{
+	font-size: xx-large;
+}
+@media (width < 300px){
+	.add-btn{
+		font-size: medium;
 	}
 }
