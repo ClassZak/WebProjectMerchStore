@@ -192,7 +192,7 @@ footer a {
 	text-align: center;
 }
 .social > a:hover {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 /* Описание проекта */
 p + h2{
@@ -207,7 +207,7 @@ ol{
 
 /* Медиа запросы */
 @media (width< 920px) {
-    h1, h2, h3, h4, h5, h6 {
+	h1, h2, h3, h4, h5, h6 {
 		text-align: center;
 		padding-left: 0%;
     }
@@ -230,36 +230,24 @@ ol{
 	min-height:	10px;
 	max-width:	200px;
 	max-height:	200px;
-
+	
 	background: white;
 	border: none;
 	border-radius: 15px;
 	color: var(--primary-dark);
 	cursor: pointer;
 	transition: all 0.3s ease;
-
+	
 	font-size: xx-large;
 	font-family: Arial, sans-serif;
-
+	
 	box-shadow: 1px 1px 10px #111;
 	/* Гарантия квадратной формы */
 	aspect-ratio: 1/1;
-
+	
 	margin-left: 5px;
 	margin-bottom: 5px;
 }
-
-@media (hover: hover) and (pointer: fine) {
-	.square-btn:hover {
-		box-shadow: 1px 1px 15px #111;
-		background: #ccc;
-	}
-}
-
-.square-btn:active {
-	transform: scale(0.7);
-}
-
 /* Адаптация для маленьких экранов */
 @media (max-width: 400px) {
 	.square-btn {
@@ -269,4 +257,17 @@ ol{
 		min-height:	1.3em;
 		border-radius: 10px;
 	}
+}
+
+/* Убрать тени у кнопок при нажатии у телефонов */
+@media (hover: hover) and (pointer: fine) {
+	.square-btn:hover {
+		box-shadow: 1px 1px 15px #111;
+		background: #ccc;
+	}
+}
+
+.square-btn:active {
+	-webkit-transform: scale(0.7); /* Совместимость с Google, Safari */
+	transform: scale(0.7);
 }
