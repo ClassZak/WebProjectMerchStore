@@ -1,3 +1,7 @@
+// Данные страницы
+var manufacturers
+
+
 async function loadManufacturers(){
 	let response = await fetch('/api/manufacturers/');
 	
@@ -9,7 +13,8 @@ async function loadManufacturers(){
 			throw new Error(`Response status ${response.status}`);
 
 		let elements = await response.json();
-		elements.manufacturers.forEach(element => {
+		manufacturers=elements.manufacturers
+		manufacturers.forEach(element => {
 			container.innerHTML+=createManufacturerCard(element)
 		});
 	}
@@ -19,7 +24,7 @@ async function loadManufacturers(){
 }
 function createManufacturerCard(element){
 	return `
-	<div class="manufacturer-card">
+	<div class="manufacturer-card" element-data-id="${element.id}">
 		<div class="card-content">
 			<h4 class="card-title">${element.name}</h4>
 			<p>Название</p>
