@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="{{url_for('static', filename='styles/modal_form.css')}}">
 		<link rel="icon" href="{{url_for('static', filename='favicon.ico')}}" type="image/x-icon">
 		<script src="{{url_for('static',filename='scripts/manufacturers_scripts.js')}}"></script>
+		<meta name="csrf-token" content="{{ csrf_token() }}">
 		<title>Панель админа</title>
 	</head>
 	<body>
@@ -40,7 +41,6 @@
 				<h1>Новый производитель</h1>
 				<form action="/api/manufacturers/" method="post" class="modal-form" id="manufacturers_form">
 					<input type="text" name="name" placeholder="Имя производителя" required>
-					<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 					<div class="form-buttons">
 						<button type="submit">Добавить</button>
 						<button type="button" onclick="closeModal()">Отмена</button>

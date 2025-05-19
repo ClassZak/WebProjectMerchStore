@@ -57,8 +57,8 @@ def render_goods():
 
 # API
 # Производители
-@app.route('/api/manufacturers/<int:id>', methods=['PUT', 'DELETE'])
-def handle_manufacturer(id):
+@app.route('/api/manufacturers/<int:id>', methods=['PUT', 'DELETE', 'GET'])
+def handle_manufacturer(id:int):
 	if request.method == 'PUT':
 		data = request.get_json()
 		return manufacturer_service.update_manufacturer(data, id)

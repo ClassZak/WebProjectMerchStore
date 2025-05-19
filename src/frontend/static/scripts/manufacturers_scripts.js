@@ -1,5 +1,6 @@
 // Данные страницы
 var manufacturers
+var csrfToken = undefined;
 
 
 async function loadManufacturers(){
@@ -30,11 +31,36 @@ function createManufacturerCard(element){
 			<p>Название</p>
 		</div>
 		<div class="card-button-div">
-			<button class="square-btn"><strong>✎</strong></button>
-			<button class="square-btn"><strong>🗑</strong></button>
+			<button class="square-btn" onclick="updateManufacturer(${element.id})"><strong>✎</strong></button>
+			<button class="square-btn" onclick="deleteManufacturer(${element.id})"><strong>🗑</strong></button>
 		</div>
 	</div>
 	`;// Доп. div для стиля
+}
+
+
+async function deleteManufacturer(id){
+	let response = await fetch(`/api/manufacturers/${id}`, {method: "DELETE", headers: { 'X-CSRFToken': csrfToken}});
+	if(!response.ok){
+		console.log(response.status);
+		console.log(response.message);
+	}
+}
+async function updateManufacturer(id) {
+	const manufacturer = manufacturers.find(x => x.id==id)
+	
+	let response = await fetch(
+		`/api/manufacturers/${id}`, 
+		{
+			method: "PUT",
+			headers: 
+			{'X-CSRFToken': csrfToken, 'Content-Type': 'application/json' }, body: JSON.stringify(manufacturer)
+		}
+	);
+	if(!response.ok){
+		console.log(response.status);
+		console.log(response.message);
+	}
 }
 
 
@@ -53,6 +79,8 @@ function closeModal() {
 
 // Инициализация после загрузки DOM
 document.addEventListener('DOMContentLoaded', function() {
+	// CSRF токен
+	csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 	// Закрытие при клике вне модального окна
 	document.getElementById('manufacturers_form_overlay')?.addEventListener('click', function(e) {
 		if (e.target === this) closeModal();
@@ -71,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			method: 'POST',
 			body: formData,
 			headers: {
-				'X-CSRFToken': document.querySelector('[name=csrf_token]').value
+				'X-CSRFToken': csrfToken
 			}
 		})
 		.then(response => response.json())
