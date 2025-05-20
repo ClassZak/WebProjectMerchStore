@@ -3,6 +3,15 @@ var manufacturers
 var csrfToken = undefined;
 
 
+function handleUnknownError(error){
+	const message=`Неизвестная ошибка: "${error}"`;
+	alert(message);
+	console.log(message)
+}
+
+
+
+
 async function loadManufacturers(){
 	let response = await fetch('/api/manufacturers/');
 	
@@ -40,27 +49,48 @@ function createManufacturerCard(element){
 
 
 async function deleteManufacturer(id){
-	let response = await fetch(`/api/manufacturers/${id}`, {method: "DELETE", headers: { 'X-CSRFToken': csrfToken}});
-	if(!response.ok){
-		console.log(response.status);
-		console.log(response.message);
-	}
+	const manufacturer = manufacturers.find(x => x.id==id)
+
+	fetch(`/api/manufacturers/${id}`, {method: "DELETE", headers: { 'X-CSRFToken': csrfToken}})
+	.then(response => response.json())
+	.then(data => {
+		if(data.error){
+			alert(`Ошибка удаление поставщика "${manufacturer.name}": ${data.error}`);
+			loadManufacturers();
+		} else{
+			alert(`Поставщик "${manufacturer.name}" успешно удалён`);
+		}
+	})
+	.catch(error =>{ 
+		handleUnknownError(error);
+		loadManufacturers();
+	});
 }
 async function updateManufacturer(id) {
 	const manufacturer = manufacturers.find(x => x.id==id)
 	
-	let response = await fetch(
+	fetch(
 		`/api/manufacturers/${id}`, 
 		{
 			method: "PUT",
 			headers: 
 			{'X-CSRFToken': csrfToken, 'Content-Type': 'application/json' }, body: JSON.stringify(manufacturer)
 		}
-	);
-	if(!response.ok){
-		console.log(response.status);
-		console.log(response.message);
-	}
+	)
+	.then(response => response.json())
+	.then(data => {
+		if(data.error) {
+			alert(`Ошибка редактирования данных производителя "${manufacturer.name}": ${data.error}`);
+			loadManufacturers();
+		}
+		else {
+			alert(`Данные производителя "${manufacturer.name}" изменены успешно`);
+		}
+	})
+	.catch(error =>{ 
+		handleUnknownError(error);
+		loadManufacturers();
+	});
 }
 
 

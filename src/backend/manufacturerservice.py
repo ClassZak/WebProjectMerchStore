@@ -66,12 +66,15 @@ class ManufacturerService(AService):
 		
 	def update_manufacturer(self, data: dict, id: int) -> Tuple[Response, int]:
 		try:
-			self.connect()
 			# Проверка конфликта ID
 			if 'id' in data and data['id'] != id:
 				return jsonify({'error': 'ID в теле не совпадает с ID в URL'}), 400
 				
 			data['id'] = id  # Принудительно устанавливаем ID из URL
+
+			# Проверка Id и валидация
+			if not self.exists(data['id']):
+				return jsonify({'error': 'Производитель не найден'}), 404
 			validated = ModelValidator.validate(data, Manufacturer.FIELDS_META, self.cursor)
 			
 			# Формируем SET-часть
@@ -88,11 +91,12 @@ class ManufacturerService(AService):
 				WHERE {Manufacturer.DB_COLUMNS['columns']['id']} = %s
 			"""
 			
+			self.connect()
 			self.cursor.execute(query, values)
 			self.connection.commit()
 			
-			if self.cursor.rowcount == 0:
-				return jsonify({'error': 'Производитель не найден'}), 404
+			if self.cursor.rowcount==0:
+				return jsonify({'error': 'Производитель уже имеет эти данные'}), 400
 				
 			return jsonify({'message': 'Производитель обновлён'}), 200
 			
@@ -106,34 +110,32 @@ class ManufacturerService(AService):
 
 	def delete_manufacturer(self, id: int) -> Tuple[Response, int]:
 		try:
-			self.connect()
 			if not self.exists(id):
 				return jsonify({'error': 'Не найден объект для удаления'}), 404
 			else:
+				self.connect()
 				query = f"""
 					DELETE FROM {ManufacturerService.TABLE_NAME}
 					WHERE {Manufacturer.DB_COLUMNS['columns']['id']} = %s
 				"""
 				self.cursor.execute(query, (id,))
 				self.connection.commit()
-				return jsonify({'error': 'Объект успешно удалён'}), 200
+				return jsonify({'message': 'Объект успешно удалён'}), 200
 		except Error as e:
 			self.connection.rollback()
 			return jsonify({'error': f'Ошибка БД: {str(e)}'}), 500
 		finally:
 			self.disconnect()
-		pass
 	
 
-	def exists(self, id: int)-> bool:
-		if not (self.connection or self.connection.is_connected()):
-			raise Exception('Не возможно проверить наличие объекта без подключения к БД')
-		query = f"""
-			SELECT EXISTS(
-				SELECT 1 FROM {ManufacturerService.TABLE_NAME} 
-				WHERE {Manufacturer.DB_COLUMNS['columns']['id']} = %s
-			)
-				AS exist 
-		"""
-		self.cursor.execute(query, (id,))
-		return bool(self.cursor.fetchone()['exist'])
+	def exists(self, id: int) -> bool:
+		try:
+			self.connect()
+			query = "SELECT EXISTS(SELECT 1 FROM Manufacturer WHERE Id = %s) AS exist"
+			self.cursor.execute(query, (int(id),))
+			print("SQL:", self.cursor.statement)  # или ._executed
+			# вернёт (1,) или (0,)
+			result = self.cursor.fetchone()
+			return bool(result['exist']) if result else False
+		finally:
+			self.disconnect()

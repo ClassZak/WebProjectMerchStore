@@ -22,7 +22,9 @@ class AService(ABC):
 			host=self.host,
 			user=self.user,
 			password=self.password,
-			database=self.database
+			database=self.database,
+			charset='utf8mb4',
+			collation='utf8mb4_unicode_ci'
 		)
 		self.cursor=self.connection.cursor(dictionary=True)
 	
