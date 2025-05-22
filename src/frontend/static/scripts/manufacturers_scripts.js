@@ -69,6 +69,10 @@ async function deleteManufacturer(id){
 async function updateManufacturer(id) {
 	const manufacturer = manufacturers.find(x => x.id==id)
 	
+	let element=document.getElementById('edit_manufacturers_form');
+	element.setAttribute('element-data-id',id);
+	openModal('edit_manufacturers_form_overlay');
+	/*
 	fetch(
 		`/api/manufacturers/${id}`, 
 		{
@@ -90,20 +94,20 @@ async function updateManufacturer(id) {
 	.catch(error =>{ 
 		handleUnknownError(error);
 		loadManufacturers();
-	});
+	});*/
 }
 
 
 
 
 // Функции добавления производителей
-function openModal() {
-	document.getElementById('manufacturers_form_overlay').style.display = 'flex';
+function openModal(modalId) {
+	document.getElementById(modalId).style.display = 'flex';
 	document.body.classList.add('no-scroll');
 };
 
-function closeModal() {
-	document.getElementById('manufacturers_form_overlay').style.display = 'none';
+function closeModal(modalId) {
+	document.getElementById(modalId).style.display = 'none';
 	document.body.classList.remove('no-scroll');
 };
 
@@ -112,12 +116,12 @@ document.addEventListener('DOMContentLoaded', function() {
 	// CSRF токен
 	csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 	// Закрытие при клике вне модального окна
-	document.getElementById('manufacturers_form_overlay')?.addEventListener('click', function(e) {
-		if (e.target === this) closeModal();
+	document.getElementById('create_manufacturers_form_overlay')?.addEventListener('click', function(e) {
+		if (e.target === this) closeModal('create_manufacturers_form_overlay');
 	});
 
 	// Обработка отправки формы
-	document.getElementById('manufacturers_form')?.addEventListener('submit', function(e) {
+	document.getElementById('create_manufacturers_form')?.addEventListener('submit', function(e) {
 		e.preventDefault();
 		
 		/* Поля formData:
@@ -140,12 +144,46 @@ document.addEventListener('DOMContentLoaded', function() {
 				//TODO: Доработать обновление списка производителей
 				if(data.id!=0)
 					alert(`Успешно добавлен новый производитель \"${formData.get('name')}\"`);
-				closeModal();
+				closeModal('create_manufacturers_form_overlay');
 				this.reset();
 				loadManufacturers()
 			}
 		})
 		.catch(error => {
+			console.error('Ошибка:', error);
+			alert('Произошла ошибка при отправке формы');
+		});
+	});
+	document.getElementById('edit_manufacturers_form')?.addEventListener('submit', function(e){
+		e.preventDefault();
+		
+		/* Поля formData:
+		name		string
+		csrf_token	string	*/
+		const formData = new FormData(this);
+		
+		fetch(this.action+this.getAttribute('element-data-id'),{
+			method: 'PUT',
+			body: formData,
+			headers: {
+				'X-CSRFToken': csrfToken
+			}
+		})
+		.then(response => response.json())
+		.then(data => {
+			console.log(data);
+			if(data.error){
+				alert(data.error);
+			} else {
+				//TODO: Доработать обновление списка производителей
+				if(data.id!=0)
+					alert(`Успешно изменены данные производителя \"${formData.get('name')}\"`);
+				closeModal('edit_manufacturers_form_overlay');
+				this.reset();
+				loadManufacturers();
+			}
+		})
+		.catch(error =>{
 			console.error('Ошибка:', error);
 			alert('Произошла ошибка при отправке формы');
 		});

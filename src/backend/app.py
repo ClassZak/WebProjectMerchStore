@@ -1,5 +1,6 @@
 import os
-from flask import Flask, json, render_template, request, jsonify
+from typing import Dict
+from flask import Flask, Request, json, render_template, request, jsonify
 import mysql.connector
 import base64
 
@@ -24,8 +25,14 @@ app.secret_key = get_app_config()['secret_key']
 csrf = CSRFProtect(app)
 
 
-
-
+# Получение словаря из формы
+def get_dict_from_request(request:Request) -> Dict:
+	data = {}
+	for key in request.form.keys():
+		values = request.form.getlist(key)
+		# Если несколько значений - сохраняем список, иначе одиночное значение
+		data[key] = values if len(values) > 1 else values[0]
+	return data
 
 # Сервисы
 good_service=GoodService(
@@ -60,7 +67,7 @@ def render_goods():
 @app.route('/api/manufacturers/<int:id>', methods=['PUT', 'DELETE', 'GET'])
 def handle_manufacturer(id:int):
 	if request.method == 'PUT':
-		data = request.get_json()
+		data = get_dict_from_request(request)
 		return manufacturer_service.update_manufacturer(data, id)
 	elif request.method == 'DELETE':
 		return manufacturer_service.delete_manufacturer(id)

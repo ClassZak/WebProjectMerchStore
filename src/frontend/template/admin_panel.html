@@ -22,7 +22,10 @@
 				<div class="gold-border">
 					<div class="data-grid manufacturer-grid" id="manufacturers_grid">
 					</div>
-					<button onclick="openModal()" class="square-btn add-btn"><strong>+</strong></button>
+					<button
+						onclick="openModal('create_manufacturers_form_overlay')" 
+						class="square-btn add-btn"><strong>+</strong>
+					</button>
 				</div>
 			</main>
 			<main class="content-wrapper good-info-grid">
@@ -36,14 +39,26 @@
 		</main>
 
 		<!--Формы для ввода данных-->
-		<div class="overlay" id="manufacturers_form_overlay">
+		<div class="overlay" id="create_manufacturers_form_overlay">
 			<div class="modal">
 				<h1>Новый производитель</h1>
-				<form action="/api/manufacturers/" method="post" class="modal-form" id="manufacturers_form">
+				<form action="/api/manufacturers/" method="post" class="modal-form" id="create_manufacturers_form">
 					<input type="text" name="name" placeholder="Имя производителя" required>
 					<div class="form-buttons">
 						<button type="submit">Добавить</button>
-						<button type="button" onclick="closeModal()">Отмена</button>
+						<button type="button" onclick="closeModal('create_manufacturers_form_overlay')">Отмена</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="overlay" id="edit_manufacturers_form_overlay">
+			<div class="modal">
+				<h1>Редактирование данных производителя</h1>
+				<form action="/api/manufacturers/" method="put" class="modal-form" id="edit_manufacturers_form" element-data-id="0">
+					<input type="text" name="name" placeholder="Имя производителя" required>
+					<div class="form-buttons">
+						<button type="submit">Изменить</button>
+						<button type="button" onclick="closeModal('edit_manufacturers_form_overlay')">Отмена</button>
 					</div>
 				</form>
 			</div>
