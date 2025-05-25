@@ -27,12 +27,16 @@ csrf = CSRFProtect(app)
 
 # Получение словаря из формы
 def get_dict_from_request(request:Request) -> Dict:
-	data = {}
-	for key in request.form.keys():
-		values = request.form.getlist(key)
-		# Если несколько значений - сохраняем список, иначе одиночное значение
-		data[key] = values if len(values) > 1 else values[0]
-	return data
+#	data = {}
+#	for key in request.form.keys():
+#		values = request.form.getlist(key)
+#		data[key] = values if len(values) > 1 else values[0]
+#	return data
+	return {
+		k:v if len(v) > 1 else v[0] 
+		for k in request.form.keys() 
+			for v in request.form.getlist(k)
+	}
 
 # Сервисы
 good_service=GoodService(
