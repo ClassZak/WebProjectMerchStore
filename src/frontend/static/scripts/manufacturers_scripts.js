@@ -1,6 +1,8 @@
 // Данные страницы
 var manufacturers
 var csrfToken = undefined;
+// Константные выражения
+const deleteManufacturerConfirmMessage='Вы уверены, что хотите удалить производителя';
 
 
 function handleUnknownError(error){
@@ -86,7 +88,34 @@ function deleteManufacturerFromHTML(id){
 }
 
 
-async function deleteManufacturer(id){
+
+
+function deleteManufacturer(id) {
+	const manufacturer = manufacturers.find(x => x.id==id)
+	if(manufacturer === undefined || manufacturer===NaN)
+		return;
+
+	const modal = document.querySelector('#delete_manufacturers_form_overlay .modal');
+	modal.setAttribute('element-data-id', id);
+	openModal('delete_manufacturers_form_overlay');
+	setDeleteConfirmMessage(
+		'delete_manufacturers_confirm_message',
+		deleteManufacturerConfirmMessage, 
+		manufacturer.name
+	);
+}
+function handleDeleteConfirm() {
+	const modal = document.querySelector('#delete_manufacturers_form_overlay .modal');
+	const id = modal.getAttribute('element-data-id');
+	
+	if (!id) return;
+	
+	deleteManufacturerFromDB(id);
+	closeModal('delete_manufacturers_form_overlay');
+
+	modal.removeAttribute('element-data-id');
+}
+async function deleteManufacturerFromDB(id){
 	const manufacturer = manufacturers.find(x => x.id==id)
 
 	fetch(`/api/manufacturers/${id}`, {method: "DELETE", headers: { 'X-CSRFToken': csrfToken}})
@@ -106,35 +135,20 @@ async function deleteManufacturer(id){
 		loadManufacturers();
 	});
 }
+function setDeleteConfirmMessage(elementId, text, object){
+	const container=document.getElementById(elementId);
+	container.textContent=`${text} "${object}"?`;
+}
+
+
+
+
 async function updateManufacturer(id) {
 	const manufacturer = manufacturers.find(x => x.id==id)
 	
 	let element=document.getElementById('edit_manufacturers_form');
 	element.setAttribute('element-data-id',id);
 	openModal('edit_manufacturers_form_overlay');
-	/*
-	fetch(
-		`/api/manufacturers/${id}`, 
-		{
-			method: "PUT",
-			headers: 
-			{'X-CSRFToken': csrfToken, 'Content-Type': 'application/json' }, body: JSON.stringify(manufacturer)
-		}
-	)
-	.then(response => response.json())
-	.then(data => {
-		if(data.error) {
-			alert(`Ошибка редактирования данных производителя "${manufacturer.name}": ${data.error}`);
-			loadManufacturers();
-		}
-		else {
-			alert(`Данные производителя "${manufacturer.name}" изменены успешно`);
-		}
-	})
-	.catch(error =>{ 
-		handleUnknownError(error);
-		loadManufacturers();
-	});*/
 }
 
 
@@ -186,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					alert(`Успешно добавлен новый производитель \"${formData.get('name')}\"`);
 				closeModal('create_manufacturers_form_overlay');
 				this.reset();
-				loadManufacturers()
+				loadManufacturers();
 			}
 		})
 		.catch(error => {
