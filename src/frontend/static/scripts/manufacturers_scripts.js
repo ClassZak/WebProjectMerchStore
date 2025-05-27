@@ -6,9 +6,9 @@ const deleteManufacturerConfirmMessage='Вы уверены, что хотите
 
 
 function handleUnknownError(error){
-	const message=`Неизвестная ошибка: "${error}"`;
+	const message = `Неизвестная ошибка: "${error}"`;
 	alert(message);
-	console.log(message)
+	console.log(message);
 }
 
 
@@ -25,7 +25,7 @@ async function loadManufacturers(){
 			throw new Error(`Response status ${response.status}`);
 
 		let elements = await response.json();
-		manufacturers=elements.manufacturers
+		manufacturers=elements.manufacturers;
 		manufacturers.forEach(element => {
 			container.innerHTML+=createManufacturerCard(element)
 		});
@@ -93,8 +93,8 @@ async function deleteManufacturerFromDB(id){
 			loadManufacturers();
 		} else{
 			alert(`Поставщик "${manufacturer.name}" успешно удалён`);
-			manufacturers=manufacturers.filter(element=>element.id!=id)
-			deleteManufacturerFromHTML(id)
+			manufacturers=manufacturers.filter(element=>element.id!=id);
+			deleteManufacturerFromHTML(id);
 		}
 	})
 	.catch(error =>{ 
@@ -213,5 +213,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 	// Загрузки данных при запуске страницы
-	loadManufacturers()
+	loadManufacturers();
 });
