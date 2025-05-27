@@ -141,6 +141,11 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (e.target === this) closeModal('create_manufacturers_form_overlay');
 	});
 
+	
+
+
+
+	// Формы для производителей
 	// Обработка отправки формы
 	document.getElementById('create_manufacturers_form')?.addEventListener('submit', function(e) {
 		e.preventDefault();
