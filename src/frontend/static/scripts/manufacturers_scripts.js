@@ -49,42 +49,9 @@ function createManufacturerCard(element){
 	`;// Доп. div для стиля
 }
 function deleteManufacturerFromHTML(id){
-	const findingPart='<div class=\"manufacturer-card\"'
-	const container=document.getElementById('manufacturers_grid');
-	let idPos=container.innerHTML.indexOf(`\"${id}\"`)
-	if(idPos===-1)
-		return;
-	try{
-		let findingPartPos=idPos;
-		let endPos=0;
-		while(container.innerHTML.substring(findingPartPos,findingPartPos+findingPart.length)!=findingPart)
-			--findingPartPos;
-
-		const openedDiv='<div'
-		const closedDiv='</div>'
-		let divsOpened=0;
-		let divsClosed=0;
-		let i=findingPartPos;
-		while(true){
-			if(container.innerHTML.substring(i,i+openedDiv.length)==openedDiv)
-				++divsOpened;
-			if(container.innerHTML.substring(i,i+closedDiv.length)==closedDiv)
-				++divsClosed;
-
-			if(divsOpened===divsClosed){
-				container.innerHTML=
-					container.innerHTML.substring(0,findingPartPos)+
-					container.innerHTML.substring(i+closedDiv.length, container.innerHTML.length-1);
-				break;
-			}
-				
-
-			++i;
-		}
-	}
-	catch(error){
-
-	}
+	const card = document.querySelector(`.manufacturer-card[element-data-id="${id}"]`);
+	if(card)
+		card.remove();
 }
 
 
