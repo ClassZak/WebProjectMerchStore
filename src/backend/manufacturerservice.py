@@ -15,6 +15,11 @@ class ManufacturerService(AService):
 	def __init__(self,config_file:str):
 		super().__init__(config_file)
 	
+
+
+	"""
+		CRUD операции
+	"""
 	def create_manufacturer(self, data: dict) -> Tuple[Response, int]:
 		try:
 			self.connect()
@@ -50,13 +55,14 @@ class ManufacturerService(AService):
 			self.connect()
 			columns = [Manufacturer.DB_COLUMNS['columns'][field] 
 				for field in Manufacturer.FIELDS_META.keys()]
-			self.cursor.execute(f'SELECT {", ".join(columns)} FROM Manufacturer')
+			self.cursor.execute(f'SELECT {", ".join(columns)} FROM {ManufacturerService.TABLE_NAME}')
 			raw_data = self.cursor.fetchall()
 			
 			# Преобразуем данные БД в формат модели
-			return jsonify({'manufacturers': [
-				{field: row[Manufacturer.DB_COLUMNS['columns'][field]]
-                for field in Manufacturer.FIELDS_META.keys()}
+			return jsonify({'manufacturers': [{
+					field: row[Manufacturer.DB_COLUMNS['columns'][field]]
+                	for field in Manufacturer.FIELDS_META.keys()
+				}
 				for row in raw_data
 			]}), 200
 		except Error as e:
@@ -126,7 +132,39 @@ class ManufacturerService(AService):
 			return jsonify({'error': f'Ошибка БД: {str(e)}'}), 500
 		finally:
 			self.disconnect()
-	
+	"""
+		CRUD операции
+	"""
+
+
+
+
+	def read_manufacturer_by_id(self,id:int):
+		try:
+			if not self.exists(id):
+				return jsonify({'error': 'Не найден объект для чтения'}), 404
+
+			self.connect()
+			columns=[Manufacturer.DB_COLUMNS['columns'][field]
+				for field in Manufacturer.FIELDS_META.keys()]
+			self.cursor.execute(
+				f"""
+				SELECT {', '.join(columns)} 
+				FROM {ManufacturerService.TABLE_NAME} 
+					WHERE {Manufacturer.DB_COLUMNS['columns']['id']} = %s
+				""",(id,))
+			obj=self.cursor.fetchone()
+			return jsonify(self.sql_data_to_json_list(obj)), 200
+		except ValueError as e:
+			return jsonify({'error':str(e)}), 400
+		except Error as e:
+			return jsonify({'error': f'Ошибка БД: {str(e)}'}), 500
+		finally:
+			self.disconnect()
+
+	def sql_data_to_json_list(self, data:dict):
+		return {field:data[Manufacturer.DB_COLUMNS['columns'][field]] for field in Manufacturer.FIELDS_META.keys()}
+
 
 	def exists(self, id: int) -> bool:
 		try:

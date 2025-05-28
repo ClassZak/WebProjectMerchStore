@@ -12,7 +12,10 @@ class ModelValidator:
 			
 			# Проверка обязательности
 			if meta.get('required') and value in (None, ''):
-				raise ValueError(f"Поле {field} обязательно")
+				if not meta.get('default'):
+					raise ValueError(f"Поле {field} обязательно")
+				else:
+					value=meta['default']
 			
 			# Преобразование типа
 			if value is not None:

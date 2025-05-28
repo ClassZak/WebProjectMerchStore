@@ -75,6 +75,8 @@ def handle_manufacturer(id:int):
 		return manufacturer_service.update_manufacturer(data, id)
 	elif request.method == 'DELETE':
 		return manufacturer_service.delete_manufacturer(id)
+	elif request.method == 'GET':
+		return manufacturer_service.read_manufacturer_by_id(id)
 	return jsonify({'error': 'Method Not Allowed'}), 405
 @app.route('/api/manufacturers/', methods=['GET', 'POST'])
 def manufacturers_route():
