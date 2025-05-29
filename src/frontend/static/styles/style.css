@@ -211,7 +211,7 @@ ol{
 
 
 /* Медиа запросы */
-@media (max-width: 920px) {
+@media (max-width: 900px) {
 	h1, h2, h3, h4, h5, h6 {
 		text-align: center;
 		padding-left: 0%;

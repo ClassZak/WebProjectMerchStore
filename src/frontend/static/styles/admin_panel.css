@@ -46,6 +46,7 @@ h1{
 
 
 /* Стиль для производителей */
+/* TODO: сделать стиль общим*/
 .manufacturer-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -62,11 +63,13 @@ h1{
 		grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
 	}
 }
+/* TODO: сделать стиль общим*/
 .manufacturer-grid > .manufacturer-card {
 	width: auto;
 	height: auto;
 	aspect-ratio: auto; /* Квадратные ячейки (опционально) */
 }
+/* TODO: сделать стиль общим*/
 .manufacturer-grid > .manufacturer-card > div{
 	padding: 16px;
 }
@@ -77,6 +80,7 @@ h1{
 
 
 /* Стили для карточки производителя */
+/* TODO: сделать стиль общим*/
 .manufacturer-card {
     display: flex;
     flex-direction: column;

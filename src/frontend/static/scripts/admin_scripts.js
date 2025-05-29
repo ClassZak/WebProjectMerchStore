@@ -1,19 +1,70 @@
 // Данные страницы
-var manufacturers
+var manufacturers;
+var goods;
 var csrfToken = undefined;
 // Константные выражения
 const deleteManufacturerConfirmMessage='Вы уверены, что хотите удалить производителя';
-
-
+const deleteGoodConfirmMessage='Вы уверены, что хотите удалить товар';
+// Общие функции
 function handleUnknownError(error){
 	const message = `Неизвестная ошибка: "${error}"`;
 	alert(message);
 	console.log(message);
 }
+function openModal(modalId) {
+	document.getElementById(modalId).style.display = 'flex';
+	document.body.classList.add('no-scroll');
+};
+function closeModal(modalId) {
+	document.getElementById(modalId).style.display = 'none';
+	document.body.classList.remove('no-scroll');
+};
+// Создание каточек
+function createManufacturerCard(element){
+	return `
+	<div class="manufacturer-card" element-data-id="${element.id}">
+		<div class="card-content">
+			<p>Название</p>
+			<h4 class="card-title">${element.name}</h4>
+		</div>
+		<div class="card-button-div">
+			<button class="square-btn" onclick="updateManufacturer(${element.id})"><strong>✎</strong></button>
+			<button class="square-btn" onclick="deleteManufacturer(${element.id})"><strong>🗑</strong></button>
+		</div>
+	</div>
+	`;// Доп. div для стиля
+}
+function createGoodCard(element){
+	let manufacturer=manufacturers.find(x=>x.id==element.idManufacturer);
+	return `
+	<div class="manufacturer-card" element-data-id="${element.id}">
+		<div class="card-content">
+			<p>Название</p>
+			<h4 class="card-title">${element.name}</h4>
+			<p>Описание</p>
+			<h4 class="card-title">${element.description}</h4>
+			<p>Цена</p>
+			<h4 class="card-title">
+				${Intl.NumberFormat('ru-RU',{style: 'currency', currency: 'RUB'}).format(element.price)}
+			</h4>
+			<p>Производитель</p>
+			<h4 class="card-title">${manufacturer && manufacturer.name ? manufacturer.name: 'Незвестен'}</h4>
+			<p>Дата появления в ассортименте</p>
+			<h4 class="card-title">${element.appearanceDate}</h4>
+		</div>
+		<div class="card-button-div">
+			<button class="square-btn" onclick="updateGood(${element.id})"><strong>✎</strong></button>
+			<button class="square-btn" onclick="deleteGood(${element.id})"><strong>🗑</strong></button>
+		</div>
+	</div>
+	`
+}
 
 
 
-
+/**
+ * Производители
+ */
 async function loadManufacturers(){
 	let response = await fetch('/api/manufacturers/');
 	
@@ -34,26 +85,11 @@ async function loadManufacturers(){
 		console.log(error);
 	}
 }
-function createManufacturerCard(element){
-	return `
-	<div class="manufacturer-card" element-data-id="${element.id}">
-		<div class="card-content">
-			<p>Название</p>
-			<h4 class="card-title">${element.name}</h4>
-		</div>
-		<div class="card-button-div">
-			<button class="square-btn" onclick="updateManufacturer(${element.id})"><strong>✎</strong></button>
-			<button class="square-btn" onclick="deleteManufacturer(${element.id})"><strong>🗑</strong></button>
-		</div>
-	</div>
-	`;// Доп. div для стиля
-}
 function deleteManufacturerFromHTML(id){
 	const card = document.querySelector(`.manufacturer-card[element-data-id="${id}"]`);
 	if(card)
 		card.remove();
 }
-
 
 
 
@@ -109,7 +145,6 @@ function setDeleteConfirmMessage(elementId, text, object){
 
 
 
-
 async function updateManufacturer(id) {
 	const manufacturer = manufacturers.find(x => x.id==id)
 	
@@ -121,30 +156,49 @@ async function updateManufacturer(id) {
 
 
 
-// Функции добавления производителей
-function openModal(modalId) {
-	document.getElementById(modalId).style.display = 'flex';
-	document.body.classList.add('no-scroll');
-};
 
-function closeModal(modalId) {
-	document.getElementById(modalId).style.display = 'none';
-	document.body.classList.remove('no-scroll');
-};
+
+
+
+
+
+/**
+ * Товары
+ */
+async function loadGoods() {
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Инициализация после загрузки DOM
 document.addEventListener('DOMContentLoaded', function() {
 	// CSRF токен
 	csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 	// Закрытие при клике вне модального окна
+	// Производители
 	document.getElementById('create_manufacturers_form_overlay')?.addEventListener('click', function(e) {
 		if (e.target === this) closeModal('create_manufacturers_form_overlay');
 	});
 
 	
-
-
-
 	// Формы для производителей
 	// Обработка отправки формы
 	document.getElementById('create_manufacturers_form')?.addEventListener('submit', function(e) {

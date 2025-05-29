@@ -29,6 +29,7 @@ class GoodService(AService):
 				INSERT INTO {GoodService.TABLE_NAME} ({','.join(db_columns)})
 				VALUES ({','.join(values)})
 			"""
+			
 			self.cursor.execute(query,values)
 			self.connection.commit()
 

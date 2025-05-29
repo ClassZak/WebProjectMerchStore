@@ -17,6 +17,7 @@
 			<h1>Панель администратора</h1>
 		</header>
 		<main class="content-wrapper">
+			<!--Производители-->
 			<main class="content-wrapper data-grid-block">
 				<h1>Производители</h1>
 				<div class="gold-border">
@@ -28,17 +29,25 @@
 					</button>
 				</div>
 			</main>
-			<main class="content-wrapper good-info-grid">
+			<!--Товары-->
+			<main class="content-wrapper data-grid-block">
 				<h1>Товары</h1>
 				<div class="gold-border">
-					<div class="image-grid data-grid" id="goods_grid">
+					<div class="data-grid manufacturer-grid" id="goods_grid">
 					</div>
-					<button class="square-btn add-btn"><strong>+</strong></button>
+					<button
+						onclick="openModal('create_goods_form_overlay')"
+						class="square-btn add-btn"><strong>+</strong>
+					</button>
 				</div>
 			</main>
 		</main>
 
-		<!--Формы для ввода данных-->
+
+
+
+		<!--Формы для таблиц-->
+		<!--Формы для производителей-->
 		<div class="overlay" id="create_manufacturers_form_overlay">
 			<div class="modal">
 				<h1>Новый производитель</h1>
@@ -69,6 +78,40 @@
 				<div class="form-buttons">
 					<button onclick="handleDeleteConfirm()">Удалить</button>
 					<button onclick="closeModal('delete_manufacturers_form_overlay')">Отмена</button>
+				</div>
+			</div>
+		</div>
+		<!--Формы для товаров-->
+		<div class="overlay" id="create_goods_form_overlay">
+			<div class="modal">
+				<h1>Новый производитель</h1>
+				<form action="/api/goods/" method="post" class="modal-form" id="create_goods_form">
+					<input type="text" name="name" placeholder="Имя производителя" required>
+					<div class="form-buttons">
+						<button type="submit">Добавить</button>
+						<button type="button" onclick="closeModal('create_goods_form_overlay')">Отмена</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="overlay" id="edit_goods_form_overlay">
+			<div class="modal">
+				<h1>Редактирование данных производителя</h1>
+				<form action="/api/goods/" method="put" class="modal-form" id="edit_goods_form" element-data-id="0">
+					<input type="text" name="name" placeholder="Имя производителя" required>
+					<div class="form-buttons">
+						<button type="submit">Изменить</button>
+						<button type="button" onclick="closeModal('edit_goods_form_overlay')">Отмена</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="overlay" id="delete_goods_form_overlay">
+			<div class="modal" element-data-id="">
+				<h1 id="delete_goods_confirm_message">Вы уверены, что хотите удалить производителя?</h1>
+				<div class="form-buttons">
+					<button onclick="handleDeleteConfirm()">Удалить</button>
+					<button onclick="closeModal('delete_goods_form_overlay')">Отмена</button>
 				</div>
 			</div>
 		</div>
