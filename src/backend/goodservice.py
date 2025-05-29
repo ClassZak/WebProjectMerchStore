@@ -1,40 +1,53 @@
+from sqlite3 import IntegrityError
 from typing import Tuple, Union
 import mysql.connector
-from flask import jsonify, request, Flask
+from flask import Response, jsonify, request, Flask
 from mysql.connector import Error
 import base64
 
 from aservice import AService
+from validators.modelvalidator import ModelValidator
 from model.good import Good
 
 
 class GoodService(AService):
+	TABLE_NAME = 'Good'
 	def __init__(self,config_file:str):
 		super().__init__(config_file)
 
-	def create_good(self, name: str, description: str, base64_image: str, price: str) -> Union[int, Tuple[str, int]]:
+	"""
+		CRUD операции
+	"""
+	def create_good(self, data:dict) -> Tuple[Response, int]:
 		try:
 			self.connect()
-			self.cursor.execute(
-				'INSERT INTO Good (Name,Description,Image,Price) VALUES (%s,%s,%s,%s)',
-				(name, description, base64_image, price)
-			)
+			validated = ModelValidator.validate(data, Good.FIELDS_META)
+			values = tuple(validated.values())
+			db_columns = [Good.DB_COLUMNS['columns'][field] for field in validated.keys()]
+
+			query = f"""
+				INSERT INTO {GoodService.TABLE_NAME} ({','.join(db_columns)})
+				VALUES ({','.join(values)})
+			"""
+			self.cursor.execute(query,values)
 			self.connection.commit()
-			return self.cursor.lastrowid
+
+			return (jsonify({'id': self.cursor.lastrowid}), 201)
 			
+		except ValueError as e:
+			return jsonify({'error':str(e)}), 400
+		except IntegrityError as e:
+			self.connection.rollback()
+			if e.errno == 1062:
+				return jsonify({'error':'Товар с таким именем уже существует'}), 409	
 		except Error as e:
-			if self.connection:
-				self.connection.rollback()
-			return f"Database error: {str(e)}", 500
-		except Exception as e:
-			if self.connection:
-				self.connection.rollback()
-			return "Internal server error", 500
-			
+			self.connection.rollback()
+			return jsonify({'error': f'Ошибка БД: {str(e)}'}), 500
+		
 		finally:
 			self.disconnect()
 	
-	def get_all_goods(self):
+	def read_goods(self):
 		try:
 			super().connect()
 			self.cursor.execute('SELECT * FROM Good')

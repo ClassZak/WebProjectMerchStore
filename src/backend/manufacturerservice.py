@@ -11,7 +11,7 @@ from validators.modelvalidator import ModelValidator
 
 
 class ManufacturerService(AService):
-	TABLE_NAME='Manufacturer'
+	TABLE_NAME = 'Manufacturer'
 	def __init__(self,config_file:str):
 		super().__init__(config_file)
 	
