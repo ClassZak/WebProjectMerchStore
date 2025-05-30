@@ -166,7 +166,23 @@ async function updateManufacturer(id) {
  * Товары
  */
 async function loadGoods() {
-	
+	let response = await fetch('/api/googs', {method: 'get'});
+
+	const container = document.getElementById('goods_grid');
+	container.innerHTML = '';
+
+	try {
+		if(!response.ok)
+			throw new Error(`Response status: ${response.status}`);
+		
+		let elements = await response.json();
+		goods = elements;
+		goods.forEach(element => {
+			container.innerHTML += createGoodCard(element);
+		});
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 
@@ -273,4 +289,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// Загрузки данных при запуске страницы
 	loadManufacturers();
+	loadGoods();
 });
