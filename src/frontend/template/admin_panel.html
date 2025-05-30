@@ -46,6 +46,7 @@
 
 
 
+
 		<!--Формы для таблиц-->
 		<!--Формы для производителей-->
 		<div class="overlay" id="create_manufacturers_form_overlay">
@@ -81,12 +82,19 @@
 				</div>
 			</div>
 		</div>
+
+
 		<!--Формы для товаров-->
 		<div class="overlay" id="create_goods_form_overlay">
 			<div class="modal">
-				<h1>Новый производитель</h1>
+				<h1>Новый товар</h1>
 				<form action="/api/goods/" method="post" class="modal-form" id="create_goods_form">
-					<input type="text" name="name" placeholder="Имя производителя" required>
+					<input type="text"		name="name"				placeholder="Название товара"	required>
+					<input type="text"		name="description"		placeholder="Описание товара"	required>
+					<input type="file"		name="image"			placeholder="Картинка"			accept="image/*" required>
+					<input type="number"	name="price"			placeholder="Цена товара"		required>
+					<input type="date"		name="appearanceDate"	required>
+					<select placeholder="Выберете производителя" required >
 					<div class="form-buttons">
 						<button type="submit">Добавить</button>
 						<button type="button" onclick="closeModal('create_goods_form_overlay')">Отмена</button>
@@ -96,7 +104,7 @@
 		</div>
 		<div class="overlay" id="edit_goods_form_overlay">
 			<div class="modal">
-				<h1>Редактирование данных производителя</h1>
+				<h1>Редактирование данных товара</h1>
 				<form action="/api/goods/" method="put" class="modal-form" id="edit_goods_form" element-data-id="0">
 					<input type="text" name="name" placeholder="Имя производителя" required>
 					<div class="form-buttons">
@@ -108,7 +116,7 @@
 		</div>
 		<div class="overlay" id="delete_goods_form_overlay">
 			<div class="modal" element-data-id="">
-				<h1 id="delete_goods_confirm_message">Вы уверены, что хотите удалить производителя?</h1>
+				<h1 id="delete_goods_confirm_message">Вы уверены, что хотите удалить товар?</h1>
 				<div class="form-buttons">
 					<button onclick="handleDeleteConfirm()">Удалить</button>
 					<button onclick="closeModal('delete_goods_form_overlay')">Отмена</button>

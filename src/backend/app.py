@@ -28,7 +28,7 @@ csrf = CSRFProtect(app)
 # Получение словаря из формы
 def get_dict_from_request(request:Request) -> Dict:
 	return {
-		k:v if len(v) > 1 else v[0] 
+		k:v
 		for k in request.form.keys() 
 			for v in request.form.getlist(k)
 	}
@@ -98,14 +98,8 @@ def goods_route():
 		else:
 			return 'Not Found', 404
 	elif request.method=='POST':
-		good=request.get_json()
-		result=good_service.create_good(
-			good['name'],good['description'],good['image'],good['price']
-		)
-		if result==0:
-			return jsonify({'error':'Не удалось добавить новый товар'}),500
-		else:
-			return jsonify({'message':f'Новый товар успешно добавлен'}),201
+		data = get_dict_from_request(request)
+		return good_service.create_good(data)
 
 @app.route('/api/goods/<int:good_id>', methods=['PUT','GET'])
 def update_and_get_good(good_id:int):

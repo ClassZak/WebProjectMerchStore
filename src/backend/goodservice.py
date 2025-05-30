@@ -24,12 +24,12 @@ class GoodService(AService):
 			validated = ModelValidator.validate(data, Good.FIELDS_META)
 			values = tuple(validated.values())
 			db_columns = [Good.DB_COLUMNS['columns'][field] for field in validated.keys()]
-
+			
 			query = f"""
 				INSERT INTO {GoodService.TABLE_NAME} ({','.join(db_columns)})
 				VALUES ({','.join(values)})
 			"""
-			
+
 			self.cursor.execute(query,values)
 			self.connection.commit()
 

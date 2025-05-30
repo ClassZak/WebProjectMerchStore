@@ -237,7 +237,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			if (data.error) {
 				alert(data.error);
 			} else {
-				//TODO: Доработать обновление списка производителей
 				if(data.id!=0)
 					alert(`Успешно добавлен новый производитель \"${formData.get('name')}\"`);
 				closeModal('create_manufacturers_form_overlay');
@@ -271,7 +270,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			if(data.error){
 				alert(data.error);
 			} else {
-				//TODO: Доработать обновление списка производителей
 				if(data.id!=0)
 					alert(`Успешно изменены данные производителя \"${formData.get('name')}\"`);
 				closeModal('edit_manufacturers_form_overlay');
@@ -284,6 +282,56 @@ document.addEventListener('DOMContentLoaded', function() {
 			alert('Произошла ошибка при отправке формы');
 		});
 	});
+
+
+
+
+
+
+
+
+	// Формы для товаров
+	// Обработка отправки формы
+	document.getElementById('create_goods_form')?.addEventListener('submit', function(e) {
+		e.preventDefault();
+		
+		/* Поля formData:
+		name			string
+		description		string,
+		image			string,
+		price			number,
+		appearanceDate	string,
+		idManufacturer	numnber
+		csrf_token		string	*/
+		const formData = new FormData(this);
+		
+		fetch(this.action, {
+			method: 'POST',
+			body: formData,
+			headers: {
+				'X-CSRFToken': csrfToken
+			}
+		})
+		.then(response => response.json())
+		.then(data => {
+			if (data.error) {
+				alert(data.error);
+			} else {
+				if(data.id!=0)
+					alert(`Успешно добавлен новый товар \"${formData.get('name')}\"`);
+				closeModal('create_goods_form_overlay');
+				this.reset();
+				loadManufacturers();
+			}
+		})
+		.catch(error => {
+			console.error('Ошибка:', error);
+			alert('Произошла ошибка при отправке формы');
+		});
+	});
+
+
+
 
 
 
