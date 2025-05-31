@@ -88,13 +88,24 @@
 		<div class="overlay" id="create_goods_form_overlay">
 			<div class="modal">
 				<h1>Новый товар</h1>
-				<form action="/api/goods/" method="post" class="modal-form" id="create_goods_form">
+				<form action="/api/goods/" method="post" class="modal-form" id="create_goods_form" enctype="multipart/form-data">
 					<input type="text"		name="name"				placeholder="Название товара"	required>
 					<input type="text"		name="description"		placeholder="Описание товара"	required>
-					<input type="file"		name="image"			placeholder="Картинка"			accept="image/*" required>
+
+					<!--Для загрузки изображения-->
+					<input type="file" name="image" accept="image/*" required hidden>
+					<button type="button" class="file-select-button">Выбрать файл</button>
+					<span class="file-name-display">Файлов не выбрано</span>
+					
+					
 					<input type="number"	name="price"			placeholder="Цена товара"		required>
 					<input type="date"		name="appearanceDate"	required>
-					<select placeholder="Выберете производителя" required >
+					<select 
+						id="manufacturer_select_for_good" 
+						name ="idManufacturer" 
+						placeholder="Выберете производителя" 
+						required>
+					</select>
 					<div class="form-buttons">
 						<button type="submit">Добавить</button>
 						<button type="button" onclick="closeModal('create_goods_form_overlay')">Отмена</button>

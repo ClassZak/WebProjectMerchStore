@@ -77,22 +77,30 @@ async function loadManufacturers(){
 
 		let elements = await response.json();
 		manufacturers=elements.manufacturers;
-		manufacturers.forEach(element => {
-			container.innerHTML+=createManufacturerCard(element)
-		});
+		manufacturers.forEach(element => container.innerHTML+=createManufacturerCard(element));
+		loadManufacturersToSelects();
 	}
 	catch(error){
 		console.log(error);
 	}
 }
+function loadManufacturersToSelects(){
+	let select = document.getElementById('manufacturer_select_for_good');
+	manufacturers.forEach(element => {
+		const option = document.createElement('option');
+		option.value = element.id;
+		option.textContent = element.name;
+		select.appendChild(option);
+	});
+}
+
+
+
 function deleteManufacturerFromHTML(id){
 	const card = document.querySelector(`.manufacturer-card[element-data-id="${id}"]`);
 	if(card)
 		card.remove();
 }
-
-
-
 function deleteManufacturer(id) {
 	const manufacturer = manufacturers.find(x => x.id==id)
 	if(manufacturer === undefined || manufacturer===NaN)
@@ -215,6 +223,29 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 
 	
+	// Кастомизация выбора файлов
+	document.querySelectorAll('.modal-form').forEach(form => {
+		// Находим элементы внутри конкретной формы
+		const fileInput = form.querySelector('input[type="file"]');
+		const fileButton = form.querySelector('.file-select-button');
+		const fileNameDisplay = form.querySelector('.file-name-display');
+		
+		if (fileInput && fileButton && fileNameDisplay) {
+			// Обработчик для кастомной кнопки
+			fileButton.addEventListener('click', () => fileInput.click());
+			
+			// Обработчик изменения файла
+			fileInput.addEventListener('change', function() {
+				fileNameDisplay.textContent = this.files.length 
+					? this.files[0].name 
+					: 'Файлов не выбрано';
+			});
+		}
+	});
+
+
+
+
 	// Формы для производителей
 	// Обработка отправки формы
 	document.getElementById('create_manufacturers_form')?.addEventListener('submit', function(e) {

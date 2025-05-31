@@ -60,35 +60,44 @@ class Good(metaclass=GoodMeta):
 			'type': str,
 			'required': True,
 			'db_column': {
-				'name' : 'description'
+				'name' : 'Description'
+			}
+		}
+	}
+	image = {
+		'field_meta':{
+			'type': str,
+			'required': True,
+			'db_column': {
+				'name' : 'Image'
 			}
 		}
 	}
 	price = {
-		'price':{
+		'field_meta':{
 			'type': float,
 			'required': True,
 			'default': 0,
 			'db_column': {
-				'name' : 'price'
+				'name' : 'Price'
 			}
 		}
 	}
 	appearance_date = {
-		'appearance_date':{
+		'field_meta':{
 			'type': date,
 			'required':True,
 			'db_column': {
-				'name' : 'appearance_date'
+				'name' : 'AppearanceDate'
 			}			
 		}
 	}
 	id_manufacturer = {
-		'id_manufacturer':{
+		'field_meta':{
 			'type' : int,
 			'required': True,
 			'db_column': {
-				'name' : 'id_manufacturer'
+				'name' : 'IdManufacturer'
 			}
 		}
 	}
