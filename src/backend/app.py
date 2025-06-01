@@ -86,21 +86,6 @@ def manufacturers_route():
 		return jsonify({'error': 'Internal Server Error'}), 500
 
 # Товары
-@app.route('/api/goods/',methods=['GET','POST'])
-def goods_route():
-	if request.method=='GET':
-		limit = request.args.get('limit', type=int)
-		if limit:
-			return good_service.get_goods_ids(limit)
-		ids=request.args.getlist('ids', type=int)
-		if ids and len(ids)!=0:
-			return good_service.get_goods_by_ids(ids)
-		else:
-			return 'Not Found', 404
-	elif request.method=='POST':
-		data = get_dict_from_request(request)
-		return good_service.create_good(data)
-
 @app.route('/api/goods/<int:good_id>', methods=['PUT','GET'])
 def update_and_get_good(good_id:int):
 	if request.method=='PUT':
@@ -119,6 +104,13 @@ def update_and_get_good(good_id:int):
 			return jsonify(result),200
 		else:
 			return jsonify({'error':'Not Found'}),404
+@app.route('/api/goods/',methods=['GET','POST'])
+def goods_route():
+	if request.method=='GET':
+		return good_service.read_goods()
+	elif request.method=='POST':
+		data = get_dict_from_request(request)
+		return good_service.create_good(data)
 
 
 

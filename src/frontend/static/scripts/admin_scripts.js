@@ -35,7 +35,7 @@ function createManufacturerCard(element){
 	`;// Доп. div для стиля
 }
 function createGoodCard(element){
-	let manufacturer=manufacturers.find(x=>x.id==element.idManufacturer);
+	let manufacturer=manufacturers.find(x=>x.id==element.id_manufacturer);
 	return `
 	<div class="manufacturer-card" element-data-id="${element.id}">
 		<div class="card-content">
@@ -50,7 +50,10 @@ function createGoodCard(element){
 			<p>Производитель</p>
 			<h4 class="card-title">${manufacturer && manufacturer.name ? manufacturer.name: 'Незвестен'}</h4>
 			<p>Дата появления в ассортименте</p>
-			<h4 class="card-title">${element.appearanceDate}</h4>
+			<h4 class="card-title">${element.appearance_date}</h4>
+			<div>
+				<img src="data:image/*;base64,${element.image.slice(2, -1)}" alt="${element.name}">
+			</div>
 		</div>
 		<div class="card-button-div">
 			<button class="square-btn" onclick="updateGood(${element.id})"><strong>✎</strong></button>
@@ -174,7 +177,7 @@ async function updateManufacturer(id) {
  * Товары
  */
 async function loadGoods() {
-	let response = await fetch('/api/googs', {method: 'get'});
+	let response = await fetch('/api/goods/', {method: 'get'});
 
 	const container = document.getElementById('goods_grid');
 	container.innerHTML = '';
@@ -184,7 +187,7 @@ async function loadGoods() {
 			throw new Error(`Response status: ${response.status}`);
 		
 		let elements = await response.json();
-		goods = elements;
+		goods = elements.goods;
 		goods.forEach(element => {
 			container.innerHTML += createGoodCard(element);
 		});
@@ -325,40 +328,82 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Обработка отправки формы
 	document.getElementById('create_goods_form')?.addEventListener('submit', function(e) {
 		e.preventDefault();
-		
+
 		/* Поля formData:
 		name			string
 		description		string,
-		image			string,
+		image			string (base64),
 		price			number,
 		appearanceDate	string,
-		idManufacturer	numnber
+		id_manufacturer	number,
 		csrf_token		string	*/
-		const formData = new FormData(this);
-		
-		fetch(this.action, {
-			method: 'POST',
-			body: formData,
-			headers: {
-				'X-CSRFToken': csrfToken
-			}
-		})
-		.then(response => response.json())
-		.then(data => {
-			if (data.error) {
-				alert(data.error);
-			} else {
-				if(data.id!=0)
+
+		// Проверка наличия файла
+		const fileInput = this.querySelector('input[type="file"]');
+		if (!fileInput.files.length) {
+			alert('Пожалуйста, выберите изображение товара');
+			return;
+		}
+
+		// Создаем FormData и добавляем все поля кроме файла
+		const formData = new FormData();
+		formData.append('name', this.querySelector('[name="name"]').value);
+		formData.append('description', this.querySelector('[name="description"]').value);
+		formData.append('price', this.querySelector('[name="price"]').value);
+		formData.append('appearance_date', this.querySelector('[name="appearance_date"]').value);
+		formData.append('id_manufacturer', this.querySelector('[name="id_manufacturer"]').value);
+		formData.append('csrf_token', csrfToken);
+
+		// Преобразуем изображение в base64
+		const file = fileInput.files[0];
+		const reader = new FileReader();
+
+		reader.onload = function() {
+			// Получаем base64 строку (без префикса data:image/...;base64,)
+			const base64String = reader.result.split(',')[1];
+			
+			// Добавляем base64 в formData
+			formData.append('image', base64String);
+
+			// Отправляем данные
+			fetch(e.target.action, {
+				method: 'POST',
+				body: formData,
+				headers: {
+					'X-CSRFToken': csrfToken
+				}
+			})
+			.then(response => {
+				// Проверяем, что ответ в формате JSON
+				const contentType = response.headers.get('content-type');
+				if (contentType && contentType.includes('application/json')) {
+					return response.json();
+				}
+				throw new TypeError('Ответ сервера не в формате JSON');
+			})
+			.then(data => {
+				if (data.error) {
+					alert(data.error);
+				} else {
 					alert(`Успешно добавлен новый товар \"${formData.get('name')}\"`);
-				closeModal('create_goods_form_overlay');
-				this.reset();
-				loadManufacturers();
-			}
-		})
-		.catch(error => {
-			console.error('Ошибка:', error);
-			alert('Произошла ошибка при отправке формы');
-		});
+					closeModal('create_goods_form_overlay');
+					e.target.reset();
+					loadGoods(); // Обновляем список товаров
+				}
+			})
+			.catch(error => {
+				console.error('Ошибка:', error);
+				alert('Произошла ошибка при отправке формы: ' + error.message);
+			});
+		};
+
+		reader.onerror = function(error) {
+			console.error('Ошибка чтения файла:', error);
+			alert('Ошибка при чтении файла изображения');
+		};
+
+		// Начинаем чтение файла
+		reader.readAsDataURL(file);
 	});
 
 

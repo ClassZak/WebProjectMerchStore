@@ -143,27 +143,3 @@ h1{
 	}
 }
 
-
-
-
-/* Стили для кастомизации файлового ввода */
-.file-select-button {
-    padding: 8px 15px;
-    background: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin: 5px 0;
-}
-
-.file-name-display {
-    font-style: italic;
-    color: #666;
-    margin-left: 10px;
-}
-
-/* Дополнительные стили для модальных форм */
-.modal-form input[type="file"] {
-    display: none; /* Скрываем оригинальный input */
-}

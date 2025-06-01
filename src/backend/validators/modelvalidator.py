@@ -1,5 +1,6 @@
 from typing import Dict, Any
 from flask import jsonify
+from datetime import date
 
 class ModelValidator:
 	@staticmethod
@@ -20,9 +21,12 @@ class ModelValidator:
 			# Преобразование типа
 			if value is not None:
 				try:
-					value = meta['type'](value)
+					if meta['type'] == date:
+						value = date.fromisoformat(value)
+					else:
+						value = meta['type'](value)
 				except:
-					raise TypeError(f"Некорректный тип для {field}")
+					raise TypeError(f'Некорректный тип для {field}')
 			else:
 				continue
 			

@@ -22,12 +22,12 @@ class GoodService(AService):
 		try:
 			self.connect()
 			validated = ModelValidator.validate(data, Good.FIELDS_META)
-			values = tuple(validated.values())
+			values = tuple([str(i) for i in validated.values()])
 			db_columns = [Good.DB_COLUMNS['columns'][field] for field in validated.keys()]
 			
 			query = f"""
 				INSERT INTO {GoodService.TABLE_NAME} ({','.join(db_columns)})
-				VALUES ({','.join(values)})
+				VALUES ({','.join(['%s'] * len(values))})
 			"""
 
 			self.cursor.execute(query,values)
@@ -50,13 +50,23 @@ class GoodService(AService):
 	
 	def read_goods(self):
 		try:
-			super().connect()
-			self.cursor.execute('SELECT * FROM Good')
-			return super().remove_keys_uppercase_in_dicts_list(self.cursor.fetchall())
+			self.connect()
+			columns = [Good.DB_COLUMNS['columns'][field] 
+				for field in Good.FIELDS_META.keys()]
+			self.cursor.execute(f'SELECT {", ".join(columns)} FROM {GoodService.TABLE_NAME}')
+			raw_data = self.cursor.fetchall()
+			
+			# Преобразуем данные БД в формат модели
+			return jsonify({'goods': [{
+					field: str(row[Good.DB_COLUMNS['columns'][field]])
+					for field in Good.FIELDS_META.keys()
+				}
+				for row in raw_data
+			]}), 200
 		except Error as e:
-			return None
+			return jsonify({'error': f'Ошибка БД: {str(e)}'}), 500
 		finally:
-			super().disconnect()
+			self.disconnect()
 	
 	def get_good_by_id(self, id:int):
 		try:
