@@ -1,6 +1,7 @@
 import os
 from typing import Dict
 from flask import Flask, Request, json, render_template, request, jsonify
+from markupsafe import escape
 import mysql.connector
 import base64
 
@@ -23,6 +24,22 @@ app = Flask(
 )
 app.secret_key = get_app_config()['secret_key']
 csrf = CSRFProtect(app)
+
+
+
+
+# Действия перед обработкой запросов
+@app.before_request
+def auto_escape():
+	if request.is_json:
+		request.json = {k: escape(v) if isinstance(v, str) else v 
+						for k, v in request.json.items()}
+	else:
+		request.form = {k: escape(v) if isinstance(v, str) else v 
+					for k, v in request.form.items()}
+
+
+
 
 
 # Получение словаря из формы

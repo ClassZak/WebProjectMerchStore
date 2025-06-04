@@ -1,7 +1,8 @@
-// Данные страницы
+// Данные и объекты страницы
 var manufacturers;
 var goods;
 var csrfToken = undefined;
+var DOMPurify = window.DOMPurify;
 // Константные выражения
 const deleteManufacturerConfirmMessage='Вы уверены, что хотите удалить производителя';
 const deleteGoodConfirmMessage='Вы уверены, что хотите удалить товар';
@@ -20,19 +21,32 @@ function closeModal(modalId) {
 	document.body.classList.remove('no-scroll');
 };
 // Создание каточек
-function createManufacturerCard(element){
-	return `
-	<div class="manufacturer-card" element-data-id="${element.id}">
+function createManufacturerCard(element) {
+	// Экранируем все динамические значения
+	const safeId = DOMPurify.sanitize(element.id.toString());
+	const safeName = DOMPurify.sanitize(element.name);
+	
+	// Создаем DOM-структуру без обработчиков событий
+	const card = document.createElement('div');
+	card.className = 'manufacturer-card';
+	card.dataset.id = safeId;
+	
+	card.innerHTML = DOMPurify.sanitize(`
 		<div class="card-content">
 			<p>Название</p>
-			<h4 class="card-title">${element.name}</h4>
+			<h4 class="card-title">${safeName}</h4>
 		</div>
 		<div class="card-button-div">
-			<button class="square-btn" onclick="updateManufacturer(${element.id})"><strong>✎</strong></button>
-			<button class="square-btn" onclick="deleteManufacturer(${element.id})"><strong>🗑</strong></button>
+			<button class="square-btn update-btn" data-id="${safeId}">
+				<strong>✎</strong>
+			</button>
+			<button class="square-btn delete-btn" data-id="${safeId}">
+				<strong>🗑</strong>
+			</button>
 		</div>
-	</div>
-	`;// Доп. div для стиля
+	`);
+	
+	return card;
 }
 function createGoodCard(element){
 	let manufacturer=manufacturers.find(x=>x.id==element.id_manufacturer);
@@ -80,7 +94,7 @@ async function loadManufacturers(){
 
 		let elements = await response.json();
 		manufacturers=elements.manufacturers;
-		manufacturers.forEach(element => container.innerHTML+=createManufacturerCard(element));
+		manufacturers.forEach(element => container.appendChild(createManufacturerCard(element)));
 		loadManufacturersToSelects();
 	}
 	catch(error){
