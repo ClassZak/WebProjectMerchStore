@@ -7,6 +7,15 @@ var DOMPurify = window.DOMPurify;
 const deleteManufacturerConfirmMessage='Вы уверены, что хотите удалить производителя';
 const deleteGoodConfirmMessage='Вы уверены, что хотите удалить товар';
 // Общие функции
+// Функция для экранирования HTML
+function escapeHtml(unsafe) {
+	return unsafe
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/"/g, "&quot;")
+		.replace(/'/g, "&#039;");
+}
 function handleUnknownError(error){
 	const message = `Неизвестная ошибка: "${error}"`;
 	alert(message);
@@ -22,25 +31,20 @@ function closeModal(modalId) {
 };
 // Создание каточек
 function createManufacturerCard(element) {
-	// Экранируем все динамические значения
-	const safeId = DOMPurify.sanitize(element.id.toString());
-	const safeName = DOMPurify.sanitize(element.name);
 	
-	// Создаем DOM-структуру без обработчиков событий
 	const card = document.createElement('div');
 	card.className = 'manufacturer-card';
-	card.dataset.id = safeId;
 	
 	card.innerHTML = DOMPurify.sanitize(`
 		<div class="card-content">
 			<p>Название</p>
-			<h4 class="card-title">${safeName}</h4>
+			<h4 class="card-title">${escapeHtml(element.name)}</h4>
 		</div>
 		<div class="card-button-div">
-			<button class="square-btn update-btn" data-id="${safeId}">
+			<button class="square-btn update-btn" onclick="updateManufacturer(${element.id})">
 				<strong>✎</strong>
 			</button>
-			<button class="square-btn delete-btn" data-id="${safeId}">
+			<button class="square-btn delete-btn" onclick="deleteManufacturer(${element.id})">
 				<strong>🗑</strong>
 			</button>
 		</div>
@@ -54,9 +58,9 @@ function createGoodCard(element){
 	<div class="manufacturer-card" element-data-id="${element.id}">
 		<div class="card-content">
 			<p>Название</p>
-			<h4 class="card-title">${element.name}</h4>
+			<h4 class="card-title">${escapeHtml(element.name)}</h4>
 			<p>Описание</p>
-			<h4 class="card-title">${element.description}</h4>
+			<h4 class="card-title">${escapeHtml(element.description)}</h4>
 			<p>Цена</p>
 			<h4 class="card-title">
 				${Intl.NumberFormat('ru-RU',{style: 'currency', currency: 'RUB'}).format(element.price)}
@@ -66,7 +70,7 @@ function createGoodCard(element){
 			<p>Дата появления в ассортименте</p>
 			<h4 class="card-title">${element.appearance_date}</h4>
 			<div>
-				<img src="data:image/*;base64,${element.image.slice(2, -1)}" alt="${element.name}">
+				<img src="data:image/*;base64,${element.image.slice(2, -1)}" alt="${escapeHtml(element.name)}">
 			</div>
 		</div>
 		<div class="card-button-div">
@@ -94,6 +98,9 @@ async function loadManufacturers(){
 
 		let elements = await response.json();
 		manufacturers=elements.manufacturers;
+		for(i=0;i<manufacturers.length;++i)
+			manufacturers[i].name=escapeHtml(manufacturers[i].name);
+
 		manufacturers.forEach(element => container.appendChild(createManufacturerCard(element)));
 		loadManufacturersToSelects();
 	}
