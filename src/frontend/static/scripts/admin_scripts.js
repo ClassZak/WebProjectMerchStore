@@ -62,6 +62,7 @@ function createGoodCard(element){
 			<p>Описание</p>
 			<h4 class="card-title">${escapeHtml(element.description)}</h4>
 			<p>Цена</p>
+			
 			<h4 class="card-title">
 				${Intl.NumberFormat('ru-RU',{style: 'currency', currency: 'RUB'}).format(element.price)}
 			</h4>
