@@ -7,14 +7,8 @@ var DOMPurify = window.DOMPurify;
 const deleteManufacturerConfirmMessage='Вы уверены, что хотите удалить производителя';
 const deleteGoodConfirmMessage='Вы уверены, что хотите удалить товар';
 // Общие функции
-// Функция для экранирования HTML
-function escapeHtml(unsafe) {
-	return unsafe
-		.replace(/&/g, "&amp;")
-		.replace(/</g, "&lt;")
-		.replace(/>/g, "&gt;")
-		.replace(/"/g, "&quot;")
-		.replace(/'/g, "&#039;");
+function escapeHtml(unsafe){
+	return unsafe.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;').replace('\"','&quot;').replace('\'','&#39;')
 }
 function handleUnknownError(error){
 	const message = `Неизвестная ошибка: "${error}"`;
@@ -31,38 +25,38 @@ function closeModal(modalId) {
 };
 // Создание каточек
 function createManufacturerCard(element) {
-	
+	// Создаем DOM-структуру без обработчиков событий
 	const card = document.createElement('div');
+	card.setAttribute('data-element-id',element.id)
 	card.className = 'manufacturer-card';
 	
-	card.innerHTML = DOMPurify.sanitize(`
-		<div class="card-content">
+	card.innerHTML = `
+		<div class="manufacturer-card">
 			<p>Название</p>
 			<h4 class="card-title">${escapeHtml(element.name)}</h4>
 		</div>
 		<div class="card-button-div">
-			<button class="square-btn update-btn" onclick="updateManufacturer(${element.id})">
+			<button class="square-btn update-btn" onclick="updateManufacturer(${element.id})" data-id="${element.id}">
 				<strong>✎</strong>
 			</button>
-			<button class="square-btn delete-btn" onclick="deleteManufacturer(${element.id})">
+			<button class="square-btn delete-btn" onclick="deleteManufacturer(${element.id})" data-id="${element.id}">
 				<strong>🗑</strong>
 			</button>
 		</div>
-	`);
-	
-	return card;
+	`
+
+	return card
 }
 function createGoodCard(element){
 	let manufacturer=manufacturers.find(x=>x.id==element.id_manufacturer);
 	return `
-	<div class="manufacturer-card" element-data-id="${element.id}">
+	<div class="" data-element-id="${element.id}">
 		<div class="card-content">
 			<p>Название</p>
 			<h4 class="card-title">${escapeHtml(element.name)}</h4>
 			<p>Описание</p>
 			<h4 class="card-title">${escapeHtml(element.description)}</h4>
 			<p>Цена</p>
-			
 			<h4 class="card-title">
 				${Intl.NumberFormat('ru-RU',{style: 'currency', currency: 'RUB'}).format(element.price)}
 			</h4>
@@ -99,9 +93,6 @@ async function loadManufacturers(){
 
 		let elements = await response.json();
 		manufacturers=elements.manufacturers;
-		for(i=0;i<manufacturers.length;++i)
-			manufacturers[i].name=escapeHtml(manufacturers[i].name);
-
 		manufacturers.forEach(element => container.appendChild(createManufacturerCard(element)));
 		loadManufacturersToSelects();
 	}
@@ -122,7 +113,7 @@ function loadManufacturersToSelects(){
 
 
 function deleteManufacturerFromHTML(id){
-	const card = document.querySelector(`.manufacturer-card[element-data-id="${id}"]`);
+	const card = document.querySelector(`.manufacturer-card[data-element-id="${id}"]`);
 	if(card)
 		card.remove();
 }
@@ -132,7 +123,7 @@ function deleteManufacturer(id) {
 		return;
 
 	const modal = document.querySelector('#delete_manufacturers_form_overlay .modal');
-	modal.setAttribute('element-data-id', id);
+	modal.setAttribute('data-element-id', id);
 	openModal('delete_manufacturers_form_overlay');
 	setDeleteConfirmMessage(
 		'delete_manufacturers_confirm_message',
@@ -142,14 +133,15 @@ function deleteManufacturer(id) {
 }
 function handleDeleteConfirm() {
 	const modal = document.querySelector('#delete_manufacturers_form_overlay .modal');
-	const id = modal.getAttribute('element-data-id');
+	const id = modal.getAttribute('data-element-id');
 	
 	if (!id) return;
 	
 	deleteManufacturerFromDB(id);
+	deleteManufacturerFromHTML(id);
 	closeModal('delete_manufacturers_form_overlay');
 
-	modal.removeAttribute('element-data-id');
+	modal.removeAttribute('data-element-id');
 }
 async function deleteManufacturerFromDB(id){
 	const manufacturer = manufacturers.find(x => x.id==id)
@@ -182,7 +174,7 @@ async function updateManufacturer(id) {
 	const manufacturer = manufacturers.find(x => x.id==id)
 	
 	let element=document.getElementById('edit_manufacturers_form');
-	element.setAttribute('element-data-id',id);
+	element.setAttribute('data-element-id',id);
 	openModal('edit_manufacturers_form_overlay');
 }
 
@@ -313,7 +305,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		csrf_token	string	*/
 		const formData = new FormData(this);
 		
-		fetch(this.action+this.getAttribute('element-data-id'),{
+		fetch(this.action+this.getAttribute('data-element-id'),{
 			method: 'PUT',
 			body: formData,
 			headers: {

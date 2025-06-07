@@ -28,15 +28,6 @@ csrf = CSRFProtect(app)
 
 
 
-# Действия перед обработкой запросов
-@app.before_request
-def auto_escape():
-	if request.is_json:
-		request.json = {k: escape(v) if isinstance(v, str) else v 
-						for k, v in request.json.items()}
-	else:
-		request.form = {k: escape(v) if isinstance(v, str) else v 
-					for k, v in request.form.items()}
 
 
 
