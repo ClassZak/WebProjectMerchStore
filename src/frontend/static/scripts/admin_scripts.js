@@ -49,8 +49,12 @@ function createManufacturerCard(element) {
 }
 function createGoodCard(element){
 	let manufacturer=manufacturers.find(x=>x.id==element.id_manufacturer);
-	return `
-	<div class="" data-element-id="${element.id}">
+
+	const card = document.createElement('div');
+	card.setAttribute('data-element-id',element.id);
+	card.className = 'manufacturer-card';
+
+	card.innerHTML = `
 		<div class="card-content">
 			<p>Название</p>
 			<h4 class="card-title">${escapeHtml(element.name)}</h4>
@@ -64,7 +68,7 @@ function createGoodCard(element){
 			<h4 class="card-title">${manufacturer && manufacturer.name ? manufacturer.name: 'Незвестен'}</h4>
 			<p>Дата появления в ассортименте</p>
 			<h4 class="card-title">${element.appearance_date}</h4>
-			<div>
+			<div class="one-photo">
 				<img src="data:image/*;base64,${element.image.slice(2, -1)}" alt="${escapeHtml(element.name)}">
 			</div>
 		</div>
@@ -72,8 +76,9 @@ function createGoodCard(element){
 			<button class="square-btn" onclick="updateGood(${element.id})"><strong>✎</strong></button>
 			<button class="square-btn" onclick="deleteGood(${element.id})"><strong>🗑</strong></button>
 		</div>
-	</div>
 	`
+
+	return card;
 }
 
 
@@ -203,7 +208,7 @@ async function loadGoods() {
 		let elements = await response.json();
 		goods = elements.goods;
 		goods.forEach(element => {
-			container.innerHTML += createGoodCard(element);
+			container.appendChild(createGoodCard(element));
 		});
 	} catch (error) {
 		console.log(error);
