@@ -59,17 +59,14 @@ function createGoodCard(element){
 			<div class="one-photo">
 				<img src="data:image/*;base64,${element.image.slice(2, -1)}" alt="${escapeHtml(element.name)}">
 			</div>
-			<p>Название</p>
 			<h4 class="card-title">${escapeHtml(element.name)}</h4>
-			<p>Описание</p>
-			<h4 class="card-title">${escapeHtml(element.description)}</h4>
-			<p>Цена</p>
 			<h4 class="card-title">
-				${Intl.NumberFormat('ru-RU',{style: 'currency', currency: 'RUB'}).format(element.price)}
+			${Intl.NumberFormat('ru-RU',{style: 'currency', currency: 'RUB'}).format(element.price)}
 			</h4>
-			<p>Производитель</p>
+			<h4 class="card-title">${escapeHtml(element.description)}</h4>
+			<p>Производитель:</p>
 			<h4 class="card-title">${manufacturer && manufacturer.name ? manufacturer.name: 'Незвестен'}</h4>
-			<p>Дата появления в ассортименте</p>
+			<p>Дата появления в ассортименте:</p>
 			<h4 class="card-title">${element.appearance_date}</h4>
 		</div>
 		<div class="card-button-div">
