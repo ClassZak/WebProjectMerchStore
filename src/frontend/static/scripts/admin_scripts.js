@@ -91,7 +91,7 @@ async function loadManufacturers(){
 
 	try{
 		if(!response.ok)
-			throw new Error(`Response status ${response.status}`);
+			throw new Error(`Response status: ${response.status}\nError Message: ${(await response.json()).error}`);
 
 		let elements = await response.json();
 		manufacturers=elements.manufacturers;
@@ -200,7 +200,7 @@ async function loadGoods() {
 
 	try {
 		if(!response.ok)
-			throw new Error(`Response status: ${response.status}`);
+			throw new Error(`Response status: ${response.status}\nError Message: ${(await response.json()).error}`);
 		
 		let elements = await response.json();
 		goods = elements.goods;
