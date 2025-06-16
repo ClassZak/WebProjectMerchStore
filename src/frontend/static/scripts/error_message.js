@@ -12,20 +12,6 @@ var errorWindowObject = {
 	htmlElement : errorWindow
 }
 
-function createErrorNotification(){
-	errorWindow = document.createElement('div');
-	errorWindow.style.visibility = 'collapse';
-	errorWindow.classList.add('error-window');
-	
-	errorWindow.innerHTML = `
-		<div class="error-window-element">
-			<h2 id="error-message"></h2>
-		</div>
-		<button class="error-window-element" onclick="hideError()" style = "">X</button>
-	`;
-
-	document.body.append(errorWindow);
-}
 
 
 function hideError(){
@@ -35,3 +21,22 @@ function showError(error){
 	errorWindow.style.visibility='visible';
 	document.getElementById('error-message').textContent=escapeHtml(error);
 }
+
+
+function createErrorNotification(){
+	errorWindow = document.createElement('div');
+	errorWindow.style.visibility = 'collapse';
+	errorWindow.classList.add('error-window');
+	
+	errorWindow.innerHTML = `
+		<div class="error-window-text-content">
+			<h2 class="error-window-inline-element" id="error-message"></h2>
+		</div>
+		<div >
+			<button class="error-window-square-btn" onclick="hideError()" style = "">X</button>
+		</div>
+	`;
+
+	document.body.append(errorWindow);
+}
+document.addEventListener('DOMContentLoaded', createErrorNotification);

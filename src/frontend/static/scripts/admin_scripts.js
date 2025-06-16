@@ -89,9 +89,13 @@ async function loadManufacturers(){
 	const container=document.getElementById('manufacturers_grid');
 	container.innerHTML='';
 
+	let message = '';
 	try{
 		if(!response.ok)
-			throw new Error(`Response status: ${response.status}\nError Message: ${(await response.json()).error}`);
+		{
+			message = (await response.json()).error
+			throw new Error(`Response status: ${response.status}\nError Message: ${message}`);
+		}
 
 		let elements = await response.json();
 		manufacturers=elements.manufacturers;
@@ -100,6 +104,7 @@ async function loadManufacturers(){
 	}
 	catch(error){
 		console.log(error);
+		showError(message);
 	}
 }
 function loadManufacturersToSelects(){
@@ -198,9 +203,13 @@ async function loadGoods() {
 	const container = document.getElementById('goods_grid');
 	container.innerHTML = '';
 
+	let message = '';
 	try {
 		if(!response.ok)
-			throw new Error(`Response status: ${response.status}\nError Message: ${(await response.json()).error}`);
+		{
+			message = (await response.json()).error;
+			throw new  Error(`Response status: ${response.status}\nError Message: ${message}`);
+		}
 		
 		let elements = await response.json();
 		goods = elements.goods;
@@ -209,6 +218,7 @@ async function loadGoods() {
 		});
 	} catch (error) {
 		console.log(error);
+		showError(message);
 	}
 }
 
