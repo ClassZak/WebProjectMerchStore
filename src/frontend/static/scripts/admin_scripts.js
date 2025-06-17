@@ -63,7 +63,7 @@ function createGoodCard(element){
 			<h4 class="card-title">
 			${Intl.NumberFormat('ru-RU',{style: 'currency', currency: 'RUB'}).format(element.price)}
 			</h4>
-			<h4 class="card-title">${escapeHtml(element.description)}</h4>
+			<h5 class="card-title">${escapeHtml(element.description)}</h5>
 			<p>Производитель:</p>
 			<h4 class="card-title">${manufacturer && manufacturer.name ? manufacturer.name: 'Незвестен'}</h4>
 			<p>Дата появления в ассортименте:</p>
