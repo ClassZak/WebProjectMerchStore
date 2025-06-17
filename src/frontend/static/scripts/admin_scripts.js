@@ -124,6 +124,25 @@ function deleteManufacturerFromHTML(id){
 	if(card)
 		card.remove();
 }
+async function deleteManufacturerFromDB(id){
+	const manufacturer = manufacturers.find(x => x.id==id)
+
+	fetch(`/api/manufacturers/${id}`, {method: "DELETE", headers: { 'X-CSRFToken': csrfToken}})
+	.then(response => response.json())
+	.then(data => {
+		if(data.error){
+			alert(`Ошибка удаление поставщика "${manufacturer.name}": ${data.error}`);
+			loadManufacturers();
+		} else{
+			alert(`Поставщик "${manufacturer.name}" успешно удалён`);
+			manufacturers=manufacturers.filter(element=>element.id!=id);
+		}
+	})
+	.catch(error =>{ 
+		handleUnknownError(error);
+		loadManufacturers();
+	});
+}
 function deleteManufacturer(id) {
 	const manufacturer = manufacturers.find(x => x.id==id)
 	if(manufacturer === undefined || manufacturer===NaN)
@@ -138,37 +157,18 @@ function deleteManufacturer(id) {
 		manufacturer.name
 	);
 }
-function handleDeleteConfirm() {
+function handleDeleteManufacturerConfirm() {
 	const modal = document.querySelector('#delete_manufacturers_form_overlay .modal');
 	const id = modal.getAttribute('data-element-id');
 	
 	if (!id) return;
 	
 	deleteManufacturerFromDB(id);
-	deleteManufacturerFromHTML(id);
+	if (!manufacturers.find(x=>x.id==id))
+		deleteManufacturerFromHTML(id);
 	closeModal('delete_manufacturers_form_overlay');
 
 	modal.removeAttribute('data-element-id');
-}
-async function deleteManufacturerFromDB(id){
-	const manufacturer = manufacturers.find(x => x.id==id)
-
-	fetch(`/api/manufacturers/${id}`, {method: "DELETE", headers: { 'X-CSRFToken': csrfToken}})
-	.then(response => response.json())
-	.then(data => {
-		if(data.error){
-			alert(`Ошибка удаление поставщика "${manufacturer.name}": ${data.error}`);
-			loadManufacturers();
-		} else{
-			alert(`Поставщик "${manufacturer.name}" успешно удалён`);
-			manufacturers=manufacturers.filter(element=>element.id!=id);
-			deleteManufacturerFromHTML(id);
-		}
-	})
-	.catch(error =>{ 
-		handleUnknownError(error);
-		loadManufacturers();
-	});
 }
 function setDeleteConfirmMessage(elementId, text, object){
 	const container=document.getElementById(elementId);
@@ -221,8 +221,56 @@ async function loadGoods() {
 		showError(message);
 	}
 }
+function deleteGoodFromHTML(id){
+	const card = document.querySelector(`.good-card[data-element-id="${id}"]`);
+	if (card)
+		card.remove();
+}
+function deleteGoodFromDB(id){
+	element = goods.find(x=>x.id==id);
 
+	fetch(`/api/goods/${id}`, {method : 'DELETE', headers:{ 'X-CSRFToken': csrfToken}})
+	.then(response => response.json())
+	.then(data=>{
+		if (data.error)	{
+			alert(`Ошибка удаления товара ${element.name}`);
+			loadGoods();
+		} else{
+			alert(`Товар "${element.name}" успешно удалён`);
+			goods=goods.filter(element=>element.id!=id);
+		}
+	}).catch(error=>{
+		handleUnknownError(error);
+		loadGoods();
+	});
+}
+function handleDeleteGoodConfirm() {
+	const modal = document.querySelector('#delete_goods_form_overlay .modal');
+	const id = modal.getAttribute('data-element-id');
+	
+	if (!id) return;
+	
+	deleteGoodFromDB(id);
+	if (!goods.find(x=>x.id==id))
+		deleteGoodFromHTML(id);
+	closeModal('delete_goods_form_overlay');
 
+	modal.removeAttribute('data-element-id');
+}
+function deleteGood(id) {
+	const element = goods.find(x => x.id==id)
+	if(element === undefined || element===NaN)
+		return;
+
+	const modal = document.querySelector('#delete_goods_form_overlay .modal');
+	modal.setAttribute('data-element-id', id);
+	openModal('delete_goods_form_overlay');
+	setDeleteConfirmMessage(
+		'delete_goods_confirm_message',
+		deleteGoodConfirmMessage, 
+		element.name
+	);
+}
 
 
 
