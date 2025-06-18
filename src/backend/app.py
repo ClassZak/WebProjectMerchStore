@@ -34,7 +34,7 @@ csrf = CSRFProtect(app)
 
 
 # Получение словаря из формы
-def get_dict_from_request(request:Request) -> Dict:
+def get_dict_from_request_form(request:Request) -> Dict:
 	return {
 		k:v
 		for k in request.form.keys() 
@@ -71,54 +71,44 @@ def render_goods():
 
 # API
 # Производители
-@app.route('/api/manufacturers/<int:id>', methods=['PUT', 'DELETE', 'GET'])
+@app.route('/api/manufacturers/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 def handle_manufacturer(id:int):
-	if request.method == 'PUT':
-		data = get_dict_from_request(request)
+	if request.method == 'GET':
+		return manufacturer_service.read_manufacturer_by_id(id)
+	elif request.method == 'PUT':
+		data = get_dict_from_request_form(request)
 		return manufacturer_service.update_manufacturer(data, id)
 	elif request.method == 'DELETE':
 		return manufacturer_service.delete_manufacturer(id)
-	elif request.method == 'GET':
-		return manufacturer_service.read_manufacturer_by_id(id)
-	return jsonify({'error': 'Method Not Allowed'}), 405
-@app.route('/api/manufacturers/', methods=['GET', 'POST'])
+@app.route('/api/manufacturers/', methods=['POST', 'GET'])
 def manufacturers_route():
 	try:
 		if request.method=='POST':
-			return manufacturer_service.create_manufacturer({'name':request.form.get('name')})
+			return manufacturer_service.create_manufacturer(get_dict_from_request_form(request))
 		elif request.method=='GET':
 			return manufacturer_service.read_manufacturers()
-		else:
-			return jsonify({'error': 'Method Not Allowed'}), 405
 	except Exception as e:
 		return jsonify({'error': 'Internal Server Error'}), 500
 
 # Товары
-@app.route('/api/goods/<int:good_id>', methods=['PUT','GET'])
-def update_and_get_good(good_id:int):
-	if request.method=='PUT':
-		good=request.get_json()
-		result=good_service.update_good(
-			good['name'],good['description'],good['image'],good['price']
-		)
-		if result==0:
-			return jsonify({'error':'Не удалось обновить товар'}),400
-		else:
-			return jsonify({'message':f'Товар с id {good_id} обновлён'}),201
-	elif request.method=='GET':
-		result=good_service.get_good_by_id(good_id)
-		if result:
-			result['Image'] = result['Image'].decode('utf-8')
-			return jsonify(result),200
-		else:
-			return jsonify({'error':'Not Found'}),404
-@app.route('/api/goods/',methods=['GET','POST'])
+@app.route('/api/goods/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+def handle_good(id:int):
+	if request.method == 'GET':
+		return good_service.read_good_by_id(id)
+	elif request.method == 'PUT':
+		data = get_dict_from_request_form(request)
+		return good_service.update_good(data, id)
+	elif request.method=='DELETE':
+		return good_service.delete_good(id)
+@app.route('/api/goods/',methods=['POST', 'GET'])
 def goods_route():
-	if request.method=='GET':
-		return good_service.read_goods()
-	elif request.method=='POST':
-		data = get_dict_from_request(request)
-		return good_service.create_good(data)
+	try:
+		if request.method=='POST':
+			return good_service.create_good(get_dict_from_request_form(request))
+		elif request.method=='GET':
+			return good_service.read_goods()
+	except Exception as e:
+		return jsonify({'error': 'Internal Server Error'}), 500
 
 
 

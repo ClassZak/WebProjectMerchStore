@@ -103,7 +103,7 @@
 					<input type="number"	name="price"			placeholder="Цена товара"		required>
 					<input type="date"		name="appearance_date"	required>
 					<select 
-						id="manufacturer_select_for_good" 
+						id="manufacturer_select_for_good_create" 
 						name ="id_manufacturer" 
 						placeholder="Выберете производителя" 
 						required>
@@ -119,7 +119,21 @@
 			<div class="modal">
 				<h1>Редактирование данных товара</h1>
 				<form action="/api/goods/" method="put" class="modal-form" id="edit_goods_form" element-data-id="0">
-					<input type="text" name="name" placeholder="Имя производителя" required>
+					<input type="text"		name="name"				placeholder="Название товара"	required>
+					<input type="text"		name="description"		placeholder="Описание товара"	required>
+
+					<!--Для загрузки изображения-->
+					<input type="file" name="image" accept="image/*" required>
+
+					
+					<input type="number"	name="price"			placeholder="Цена товара"		required>
+					<input type="date"		name="appearance_date"	required>
+					<select 
+						id="manufacturer_select_for_good_update" 
+						name ="id_manufacturer" 
+						placeholder="Выберете производителя" 
+						required>
+					</select>
 					<div class="form-buttons">
 						<button type="submit">Изменить</button>
 						<button type="button" onclick="closeModal('edit_goods_form_overlay')">Отмена</button>

@@ -74,20 +74,19 @@ class ManufacturerService(AService):
 			if 'id' in data and data['id'] != id:
 				return jsonify({'error': 'ID в теле не совпадает с ID в URL'}), 400
 				
-			data['id'] = id  # Принудительно устанавливаем ID из URL
+			data['id'] = id
 
-			# Проверка Id и валидация
+			# Проверка ID и валидация
 			if not self.exists(data['id']):
-				return jsonify({'error': 'Производитель не найден'}), 404
+				return jsonify({'error': 'Производитель для обновления данных не найден'}), 404
 			validated = ModelValidator.validate(data, Manufacturer.FIELDS_META, self.cursor)
 			
-			# Формируем SET-часть
 			set_clause = ', '.join([
 				f"{Manufacturer.DB_COLUMNS['columns'][field]} = %s" 
 				for field in validated if field != 'id'
 			])
 			values = [validated[field] for field in validated if field != 'id']
-			values.append(id)
+			values.append(data['id'])
 			
 			query = f"""
 				UPDATE {ManufacturerService.TABLE_NAME}
@@ -99,10 +98,10 @@ class ManufacturerService(AService):
 			self.cursor.execute(query, values)
 			self.connection.commit()
 			
-			if self.cursor.rowcount==0:
+			if self.cursor.rowcount == 0:
 				return jsonify({'error': 'Производитель уже имеет эти данные'}), 400
 				
-			return jsonify({'message': 'Производитель обновлён'}), 200
+			return jsonify({'message': 'Данные производителя обновлены'}), 200
 			
 		except ValueError as e:
 			return jsonify({'error': str(e)}), 400
@@ -137,6 +136,9 @@ class ManufacturerService(AService):
 
 
 
+	"""
+		Дополнительные запросы
+	"""
 	def read_manufacturer_by_id(self,id:int):
 		try:
 			if not self.exists(id):
@@ -159,7 +161,16 @@ class ManufacturerService(AService):
 			return jsonify({'error': f'Ошибка БД: {str(e)}'}), 500
 		finally:
 			self.disconnect()
+	"""
+		Дополнительные запросы
+	"""
 
+
+
+
+	"""
+		Простые методы
+	"""
 	def sql_data_to_json_list(self, data:dict):
 		return {field:data[Manufacturer.DB_COLUMNS['columns'][field]] for field in Manufacturer.FIELDS_META.keys()}
 
@@ -167,7 +178,7 @@ class ManufacturerService(AService):
 	def exists(self, id: int) -> bool:
 		try:
 			self.connect()
-			query = "SELECT EXISTS(SELECT 1 FROM Manufacturer WHERE Id = %s) AS exist"
+			query = f"SELECT EXISTS(SELECT 1 FROM {ManufacturerService.TABLE_NAME} WHERE Id = %s) AS exist"
 			self.cursor.execute(query, (int(id),))
 			print("SQL:", self.cursor.statement)  # или ._executed
 			# вернёт (1,) или (0,)
@@ -175,3 +186,8 @@ class ManufacturerService(AService):
 			return bool(result['exist']) if result else False
 		finally:
 			self.disconnect()
+	"""
+		Простые методы
+	"""
+
+	

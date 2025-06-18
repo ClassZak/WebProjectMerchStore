@@ -47,12 +47,14 @@ function createManufacturerCard(element) {
 
 	return card
 }
-function createGoodCard(element){
+async function createGoodCard(element){
+	while(manufacturers===undefined);
 	let manufacturer=manufacturers.find(x=>x.id==element.id_manufacturer);
 
 	const card = document.createElement('div');
 	card.setAttribute('data-element-id',element.id);
-	card.className = 'manufacturer-card';
+	card.classList.add('manufacturer-card');
+	card.classList.add('good-card');
 
 	card.innerHTML = `
 		<div class="card-content">
@@ -108,12 +110,19 @@ async function loadManufacturers(){
 	}
 }
 function loadManufacturersToSelects(){
-	let select = document.getElementById('manufacturer_select_for_good');
+	let createSelect = document.getElementById('manufacturer_select_for_good_create');
 	manufacturers.forEach(element => {
 		const option = document.createElement('option');
 		option.value = element.id;
 		option.textContent = element.name;
-		select.appendChild(option);
+		createSelect.appendChild(option);
+	});
+	let updateSelect = document.getElementById('manufacturer_select_for_good_update');
+	manufacturers.forEach(element => {
+		const option = document.createElement('option');
+		option.value = element.id;
+		option.textContent = element.name;
+		updateSelect.appendChild(option);
 	});
 }
 
@@ -127,7 +136,7 @@ function deleteManufacturerFromHTML(id){
 async function deleteManufacturerFromDB(id){
 	const manufacturer = manufacturers.find(x => x.id==id)
 
-	fetch(`/api/manufacturers/${id}`, {method: "DELETE", headers: { 'X-CSRFToken': csrfToken}})
+	await fetch(`/api/manufacturers/${id}`, {method: "DELETE", headers: { 'X-CSRFToken': csrfToken}})
 	.then(response => response.json())
 	.then(data => {
 		if(data.error){
@@ -157,15 +166,17 @@ function deleteManufacturer(id) {
 		manufacturer.name
 	);
 }
-function handleDeleteManufacturerConfirm() {
+async function handleDeleteManufacturerConfirm() {
 	const modal = document.querySelector('#delete_manufacturers_form_overlay .modal');
 	const id = modal.getAttribute('data-element-id');
 	
 	if (!id) return;
 	
-	deleteManufacturerFromDB(id);
+	let res= await deleteManufacturerFromDB(id);
 	if (!manufacturers.find(x=>x.id==id))
 		deleteManufacturerFromHTML(id);
+	else
+		alert('Не удалось удалить объект');
 	closeModal('delete_manufacturers_form_overlay');
 
 	modal.removeAttribute('data-element-id');
@@ -183,6 +194,13 @@ async function updateManufacturer(id) {
 	let element=document.getElementById('edit_manufacturers_form');
 	element.setAttribute('data-element-id',id);
 	openModal('edit_manufacturers_form_overlay');
+
+	// TODO: доработать
+	/*let updatedGoods = goods.filter(x=> x.id_manufacturer == id);
+	updatedGoods.forEach(element=>{
+		element.id_manufacturer 
+	});*/
+	loadGoods();
 }
 
 
@@ -213,8 +231,8 @@ async function loadGoods() {
 		
 		let elements = await response.json();
 		goods = elements.goods;
-		goods.forEach(element => {
-			container.appendChild(createGoodCard(element));
+		goods.forEach(async element => {
+			container.appendChild(await createGoodCard(element));
 		});
 	} catch (error) {
 		console.log(error);
@@ -226,10 +244,10 @@ function deleteGoodFromHTML(id){
 	if (card)
 		card.remove();
 }
-function deleteGoodFromDB(id){
+async function deleteGoodFromDB(id){
 	element = goods.find(x=>x.id==id);
 
-	fetch(`/api/goods/${id}`, {method : 'DELETE', headers:{ 'X-CSRFToken': csrfToken}})
+	await fetch(`/api/goods/${id}`, {method : 'DELETE', headers:{ 'X-CSRFToken': csrfToken}})
 	.then(response => response.json())
 	.then(data=>{
 		if (data.error)	{
@@ -244,15 +262,17 @@ function deleteGoodFromDB(id){
 		loadGoods();
 	});
 }
-function handleDeleteGoodConfirm() {
+async function handleDeleteGoodConfirm() {
 	const modal = document.querySelector('#delete_goods_form_overlay .modal');
 	const id = modal.getAttribute('data-element-id');
 	
 	if (!id) return;
 	
-	deleteGoodFromDB(id);
+	await deleteGoodFromDB(id);
 	if (!goods.find(x=>x.id==id))
 		deleteGoodFromHTML(id);
+	else
+		alert('Не удалось удалить объект');
 	closeModal('delete_goods_form_overlay');
 
 	modal.removeAttribute('data-element-id');
@@ -273,6 +293,13 @@ function deleteGood(id) {
 }
 
 
+async function updateGood(id) {
+	const element = goods.find(x => x.id==id)
+	
+	let htmlElement=document.getElementById('edit_goods_form');
+	htmlElement.setAttribute('data-element-id',id);
+	openModal('edit_goods_form_overlay');
+}
 
 
 
@@ -357,6 +384,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			alert('Произошла ошибка при отправке формы');
 		});
 	});
+	// Обработка формы редактирования
 	document.getElementById('edit_manufacturers_form')?.addEventListener('submit', function(e){
 		e.preventDefault();
 		
@@ -461,6 +489,87 @@ document.addEventListener('DOMContentLoaded', function() {
 				} else {
 					alert(`Успешно добавлен новый товар \"${formData.get('name')}\"`);
 					closeModal('create_goods_form_overlay');
+					e.target.reset();
+					loadGoods(); // Обновляем список товаров
+				}
+			})
+			.catch(error => {
+				console.error('Ошибка:', error);
+				alert('Произошла ошибка при отправке формы: ' + error.message);
+			});
+		};
+
+		reader.onerror = function(error) {
+			console.error('Ошибка чтения файла:', error);
+			alert('Ошибка при чтении файла изображения');
+		};
+
+		// Начинаем чтение файла
+		reader.readAsDataURL(file);
+	});
+	// Обработка формы редактирования
+	document.getElementById('edit_goods_form')?.addEventListener('submit', function(e){
+		e.preventDefault();
+		
+		/* Поля formData:
+		name			string
+		description		string,
+		image			string (base64),
+		price			number,
+		appearanceDate	string,
+		id_manufacturer	number,
+		csrf_token		string	*/
+
+		// Проверка наличия файла
+		const fileInput = this.querySelector('input[type="file"]');
+		if (!fileInput.files.length) {
+			alert('Пожалуйста, выберите изображение товара');
+			return;
+		}
+
+		// Создаем FormData и добавляем все поля кроме файла
+		const formData = new FormData();
+		formData.append('name', this.querySelector('[name="name"]').value);
+		formData.append('description', this.querySelector('[name="description"]').value);
+		formData.append('price', this.querySelector('[name="price"]').value);
+		formData.append('appearance_date', this.querySelector('[name="appearance_date"]').value);
+		formData.append('id_manufacturer', this.querySelector('[name="id_manufacturer"]').value);
+		formData.append('csrf_token', csrfToken);
+
+		// Преобразуем изображение в base64
+		const file = fileInput.files[0];
+		const reader = new FileReader();
+
+		const updateUrl = this.action+this.getAttribute('data-element-id');
+		reader.onload = function() {
+			// Получаем base64 строку (без префикса data:image/...;base64,)
+			const base64String = reader.result.split(',')[1];
+			
+			// Добавляем base64 в formData
+			formData.append('image', base64String);
+
+			// Отправляем данные
+			fetch(updateUrl, {
+				method: 'PUT',
+				body: formData,
+				headers: {
+					'X-CSRFToken': csrfToken
+				}
+			})
+			.then(response => {
+				// Проверяем, что ответ в формате JSON
+				const contentType = response.headers.get('content-type');
+				if (contentType && contentType.includes('application/json')) {
+					return response.json();
+				}
+				throw new TypeError('Ответ сервера не в формате JSON');
+			})
+			.then(data => {
+				if (data.error) {
+					alert(data.error);
+				} else {
+					alert(`Успешно изменены данные товара \"${formData.get('name')}\"`);
+					closeModal('edit_goods_form_overlay');
 					e.target.reset();
 					loadGoods(); // Обновляем список товаров
 				}
