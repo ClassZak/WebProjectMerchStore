@@ -109,6 +109,14 @@ def goods_route():
 			return good_service.read_goods()
 	except Exception as e:
 		return jsonify({'error': 'Internal Server Error'}), 500
+# Доп. запросы
+@app.route('/api/goods/new/',methods=['GET'])
+def new_goods_route():
+	try:
+		return good_service.read_new_goods()
+	except Exception as e:
+		return jsonify({'error': 'Internal Server Error'}), 500
+	
 
 
 
