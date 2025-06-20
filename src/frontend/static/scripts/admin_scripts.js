@@ -8,7 +8,12 @@ const deleteManufacturerConfirmMessage='Вы уверены, что хотите
 const deleteGoodConfirmMessage='Вы уверены, что хотите удалить товар';
 // Общие функции
 function escapeHtml(unsafe){
-	return unsafe.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;').replace('\"','&quot;').replace('\'','&#39;')
+	return unsafe
+		.replaceAll('&','&amp;')
+		.replaceAll('<','&lt;')
+		.replaceAll('>','&gt;')
+		.replaceAll('\"','&quot;')
+		.replaceAll('\'','&#39;');
 }
 function handleUnknownError(error){
 	const message = `Неизвестная ошибка: "${error}"`;

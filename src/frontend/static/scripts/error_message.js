@@ -1,10 +1,10 @@
 function escapeHtml(unsafe){
 	return unsafe
-		.replace('&','&amp;')
-		.replace('<','&lt;')
-		.replace('>','&gt;')
-		.replace('\"','&quot;')
-		.replace('\'','&#39;')
+		.replaceAll('&','&amp;')
+		.replaceAll('<','&lt;')
+		.replaceAll('>','&gt;')
+		.replaceAll('\"','&quot;')
+		.replaceAll('\'','&#39;');
 }
 
 var errorWindow;
@@ -19,7 +19,8 @@ function hideError(){
 }
 function showError(error){
 	errorWindow.style.visibility='visible';
-	document.getElementById('error-message').textContent=escapeHtml(error);
+	/*Экранирование не требуется, т.к. устанавливается textContent*/
+	document.getElementById('error-message').textContent=error;
 }
 
 
@@ -33,7 +34,11 @@ function createErrorNotification(){
 			<h2 class="error-window-inline-element" id="error-message"></h2>
 		</div>
 		<div >
-			<button class="error-window-square-btn" onclick="hideError()" style = "">X</button>
+			<button
+				class="square-btn error-window-square-btn"
+				onclick="hideError()" style = "">
+				X
+			</button>
 		</div>
 	`;
 
