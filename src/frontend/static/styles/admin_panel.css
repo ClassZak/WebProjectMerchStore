@@ -64,13 +64,13 @@ h1{
 	}
 }
 /* TODO: сделать стиль общим*/
-.manufacturer-grid > .manufacturer-card {
+.manufacturer-grid > .card {
 	width: auto;
 	height: auto;
 	aspect-ratio: auto; /* Квадратные ячейки (опционально) */
 }
 /* TODO: сделать стиль общим*/
-.manufacturer-grid > .manufacturer-card > div{
+.manufacturer-grid > .card > div{
 	padding: 16px;
 }
 .manufacturer-grid *{
@@ -81,7 +81,7 @@ h1{
 
 /* Стили для карточки производителя */
 /* TODO: сделать стиль общим*/
-.manufacturer-card {
+.card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;

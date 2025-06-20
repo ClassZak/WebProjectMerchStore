@@ -28,10 +28,10 @@ function createManufacturerCard(element) {
 	// Создаем DOM-структуру без обработчиков событий
 	const card = document.createElement('div');
 	card.setAttribute('data-element-id',element.id)
-	card.className = 'manufacturer-card';
+	card.className = 'card';
 	
 	card.innerHTML = `
-		<div class="manufacturer-card">
+		<div class="card">
 			<p>Название</p>
 			<h4 class="card-title">${escapeHtml(element.name)}</h4>
 		</div>
@@ -53,7 +53,7 @@ async function createGoodCard(element){
 
 	const card = document.createElement('div');
 	card.setAttribute('data-element-id',element.id);
-	card.classList.add('manufacturer-card');
+	card.classList.add('card');
 	card.classList.add('good-card');
 
 	card.innerHTML = `
@@ -129,7 +129,7 @@ function loadManufacturersToSelects(){
 
 
 function deleteManufacturerFromHTML(id){
-	const card = document.querySelector(`.manufacturer-card[data-element-id="${id}"]`);
+	const card = document.querySelector(`.card[data-element-id="${id}"]`);
 	if(card)
 		card.remove();
 }
