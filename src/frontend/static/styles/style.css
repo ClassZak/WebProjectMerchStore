@@ -84,7 +84,7 @@ a{
     color: white;
     text-decoration: none;
 }
-a.in-text{
+p a{
 	text-decoration: underline;
 	color: #ddd;
 }
@@ -96,7 +96,7 @@ a.in-text:hover {
 	color: var(--accent-gold)  !important;
 }
 @media screen and (width< 500px) {
-	a {
+	.header-content a {
 		font-size: 0.55rem;
 	}
 }
