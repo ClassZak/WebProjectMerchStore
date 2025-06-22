@@ -5,21 +5,36 @@ USE MerchStoreWebPract;
 CREATE TABLE Manufacturer(
 	Id		INT PRIMARY KEY AUTO_INCREMENT,
 	Name	VARCHAR(100) NOT NULL
-)
+);
+ALTER TABLE Manufacturer ADD CONSTRAINT UC_Name UNIQUE (Name);
+SELECT * FROM Manufacturer;
+SELECT Id, Name, Description, Image, Price, AppearanceDate, IdManufacturer
+FROM Good
+WHERE AppearanceDate = (
+	SELECT MAX(AppearanceDate)
+    FROM Good
+);
+
+
+
 
 CREATE TABLE Good(
 	Id				INT PRIMARY KEY AUTO_INCREMENT,
 	Name			VARCHAR(100) NOT NULL,
 	Description		LONGTEXT NOT NULL,
 	Image			LONGBLOB NOT NULL,
-	Price			DECIMAL NOT NULL,
+	Price			DECIMAL(10,2) NOT NULL,
     AppearanceDate	DATE,
 	IdManufacturer	INT
 );
+ALTER TABLE Good ADD CONSTRAINT CH_Price CHECK (Price > 0);
+
 ALTER TABLE Good
 ADD CONSTRAINT ManufacturerRef
 FOREIGN KEY	(IdManufacturer)
-REFERENCES	Manufacturer(Id)
+REFERENCES	Manufacturer(Id);
+
+
 
 
 
@@ -66,3 +81,11 @@ ALTER TABLE OrderTable
 ADD CONSTRAINT goodRefForTable
 FOREIGN KEY(IdGood)
 REFERENCES Good(Id);
+
+
+
+
+SELECT * FROM Manufacturer;
+SELECT * FROM Good;
+
+SELECT EXISTS(SELECT 1 FROM Manufacturer WHERE Id = 48) AS exist UNION ALL SELECT 1; 

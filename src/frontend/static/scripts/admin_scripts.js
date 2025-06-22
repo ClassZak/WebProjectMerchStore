@@ -568,7 +568,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				} else {
 					alert(`Успешно изменены данные товара \"${formDataObject.name}\"`);
 					closeModal('edit_goods_form_overlay');
-					e.target.reset();
+					//e.target.reset();
 					loadGoods(); // Обновляем список товаров
 				}
 			})
