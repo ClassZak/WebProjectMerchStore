@@ -22,7 +22,25 @@
 	</head>
 	<body>
 		<header>
-			<h1>Панель администратора</h1>
+			<div>
+				<h1>Панель администратора</h1>
+			</div>
+			<div class="header-content">
+				<a href="/">
+					<img src="{{url_for('static',filename='Merch Store small.png')}}" alt="MStore">
+				</a>
+				<a href="/">Главная</a>
+				<a href="/about/"		target="_blank">О нас</a>
+				<a href="/contacts/"	target="_blank">Контакты</a>
+				<a href="/goods/"		target="_blank">Товары</a>
+				<input class="item" placeholder="Поиск..." type="text">
+				<button class="image-button">
+					<img alt="search" src="{{url_for('static', filename='magnifyingglass.png')}}">
+				</button>
+				<button class="image-button">
+					<img alt="basket" src="{{url_for('static', filename='shopping cart.png')}}" width="32" height="32">
+				</button>
+			</div>
 		</header>
 		<main class="content-wrapper">
 			<!--Производители-->

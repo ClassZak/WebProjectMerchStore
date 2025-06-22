@@ -13,7 +13,7 @@
 		<script src="{{url_for('static',filename='scripts/error_message.js')}}"></script>
 		<script src="{{url_for('static',filename='scripts/base_scripts/escape.js')}}"></script>
 		<script src="{{url_for('static',filename='scripts/goods_scripts.js')}}"></script>
-		<title>MStore</title>
+		<title>MStore — Главная</title>
 	</head>
 	<script>
 		document.addEventListener('DOMContentLoaded',async function(params){
@@ -32,9 +32,9 @@
 					<img src="{{url_for('static',filename='Merch Store small.png')}}" alt="MStore">
 				</a>
 				<a href="/">Главная</a>
-				<a href="/about/"	target="_blank">О нас</a>
-				<a href="/"			target="_blank">Контакты</a>
-				<a href="/goods/"	target="_blank">Товары</a>
+				<a href="/about/"		target="_blank">О нас</a>
+				<a href="/contacts/"	target="_blank">Контакты</a>
+				<a href="/goods/"		target="_blank">Товары</a>
 				<input class="item" placeholder="Поиск..." type="text">
 				<button class="image-button">
 					<img alt="search" src="{{url_for('static', filename='magnifyingglass.png')}}">

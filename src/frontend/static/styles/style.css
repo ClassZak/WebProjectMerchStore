@@ -47,6 +47,16 @@ header {
 	margin: 0;
 	padding: 0;
 }
+@media screen and (width<500px) {
+	.header-content > * { /* Первый элемент */
+		margin: 2px;
+	}
+}
+@media screen and (width<400px) {
+	.header-content > * { /* Первый элемент */
+		margin: 1px;
+	}
+}
 .image-button{
 	background: none;
 	border: none;
@@ -66,14 +76,32 @@ header input[type="text"]{
 	width: inherit;
 	min-width: 20px;
 }
+
+
+
+/*Ссылки*/
 a{
     color: white;
     text-decoration: none;
 }
-
-a:hover {
-    text-decoration: underline;
+a.in-text{
+	text-decoration: underline;
+	color: #ddd;
 }
+
+a:hover{
+	text-decoration: underline;
+}
+a.in-text:hover {
+	color: var(--accent-gold)  !important;
+}
+@media screen and (width< 500px) {
+	a {
+		font-size: 0.55rem;
+	}
+}
+
+
 
 
 

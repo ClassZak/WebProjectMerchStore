@@ -64,6 +64,9 @@ def root():
 @app.route('/about/')
 def about():
 	return render_template('about.html')
+@app.route('/contacts/')
+def contacts():
+	return render_template('contacts.html')
 
 # Товары
 @app.route('/goods/')
