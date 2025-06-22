@@ -25,3 +25,9 @@
 	border: solid var(--accent-gold);
 	z-index: 2
 }
+
+/*Стиль для описания элементов*/
+.card-description{
+	margin-top: auto; /* Прижимает описание к низу */
+	padding: 10px;
+}
