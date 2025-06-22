@@ -15,16 +15,6 @@
 		<script src="{{url_for('static',filename='scripts/goods_scripts.js')}}"></script>
 		<title>MStore</title>
 	</head>
-	<script>
-		document.addEventListener('DOMContentLoaded',async function(params){
-			setTimeout(async function(){
-				await loadManufacturersToArray();
-				loadGoods('goods_grid','new/');
-			}, 500);
-		});
-	</script>
-
-
 	<body>
 		<header>
 			<div class="header-content">
@@ -32,9 +22,9 @@
 					<img src="{{url_for('static',filename='Merch Store small.png')}}" alt="MStore">
 				</a>
 				<a href="/">Главная</a>
-				<a href="/about/"	target="_blank">О нас</a>
-				<a href="/"			target="_blank">Контакты</a>
-				<a href="/goods/"	target="_blank">Товары</a>
+				<a href="/">О нас</a>
+				<a href="/" target="_blank">Контакты</a>
+				<a href="/goods/" target="_blank">Товары</a>
 				<input class="item" placeholder="Поиск..." type="text">
 				<button class="image-button">
 					<img alt="search" src="{{url_for('static', filename='magnifyingglass.png')}}">
@@ -46,10 +36,10 @@
 		</header>
 		
 		<main class="content-wrapper data-grid-block">
-			<h1>Добро пожаловать в магазин мерча MStore!</h1>
-			<h2>О нас</h2>
-			<p>	На дворе праздники и нечего подарить? Хочется купить что-то <em><strong>оригинальное</strong></em> и <em><strong>интересное</strong></em>? Устали от <em><strong>скушных</strong></em> вещей? <br>	Если да, то вы пришли <em><strong>по адресу</strong></em>. Здесь вы найдёте <em><strong>всё</strong></em>: футболки, шапки, джинсы, толстовки, тарелки, вилки, ложки, мечи, ножи, подарочные упаковки и <em><strong>многое другое</strong></em>, <em><strong>всё</strong></em> что вам нужно есть <strong>только у нас</strong>!</p>
-			<p>	Для покупки товара выберете его среди каталога товаров и поместите в корзину. <br>	После выбора набора товаров наша система оформит ваш заказ и доставит в течении нескольких суток! <br>	<strong>Скорее</strong>, <strong>не упустите свой шанс</strong> приобрести <em><strong>уникальные</strong></em> товары, <strong>время не ждёт!</strong> Не упустите свой шанс найти то, что потом не найти; <strong>не расстраивайте себя в будущем!</strong></p>
+			<h1>О нас</h1>
+			<p>	Сайт MStore представляет собой онлайн-магазин мерча.	<br>Здесь можно приобрести различные сувениры от множества производителей, в том числе и от любимых блоггеров.	<br>	Весь ассортимент товаров пополняется на нашем складе. При заказе товара мы возьмём его со склада и доставим вам. </p>
+			<p>	Для заявки на продажу вашей продукции на данной площадке необходимо связяться с нами для дальнейшего сотрудничества.</p>
+			<p>	<a href="/contacts/" style="text-decoration: underline; color: #ccc;">Вся контактная информация</a>.</p>
 			<h2>Наши новинки</h2>
 			<div class="image-grid data-grid" id="goods_grid">
 				<div>

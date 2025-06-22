@@ -61,7 +61,11 @@ def render_admin_panel():
 @app.route('/')
 def root():
 	return render_template('index.html')
+@app.route('/about/')
+def about():
+	return render_template('about.html')
 
+# Товары
 @app.route('/goods/')
 def render_goods():
 	return render_template('goods.html')

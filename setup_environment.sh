@@ -3,4 +3,8 @@
 sudo apt-get install mysql-server
 
 
-pip install flask mysql-connector-python
+python3 -m venv .venv
+. .venv/bin/activate
+
+
+pip install Flask mysql-connector-python
