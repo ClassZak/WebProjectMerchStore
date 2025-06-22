@@ -88,14 +88,3 @@ async function loadGoods(elementId,apiRoute='') {
 		console.log(error);
 	}
 }
-async function loadNewGoods(elementId) {
-	await loadGoods(elementId,'new/')
-}
-
-
-document.addEventListener('DOMContentLoaded',async function(params){
-	setTimeout(async function(){
-		await loadManufacturersToArray();
-		loadNewGoods('goods_grid');
-	}, 500);
-});
