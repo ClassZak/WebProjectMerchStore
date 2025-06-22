@@ -9,3 +9,5 @@ python3 -m venv .venv
 
 pip install Flask mysql-connector-python
 pip install flask_wtf
+
+. .venv/bin/activate
