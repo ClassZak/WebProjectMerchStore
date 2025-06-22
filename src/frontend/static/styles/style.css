@@ -58,11 +58,13 @@ header {
 	max-height:32px;
 }
 
-input[type="text"]{
+header input[type="text"]{
 	flex-grow: 1;
 	padding: 5px;
 	border: 1px solid #ccc; /* Граница поля ввода */
 	border-radius: 0px;
+	width: inherit;
+	min-width: 20px;
 }
 a{
     color: white;
