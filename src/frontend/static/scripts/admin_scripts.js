@@ -2,19 +2,10 @@
 var manufacturers;
 var goods;
 var csrfToken = undefined;
-var DOMPurify = window.DOMPurify;
 // Константные выражения
 const deleteManufacturerConfirmMessage='Вы уверены, что хотите удалить производителя';
 const deleteGoodConfirmMessage='Вы уверены, что хотите удалить товар';
 // Общие функции
-function escapeHtml(unsafe){
-	return unsafe
-		.replaceAll('&','&amp;')
-		.replaceAll('<','&lt;')
-		.replaceAll('>','&gt;')
-		.replaceAll('\"','&quot;')
-		.replaceAll('\'','&#39;');
-}
 function handleUnknownError(error){
 	const message = `Неизвестная ошибка: "${error}"`;
 	alert(message);
@@ -90,7 +81,7 @@ async function createGoodCard(element){
 /**
  * Производители
  */
-async function loadManufacturers(){
+async function loadManufacturersToArray(){
 	let response = await fetch('/api/manufacturers/');
 	
 	const container=document.getElementById('manufacturers_grid');
@@ -98,8 +89,7 @@ async function loadManufacturers(){
 
 	let message = '';
 	try{
-		if(!response.ok)
-		{
+		if(!response.ok) {
 			message = (await response.json()).error
 			throw new Error(`Response status: ${response.status}\nError Message: ${message}`);
 		}
@@ -146,7 +136,7 @@ async function deleteManufacturerFromDB(id){
 	.then(data => {
 		if(data.error){
 			alert(`Ошибка удаление поставщика "${manufacturer.name}": ${data.error}`);
-			loadManufacturers();
+			loadManufacturersToArray();
 		} else{
 			alert(`Поставщик "${manufacturer.name}" успешно удалён`);
 			manufacturers=manufacturers.filter(element=>element.id!=id);
@@ -154,7 +144,7 @@ async function deleteManufacturerFromDB(id){
 	})
 	.catch(error =>{ 
 		handleUnknownError(error);
-		loadManufacturers();
+		loadManufacturersToArray();
 	});
 }
 function deleteManufacturer(id) {
@@ -323,8 +313,6 @@ async function updateGood(id) {
 
 // Инициализация после загрузки DOM
 document.addEventListener('DOMContentLoaded', function() {
-	// CSRF токен
-	csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 	// Закрытие при клике вне модального окна
 	// Производители
 	document.getElementById('create_manufacturers_form_overlay')?.addEventListener('click', function(e) {
@@ -381,7 +369,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					alert(`Успешно добавлен новый производитель \"${formData.get('name')}\"`);
 				closeModal('create_manufacturers_form_overlay');
 				this.reset();
-				loadManufacturers();
+				loadManufacturersToArray();
 			}
 		})
 		.catch(error => {
@@ -397,6 +385,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		name		string
 		csrf_token	string	*/
 		const formData = new FormData(this);
+		const formDataObject = getFormObject(this);
 		
 		fetch(this.action+this.getAttribute('data-element-id'),{
 			method: 'PUT',
@@ -412,10 +401,10 @@ document.addEventListener('DOMContentLoaded', function() {
 				alert(data.error);
 			} else {
 				if(data.id!=0)
-					alert(`Успешно изменены данные производителя \"${formData.get('name')}\"`);
+					alert(`Успешно изменены данные производителя \"${formDataObject.name}\"`);
 				closeModal('edit_manufacturers_form_overlay');
 				this.reset();
-				loadManufacturers();
+				loadManufacturersToArray();
 			}
 		})
 		.catch(error =>{
@@ -483,10 +472,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			.then(response => {
 				// Проверяем, что ответ в формате JSON
 				const contentType = response.headers.get('content-type');
-				if (contentType && contentType.includes('application/json')) {
+				if (contentType && contentType.includes('application/json'))
 					return response.json();
-				}
-				throw new TypeError('Ответ сервера не в формате JSON');
+
+				throw new TypeError(`Незвестная ошибка. ${response.status} ${response.statusText}`);
 			})
 			.then(data => {
 				if (data.error) {
@@ -552,6 +541,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			// Добавляем base64 в formData
 			formData.append('image', base64String);
+			const formDataObject = getFormObject(formData);
+
 
 			// Отправляем данные
 			fetch(updateUrl, {
@@ -573,7 +564,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				if (data.error) {
 					alert(data.error);
 				} else {
-					alert(`Успешно изменены данные товара \"${formData.get('name')}\"`);
+					alert(`Успешно изменены данные товара \"${formDataObject.name})}\"`);
 					closeModal('edit_goods_form_overlay');
 					e.target.reset();
 					loadGoods(); // Обновляем список товаров
@@ -598,8 +589,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
+	
 	// Загрузки данных при запуске страницы
-	loadManufacturers();
-	loadGoods();
+	setTimeout(function(){
+		loadManufacturersToArray();
+		loadGoods();
+	}, 500);
 });

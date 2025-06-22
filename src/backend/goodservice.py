@@ -167,12 +167,16 @@ class GoodService(AService):
 			self.connect()
 			columns = [Good.DB_COLUMNS['columns'][field] 
 				for field in Good.FIELDS_META.keys()]
-			self.cursor.execute(
-				f"""
+			query = f"""
 				SELECT {", ".join(columns)} 
 				FROM {GoodService.TABLE_NAME}
-					WHERE {Good.DB_COLUMNS['columns']['appearance_date']} = MAX({Good.DB_COLUMNS['columns']['appearance_date']})
-				""")
+					WHERE {Good.DB_COLUMNS['columns']['appearance_date']} = (
+						SELECT MAX({Good.DB_COLUMNS['columns']['appearance_date']})
+						FROM {GoodService.TABLE_NAME}
+					)
+				"""
+			self.cursor.execute(
+				query)
 			raw_data = self.cursor.fetchall()
 			
 			# Преобразуем данные БД в формат модели
