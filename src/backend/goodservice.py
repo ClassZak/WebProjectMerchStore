@@ -143,18 +143,18 @@ class GoodService(AService):
 		try:
 			if not self.exists(id):
 				return jsonify({'error': 'Не найден объект для чтения'}), 404
-			
+
 			self.connect()
-			columns = [Good.DB_COLUMNS['columns'][field]
+			columns=[Good.DB_COLUMNS['columns'][field]
 				for field in Good.FIELDS_META.keys()]
 			self.cursor.execute(
 				f"""
-				SELECT {', '.join(columns)}
-				FROM {GoodService.TABLE_NAME}
+				SELECT {', '.join(columns)} 
+				FROM {GoodService.TABLE_NAME} 
 					WHERE {Good.DB_COLUMNS['columns']['id']} = %s
-				""", (id,))
-			obj = self.cursor.fetchone()
-			return jsonify({self.sql_data_to_json_list(obj)}), 200
+				""",(id,))
+			obj=self.cursor.fetchone()
+			return jsonify(self.sql_data_to_json_list(obj)), 200
 		except ValueError as e:
 			return jsonify({'error':str(e)}), 400
 		except Error as e:
@@ -201,7 +201,7 @@ class GoodService(AService):
 		Простые методы
 	"""
 	def sql_data_to_json_list(self, data:dict):
-		return {field:data[Good.DB_COLUMNS['columns'][field]] for field in Good.FIELDS_META.keys()}
+		return {field:str(data[Good.DB_COLUMNS['columns'][field]]) for field in Good.FIELDS_META.keys()}
 	
 	def exists(self, id: int) -> bool:
 		try:

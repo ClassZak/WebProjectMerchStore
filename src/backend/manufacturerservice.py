@@ -172,7 +172,7 @@ class ManufacturerService(AService):
 		Простые методы
 	"""
 	def sql_data_to_json_list(self, data:dict):
-		return {field:data[Manufacturer.DB_COLUMNS['columns'][field]] for field in Manufacturer.FIELDS_META.keys()}
+		return {field:str(data[Manufacturer.DB_COLUMNS['columns'][field]]) for field in Manufacturer.FIELDS_META.keys()}
 
 
 	def exists(self, id: int) -> bool:
