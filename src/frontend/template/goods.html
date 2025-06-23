@@ -19,7 +19,8 @@
 		document.addEventListener('DOMContentLoaded',async function(params){
 			setTimeout(async function(){
 				await loadManufacturersToArray();
-				loadGoods('goods_grid');
+				await loadGoods('goods_grid','new/');
+				addGoodRedirectOnClick();
 			}, 500);
 		});
 	</script>
@@ -47,21 +48,6 @@
 		
 		<main class="content-wrapper data-grid-block">
 			<div class="image-grid data-grid" id="goods_grid">
-				<div>
-					<img src="{{url_for('static',filename='Merch Store.png')}}" alt="Описание">
-				</div>
-				<div>
-					<img src="{{url_for('static',filename='Merch Store.png')}}" alt="Описание">
-				</div>
-				<div>
-					<img src="{{url_for('static',filename='Merch Store.png')}}" alt="Описание">
-				</div>
-				<div>
-					<img src="{{url_for('static',filename='Merch Store.png')}}" alt="Описание">
-				</div>
-				<div>
-					<img src="{{url_for('static',filename='Merch Store.png')}}" alt="Описание">
-				</div>
 			</div>
 		</main>
 		<footer>

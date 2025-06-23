@@ -88,3 +88,13 @@ async function loadGoods(elementId,apiRoute='') {
 		console.log(error);
 	}
 }
+
+function addGoodRedirectOnClick(){
+	document.querySelectorAll('.good-card').forEach(card=>{
+		card.addEventListener('click', function(){
+			const id = this.dataset.elementId;
+
+			window.location.href = `/good/${id}`;
+		});
+	});
+}
