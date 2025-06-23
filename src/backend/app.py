@@ -74,18 +74,22 @@ def render_goods():
 	return render_template('goods.html')
 @app.route('/good/<int:id>')
 def render_good(id):
-    # Получаем данные товара через сервис
-    response, status_code = good_service.read_good_by_id(id)
-    
-    # Если ошибка - показываем страницу ошибки
-    if status_code != 200:
-        return render_template(f'error/{status_code}.html'), status_code
-    
-    # Преобразуем JSON-ответ в словарь Python
-    good_data = response.get_json()
-    
-    # Рендерим страницу товара с полученными данными
-    return render_template('good.html', good=good_data)
+	# Получаем данные товара через сервис
+	response, status_code = good_service.read_good_by_id(id)
+	
+	# Если ошибка - показываем страницу ошибки
+	if status_code != 200:
+		return render_template(f'error/{status_code}.html'), status_code
+	
+	# Преобразуем JSON-ответ в словарь Python
+	good_data = response.get_json()
+	manufacturer_response, status_code = \
+		manufacturer_service.read_manufacturer_by_id(good_data['id_manufacturer'])
+	good_data['manufacturer'] = manufacturer_response.get_json()['name']
+		
+	
+	# Рендерим страницу товара с полученными данными
+	return render_template('good.html', good=good_data)
 
 
 

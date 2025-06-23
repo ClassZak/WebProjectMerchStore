@@ -35,3 +35,8 @@
 .card h1, h2, h3, h4, h5, h6{
 	padding-left: 0;
 }
+.card:hover{
+	transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+	transform: translateY(-5px);
+	box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
