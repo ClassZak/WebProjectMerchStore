@@ -50,11 +50,132 @@
 
 /*Стиль для карточек-ссылок*/
 .data-grid > a.card {
-    display: block;
-    text-decoration: none;
-    color: inherit;
+	display: block;
+	text-decoration: none;
+	color: inherit;
 }
 
 .card {
-    cursor: pointer; /* Изменяем курсор для визуального обозначения */
+	cursor: pointer; /* Изменяем курсор для визуального обозначения */
+}
+/* Очищенные и оптимизированные стили */
+.good-card {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 8px;
+	overflow: hidden;
+	box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+	transition: transform 0.3s ease;
+	text-decoration: none; /* Убираем подчёркивание */
+	color: #e0e0e0; /* Цвет текста из палитры root */
+}
+
+.good-card:hover {
+	transform: translateY(-5px);
+	background: rgba(255, 255, 255, 0.15);
+}
+
+/* Контейнер для изображения */
+.image-container {
+	flex: 0 0 auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 200px;
+	padding: 10px;
+	background: rgba(0, 0, 0, 0.2);
+}
+
+.image-container img {
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: contain;
+}
+
+/* Контент карточки */
+.card-content {
+	flex: 1;
+	padding: 15px;
+	display: flex;
+	flex-direction: column;
+}
+
+.card-title {
+	margin: 5px 0;
+	font-size: 1.1rem;
+	font-weight: bold;
+}
+
+.card-price {
+	color: var(--accent-gold);
+	font-weight: bold;
+	margin: 5px 0;
+}
+.card-desc {
+	font-size: 0.9rem;
+	margin: 5px 0;
+	color: #ccc;
+	overflow-wrap: break-word;
+}
+.card-bottom {
+	margin-top: auto; /* Прижимаем к низу */
+	padding-top: 10px;
+}
+.card-manufacturer,
+.card-date {
+	font-size: 0.9rem;
+	margin: 3px 0;
+	color: #aaa;
+}
+
+/* Адаптивные колонки */
+.row > div {
+	margin-bottom: 20px;
+	display: flex;
+}
+
+@media (max-width: 575px) {
+	.col-xs-6 {
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+	.image-container {
+		height: 150px;
+	}
+}
+
+@media (min-width: 576px) {
+	.col-sm-4 {
+		flex: 0 0 33.333%;
+		max-width: 33.333%;
+	}
+}
+
+@media (min-width: 768px) {
+	.col-md-3 {
+		flex: 0 0 25%;
+		max-width: 25%;
+	}
+}
+
+@media (min-width: 1200px) {
+	.col-lg-2 {
+		flex: 0 0 16.666%;
+		max-width: 16.666%;
+	}
+}
+
+@media screen and (width<500px){
+	.card-desc{
+		overflow-wrap: normal;
+	}
+}
+
+
+.good-card, 
+.good-card:hover, 
+.good-card:focus {
+	text-decoration: none !important;
 }

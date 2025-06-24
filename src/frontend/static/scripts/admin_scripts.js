@@ -24,7 +24,7 @@ function createManufacturerCard(element) {
 	// Создаем DOM-структуру без обработчиков событий
 	const card = document.createElement('div');
 	card.setAttribute('data-element-id',element.id)
-	card.className = 'card';
+	card.classList.add('card','shadow-card');
 	
 	card.innerHTML = `
 		<div class="card">
@@ -49,8 +49,7 @@ async function createGoodCard(element){
 
 	const card = document.createElement('div');
 	card.setAttribute('data-element-id',element.id);
-	card.classList.add('card');
-	card.classList.add('good-card');
+	card.classList.add('card', 'good-card', 'shadow-card');
 
 	card.innerHTML = `
 		<div class="card-content">

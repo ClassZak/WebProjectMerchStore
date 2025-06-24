@@ -9,10 +9,12 @@
 		<link rel="stylesheet" href="{{url_for('static', filename='styles/good_frame.css')}}">
 		<link rel="stylesheet" href="{{url_for('static', filename='styles/modal_form.css')}}">
 		<link rel="stylesheet" href="{{url_for('static', filename='styles/error_window.css')}}">
+		<link rel="stylesheet" href="{{url_for('static', filename='styles/shadow_card.css')}}">
 		<link rel="icon" href="{{url_for('static', filename='favicon.ico')}}" type="image/x-icon">
 		<script src="{{url_for('static',filename='scripts/error_message.js')}}"></script>
 		<script src="{{url_for('static',filename='scripts/base_scripts/escape.js')}}"></script>
 		<script src="{{url_for('static',filename='scripts/goods_scripts.js')}}"></script>
+		<link rel="stylesheet" href="https://unpkg.com/flexboxgrid2@7.2.0/flexboxgrid2.css">
 		<title>MStore — Товары</title>
 	</head>
 	<script>
@@ -29,9 +31,8 @@
 		<header>
 			{% include 'parts/header_content.html' %}
 		</header>
-		<main class="content-wrapper data-grid-block">
-			<div class="image-grid data-grid" id="goods_grid">
-			</div>
+		<main class="content-wrapper">
+			<div class="row" id="goods_grid" style="padding: 10px;"></div>
 		</main>
 		<footer>
 			{% include 'parts/footer_content.html' %}
