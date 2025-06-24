@@ -63,6 +63,7 @@ header input[type="text"]{
 }
 header form{
 	display: flex;
+	gap: 5px;
 	width: 100%;
 }
 
@@ -129,7 +130,10 @@ a.in-text:hover {
 }
 @media screen and (width< 500px) {
 	.header-content a {
-		font-size: 0.55rem;
+		font-size: 0.7rem;
+	}
+	.header-content input{
+		font-size: 0.7rem;
 	}
 }
 

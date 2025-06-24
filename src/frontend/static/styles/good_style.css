@@ -31,11 +31,22 @@
 	display: flex;
 	flex-direction: column;
 	gap: 15px;
-	max-width: 300px;
+}
+@media screen and (width < 770px)  {
+	.cart-form{
+		gap: 5px;
+	}
+}
+	
+
+.cart-form *{
+	padding: 5px;
+}
+.cart-form label{
+	padding: 0;
 }
 
 .cart-form input {
-	padding: 10px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
 }
@@ -44,7 +55,6 @@
 	background-color: var(--accent-gold);
 	color: white;
 	border: none;
-	padding: 12px;
 	border-radius: 5px;
 	cursor: pointer;
 	font-weight: bold;
@@ -62,5 +72,9 @@
 	
 	.image-block {
 		min-height: 200px;
+	}
+	.cart-form button {
+		align-self: center;
+		aspect-ratio: 1/1;
 	}
 }

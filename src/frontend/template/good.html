@@ -12,8 +12,9 @@
 		<script src="{{url_for('static',filename='scripts/error_message.js')}}"></script>
 		<script src="{{url_for('static',filename='scripts/base_scripts/escape.js')}}"></script>
 		<script src="{{url_for('static',filename='scripts/goods_scripts.js')}}"></script>
+		<script src="{{url_for('static',filename='scripts/good_script.js')}}"></script>
 		<link rel="stylesheet" href="https://unpkg.com/flexboxgrid2@7.2.0/flexboxgrid2.css">
-		<link rel="stylesheet" href="{{url_for('static', filename='style/good_style.css')}}">
+		<link rel="stylesheet" href="{{url_for('static', filename='styles/good_style.css')}}">
 		<title>{{ good.name }}</title>
 	</head>
 	<body>
@@ -35,7 +36,8 @@
 					<div class="col-xs-12 col-md-6">
 						<div class="info-block">
 							<p>{{ good.description }}</p>
-							<p>Цена: {{ good.price }} руб.</p>
+							<!--Отрендерится при загрузке DOM-->
+							<p class="card-title formatted-price" data-price="{{ good.price }}"></p>
 							<p>Производитель: {{ good.manufacturer }}</p>
 							<p>Дата появления в ассортименте: {{ good.appearance_date }}</p>
 							
@@ -44,7 +46,9 @@
 								<input type="hidden" name="good_id" value="{{ good.id }}">
 								<label for="quantity">Количество:</label>
 								<input type="number" id="quantity" name="quantity" min="1" value="1">
-								<button type="submit">Добавить в корзину</button>
+								<button type="submit" class="image-button">
+									<img alt="В корзину" src="/static/shopping cart.png" width="32" height="32"> 
+								</button>
 							</form>
 						</div>
 					</div>
