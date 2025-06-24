@@ -15,7 +15,7 @@ from markupsafe import escape
 from flask_wtf.csrf import CSRFProtect
 
 def get_app_config(filename:str='src/backend/.password.json'):
-	with open(filename, 'r', encoding='utf-8') as file:
+	with open(filename, 'r', encoding='UTF-8') as file:
 		return json.load(file)
 
 app = Flask(
@@ -92,11 +92,26 @@ def render_good(id):
 	return render_template('good.html', good=good_data)
 # Поиск
 @app.route('/goods/search/')
-def search_good():
-	query = request.args.get('q','').strip()
-	return render_template(
-		'search.html', goods=good_service.search_goods(query), query = escape(query)
-	)
+def goods_search():
+	# Получаем и обрабатываем запрос
+	query = request.args.get('q', '').strip()
+	safe_query = escape(query)
+	
+	# Вызываем метод поиска из сервиса
+	response, status_code = good_service.search_goods(safe_query)
+	
+	# Проверяем статус ответа
+	if status_code != 200:
+		return render_template(f'error/{status_code}.html'), status_code
+	
+	# Извлекаем данные из JSON-ответа
+	data = response.get_json()
+	goods_list = data['goods']
+	
+	# Рендерим страницу с результатами
+	return render_template('search.html', 
+						goods=goods_list, 
+						query=safe_query)
 
 
 # API

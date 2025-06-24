@@ -8,7 +8,7 @@ class AService(ABC):
 		self.connection=None
 		self.cursor=None
 		
-		with open(config_file, 'r', encoding='utf-8') as file:
+		with open(config_file, 'r', encoding='UTF-8') as file:
 			config=json.load(file)
 		
 		self.host=config['host']
