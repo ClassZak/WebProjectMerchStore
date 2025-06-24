@@ -43,6 +43,7 @@
 .card .card:hover{
 	transition: none;
 	transform: none;
+	box-shadow: none;
 }
 
 
