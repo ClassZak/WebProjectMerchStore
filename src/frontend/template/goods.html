@@ -20,7 +20,6 @@
 			setTimeout(async function(){
 				await loadManufacturersToArray();
 				await loadGoods('goods_grid');
-				addGoodRedirectOnClick();
 			}, 500);
 		});
 	</script>
@@ -36,10 +35,12 @@
 				<a href="/about/"		target="_blank">О нас</a>
 				<a href="/contacts/"	target="_blank">Контакты</a>
 				<a href="/goods/"		target="_blank">Товары</a>
-				<input class="item" placeholder="Поиск..." type="text">
-				<button class="image-button">
-					<img alt="search" src="{{url_for('static', filename='magnifyingglass.png')}}">
-				</button>
+				<form action="/search" method="GET" class="search-form">
+					<input name="q" class="item" placeholder="Поиск..." type="text">
+					<button type="submit" class="image-button">
+						<img alt="search" src="{{url_for('static', filename='magnifyingglass.png')}}">
+					</button>
+				</form>
 				<button class="image-button">
 					<img alt="basket" src="{{url_for('static', filename='shopping cart.png')}}" width="32" height="32">
 				</button>

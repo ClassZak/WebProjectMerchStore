@@ -47,10 +47,10 @@ async function createGoodCard(element){
 	while(manufacturers===undefined);
 	let manufacturer=manufacturers.find(x=>x.id==element.id_manufacturer);
 
-	const card = document.createElement('div');
+	const card = document.createElement('a');
+	card.href = `/good/${element.id}`;
 	card.setAttribute('data-element-id',element.id);
-	card.classList.add('card');
-	card.classList.add('good-card');
+	card.classList.add('card','good-card');
 
 	card.innerHTML = `
 		<div class="card-content">
@@ -87,14 +87,4 @@ async function loadGoods(elementId,apiRoute='') {
 	} catch (error) {
 		console.log(error);
 	}
-}
-
-function addGoodRedirectOnClick(){
-	document.querySelectorAll('.good-card').forEach(card=>{
-		card.addEventListener('click', function(){
-			const id = this.dataset.elementId;
-
-			window.location.href = `/good/${id}`;
-		});
-	});
 }

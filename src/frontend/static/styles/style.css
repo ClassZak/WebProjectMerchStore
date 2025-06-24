@@ -68,7 +68,7 @@ header {
 	max-height:32px;
 }
 
-header input[type="text"]{
+header form{
 	flex-grow: 1;
 	padding: 5px;
 	border: 1px solid #ccc; /* Граница поля ввода */

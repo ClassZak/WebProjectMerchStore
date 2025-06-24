@@ -370,7 +370,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				if(data.id!=0)
 					alert(`Успешно добавлен новый производитель \"${formData.get('name')}\"`);
 				closeModal('create_manufacturers_form_overlay');
-				this.reset();
 				loadManufacturersToArray();
 			}
 		})
@@ -405,7 +404,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				if(data.id!=0)
 					alert(`Успешно изменены данные производителя \"${formDataObject.name}\"`);
 				closeModal('edit_manufacturers_form_overlay');
-				this.reset();
 				loadManufacturersToArray();
 			}
 		})
@@ -485,7 +483,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				} else {
 					alert(`Успешно добавлен новый товар \"${formData.get('name')}\"`);
 					closeModal('create_goods_form_overlay');
-					e.target.reset();
 					loadGoods(); // Обновляем список товаров
 				}
 			})
@@ -568,7 +565,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				} else {
 					alert(`Успешно изменены данные товара \"${formDataObject.name}\"`);
 					closeModal('edit_goods_form_overlay');
-					//e.target.reset();
 					loadGoods(); // Обновляем список товаров
 				}
 			})

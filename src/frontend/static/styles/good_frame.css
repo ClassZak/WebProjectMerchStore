@@ -44,3 +44,16 @@
 	transition: none;
 	transform: none;
 }
+
+
+
+/*Стиль для карточек-ссылок*/
+.data-grid > a.card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.card {
+    cursor: pointer; /* Изменяем курсор для визуального обозначения */
+}
