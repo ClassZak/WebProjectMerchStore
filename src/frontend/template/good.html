@@ -4,7 +4,6 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flexboxgrid2@7.2.1/flexboxgrid2.min.css">
-
 		<link rel="stylesheet" href="{{url_for('static', filename='styles/style.css')}}">
 		<link rel="stylesheet" href="{{url_for('static', filename='styles/good_frame.css')}}">
 		<link rel="stylesheet" href="{{url_for('static', filename='styles/modal_form.css')}}">
@@ -13,7 +12,76 @@
 		<script src="{{url_for('static',filename='scripts/error_message.js')}}"></script>
 		<script src="{{url_for('static',filename='scripts/base_scripts/escape.js')}}"></script>
 		<script src="{{url_for('static',filename='scripts/goods_scripts.js')}}"></script>
+		<link rel="stylesheet" href="https://unpkg.com/flexboxgrid2@7.2.0/flexboxgrid2.css">
 		<title>{{ good.name }}</title>
+		<style>
+			/* Стили для контейнера товара */
+			.good-container {
+				padding: 30px;
+				width: 100%;
+				box-sizing: border-box;
+			}
+			
+			/* Стили для блока с изображением */
+			.image-block {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-height: 300px;
+				padding: 20px;
+			}
+			
+			.image-block img {
+				max-width: 100%;
+				max-height: 400px;
+				object-fit: contain;
+			}
+			
+			/* Стили для блока с информацией */
+			.info-block {
+				padding: 20px;
+			}
+			
+			/* Стили для формы */
+			.cart-form {
+				margin-top: 20px;
+				display: flex;
+				flex-direction: column;
+				gap: 15px;
+				max-width: 300px;
+			}
+			
+			.cart-form input {
+				padding: 10px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+			}
+			
+			.cart-form button {
+				background-color: var(--accent-gold);
+				color: white;
+				border: none;
+				padding: 12px;
+				border-radius: 5px;
+				cursor: pointer;
+				font-weight: bold;
+				transition: background-color 0.3s;
+			}
+			
+			.cart-form button:hover {
+				background-color: #a88d05;
+			}
+			
+			@media (max-width: 768px) {
+				.good-container {
+					padding: 15px;
+				}
+				
+				.image-block {
+					min-height: 200px;
+				}
+			}
+		</style>
 	</head>
 	<body>
 		<header>
@@ -22,9 +90,9 @@
 					<img src="{{url_for('static',filename='Merch Store small.png')}}" alt="MStore">
 				</a>
 				<a href="/">Главная</a>
-				<a href="/about/"		target="_blank">О нас</a>
-				<a href="/contacts/"	target="_blank">Контакты</a>
-				<a href="/goods/"		target="_blank">Товары</a>
+				<a href="/about/" target="_blank">О нас</a>
+				<a href="/contacts/" target="_blank">Контакты</a>
+				<a href="/goods/" target="_blank">Товары</a>
 				<input class="item" placeholder="Поиск..." type="text">
 				<button class="image-button">
 					<img alt="search" src="{{url_for('static', filename='magnifyingglass.png')}}">
@@ -36,15 +104,32 @@
 		</header>
 		<main class="content-wrapper data-grid-block">
 			<h1>{{ good.name }}</h1>
-			<div style="display: flex;">
-				<div style="display: inline-block;">
-					<img src="data:image/jpeg;base64,{{ good.image[2:-1] }}" alt="{{ good.name }}">
-				</div>
-				<div style="display: inline-block;">
-					<p>{{ good.description }}</p>
-					<p>Цена: {{ good.price }} руб.</p>
-					<p>Производитель: {{ good.manufacturer }}</p>
-					<p>Дата появления в ассортименте: {{ good.appearance_date }}</p>
+			<div class="good-container">
+				<div class="row">
+					<!-- Блок с изображением -->
+					<div class="col-xs-12 col-md-6">
+						<div class="image-block gold-border">
+							<img src="data:image/jpeg;base64,{{ good.image[2:-1] }}" alt="{{ good.name }}">
+						</div>
+					</div>
+					
+					<!-- Блок с информацией и формой -->
+					<div class="col-xs-12 col-md-6">
+						<div class="info-block">
+							<p>{{ good.description }}</p>
+							<p>Цена: {{ good.price }} руб.</p>
+							<p>Производитель: {{ good.manufacturer }}</p>
+							<p>Дата появления в ассортименте: {{ good.appearance_date }}</p>
+							
+							<!-- Форма добавления в корзину -->
+							<form class="cart-form" action="/add_to_cart" method="post">
+								<input type="hidden" name="good_id" value="{{ good.id }}">
+								<label for="quantity">Количество:</label>
+								<input type="number" id="quantity" name="quantity" min="1" value="1">
+								<button type="submit">Добавить в корзину</button>
+							</form>
+						</div>
+					</div>
 				</div>
 			</div>
 		</main>
@@ -59,7 +144,6 @@
 			</div>
 			<p>&copy; 2025 MStore. Все права защищены.</p>
 			
-			<!-- Описание проекта -->
 			<h2>Описание проекта</h2>
 			<div class="contact">
 				<p>Тема: <strong>"Магазин мерчевой продукции"</strong></p>
