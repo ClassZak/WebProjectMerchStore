@@ -7,6 +7,7 @@ import base64
 
 from goodservice import GoodService
 from manufacturerservice import ManufacturerService
+from markupsafe import escape
 
 
 
@@ -86,11 +87,16 @@ def render_good(id):
 	manufacturer_response, status_code = \
 		manufacturer_service.read_manufacturer_by_id(good_data['id_manufacturer'])
 	good_data['manufacturer'] = manufacturer_response.get_json()['name']
-		
-	
+
 	# Рендерим страницу товара с полученными данными
 	return render_template('good.html', good=good_data)
-
+# Поиск
+@app.route('/goods/search/')
+def search_good():
+	query = request.args.get('q','').strip()
+	return render_template(
+		'search.html', goods=good_service.search_goods(query), query = escape(query)
+	)
 
 
 # API

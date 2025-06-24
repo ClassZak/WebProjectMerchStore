@@ -8,7 +8,7 @@ import base64
 from aservice import AService
 from validators.modelvalidator import ModelValidator
 from model.good import Good
-
+from manufacturerservice import *
 
 class GoodService(AService):
 	TABLE_NAME = 'Good'
@@ -139,7 +139,7 @@ class GoodService(AService):
 	"""
 		Дополнительные запросы
 	"""
-	def read_good_by_id(self, id:int):
+	def read_good_by_id(self, id:int) -> Tuple[Response, int]:
 		try:
 			if not self.exists(id):
 				return jsonify({'error': 'Не найден объект для чтения'}), 404
@@ -162,7 +162,7 @@ class GoodService(AService):
 		finally:
 			self.disconnect()
 		
-	def read_new_goods(self):
+	def read_new_goods(self) -> Tuple[Response, int]:
 		try:
 			self.connect()
 			columns = [Good.DB_COLUMNS['columns'][field] 
@@ -175,11 +175,55 @@ class GoodService(AService):
 						FROM {GoodService.TABLE_NAME}
 					)
 				"""
-			self.cursor.execute(
-				query)
+			self.cursor.execute(query)
 			raw_data = self.cursor.fetchall()
 			
 			# Преобразуем данные БД в формат модели
+			return jsonify({'goods': [{
+					field: str(row[Good.DB_COLUMNS['columns'][field]])
+					for field in Good.FIELDS_META.keys()
+				}
+				for row in raw_data
+			]}), 200
+		except Error as e:
+			return jsonify({'error': f'Ошибка БД: {str(e)}'}), 500
+		finally:
+			self.disconnect()
+
+	def search_goods(self, searching_value: str) -> Tuple[Response, int]:
+		try:
+			searching_value = searching_value.lower()
+			self.connect()
+			columns = [Good.DB_COLUMNS['columns'][field] 
+					for field in Good.FIELDS_META.keys()]
+			columns_for_check = [field 
+								for field in columns 
+								if field != Good.DB_COLUMNS['columns']['id'] and
+								field != Good.DB_COLUMNS['columns']['image'] and
+								field != Good.DB_COLUMNS['columns']['id_manufacturer']]
+			
+			# Create pattern with wildcards for LIKE clauses
+			pattern = f"%{searching_value}%"
+			
+			# Build query with proper placeholders
+			query = f"""
+				SELECT {', '.join(columns)}
+				FROM {GoodService.TABLE_NAME}
+				WHERE {' OR '.join(f"LOWER({col}) LIKE %s" for col in columns_for_check)}
+					OR (SELECT LOWER({Manufacturer.DB_COLUMNS['columns']['name']})
+						FROM {ManufacturerService.TABLE_NAME}
+						WHERE {ManufacturerService.TABLE_NAME}.{Manufacturer.DB_COLUMNS['columns']['id']} = 
+							{GoodService.TABLE_NAME}.{Good.DB_COLUMNS['columns']['id_manufacturer']}
+					) LIKE %s
+				"""
+			
+			# Create parameters list - one pattern per condition
+			params = [pattern] * len(columns_for_check) + [pattern]
+			
+			self.cursor.execute(query, params)
+			raw_data = self.cursor.fetchall()
+
+			# Convert DB data to model format
 			return jsonify({'goods': [{
 					field: str(row[Good.DB_COLUMNS['columns'][field]])
 					for field in Good.FIELDS_META.keys()
@@ -201,7 +245,8 @@ class GoodService(AService):
 		Простые методы
 	"""
 	def sql_data_to_json_list(self, data:dict):
-		return {field:str(data[Good.DB_COLUMNS['columns'][field]]) for field in Good.FIELDS_META.keys()}
+		return {field:str(
+			data[Good.DB_COLUMNS['columns'][field]]) for field in Good.FIELDS_META.keys()}
 	
 	def exists(self, id: int) -> bool:
 		try:
