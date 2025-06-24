@@ -109,9 +109,11 @@ def goods_search():
 	goods_list = data['goods']
 	
 	# Рендерим страницу с результатами
-	return render_template('search.html', 
-						goods=goods_list, 
-						query=safe_query)
+	return render_template(
+		'search.html', 
+		goods=goods_list, 
+		query=safe_query
+	)
 
 
 # API

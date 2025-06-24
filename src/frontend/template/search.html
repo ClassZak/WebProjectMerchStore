@@ -3,37 +3,53 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Результаты поиска - MerchStore</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flexboxgrid2@7.2.1/flexboxgrid2.min.css">
+	<link rel="stylesheet" href="{{url_for('static', filename='styles/style.css')}}">
+	<link rel="stylesheet" href="{{url_for('static', filename='styles/good_frame.css')}}">
+	<link rel="stylesheet" href="{{url_for('static', filename='styles/error_window.css')}}">
+	<link rel="icon" href="{{url_for('static', filename='favicon.ico')}}" type="image/x-icon">
+	<script src="{{url_for('static',filename='scripts/error_message.js')}}"></script>
+	<script src="{{url_for('static',filename='scripts/base_scripts/escape.js')}}"></script>
+	<title>MStore — Поиск</title>
 </head>
 <body>
-	{% extends "base.html" %}
-	
-	{% block content %}
-	<main class="search-results-container">
+	<header>
+		{% include 'parts/header_content.html' %}
+	</header>
+	<main class="content-wrapper data-grid-block">
 		<h1>Результаты поиска: "{{ query }}"</h1>
-		
-		{% if goods %}
-			<div class="goods-grid">
+		<div class="image-grid data-grid" id="goods_grid">
+			{% if goods %}
 				{% for good in goods %}
-				<div class="good-card">
-					<img src="data:image/jpeg;base64,{{ good.image }}" alt="{{ good.name }}" class="good-image">
-					<div class="good-info">
-						<h2 class="good-name">{{ good.name }}</h2>
-						<p class="good-price">{{ good.price }} ₽</p>
-						<p class="good-description">{{ good.description|truncate(150) }}</p>
-						<a href="{{ url_for('render_good', id=good.id) }}" class="btn-details">Подробнее</a>
+				<a href="/good/{{ good.id }}" class="card good-card">
+					<div class="card-content">
+						<div class="one-image">
+							<img src="data:image/*;base64,{{ good.image[2:-1] }}" alt="{{ good.name }}">
+						</div>
+						<div class="card-description">
+							<h4 class="card-title">{{ good.name }}</h4>
+							<h4 class="card-title">
+								{{ good.price }} ₽
+							</h4>
+							<h5 class="card-title">{{ good.description }}</h5>
+							<p>Производитель:</p>
+							<h4 class="card-title">{{ good.id_manufacturer }}</h4>
+							<p>Дата появления:</p>
+							<h4 class="card-title">{{ good.appearance_date }}</h4>
+						</div>
 					</div>
-				</div>
+				</a>
 				{% endfor %}
-			</div>
-		{% else %}
-			<div class="no-results">
-				<p>По вашему запросу "{{ query }}" ничего не найдено</p>
-				<a href="{{ url_for('render_goods') }}" class="btn-browse">Посмотреть все товары</a>
-			</div>
-		{% endif %}
+			{% else %}
+				<div class="no-results">
+					<p>По вашему запросу "{{ query }}" ничего не найдено</p>
+					<a href="{{ url_for('render_goods') }}" class="btn-browse">Посмотреть все товары</a>
+				</div>
+			{% endif %}
+		</div>
 	</main>
-	{% endblock %}
+	<footer>
+		{% include 'parts/footer_content.html' %}
+	</footer>
 </body>
 </html>

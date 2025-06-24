@@ -27,6 +27,45 @@ body {
 
 
 /* Шапка */
+/* Стили для страницы поиска */
+.no-results {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-top: 2rem;
+}
+.no-results p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+.btn-browse {
+    display: inline-block;
+    background: var(--accent-gold);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.btn-browse:hover {
+    background: #a58a05;
+    text-decoration: none;
+}
+header input[type="text"]{
+	flex-grow: 1;
+	padding: 5px;
+	border: 1px solid #ccc; /* Граница поля ввода */
+	border-radius: 0px;
+	width: inherit;
+	min-width: 20px;
+}
+header form{
+	display: flex;
+	width: 100%;
+}
+
 header {
     width: 100%;
     background-color: var(--secondary-green);
@@ -68,14 +107,7 @@ header {
 	max-height:32px;
 }
 
-header form{
-	flex-grow: 1;
-	padding: 5px;
-	border: 1px solid #ccc; /* Граница поля ввода */
-	border-radius: 0px;
-	width: inherit;
-	min-width: 20px;
-}
+
 
 
 

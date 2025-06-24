@@ -17,24 +17,8 @@
 	</head>
 	<body>
 		<header>
-			<div class="header-content">
-				<a href="/">
-					<img src="{{url_for('static',filename='Merch Store small.png')}}" alt="MStore">
-				</a>
-				<a href="/">Главная</a>
-				<a href="/about/"		target="_blank">О нас</a>
-				<a href="/contacts/"	target="_blank">Контакты</a>
-				<a href="/goods/"		target="_blank">Товары</a>
-				<input class="item" placeholder="Поиск..." type="text">
-				<button class="image-button">
-					<img alt="search" src="{{url_for('static', filename='magnifyingglass.png')}}">
-				</button>
-				<button class="image-button">
-					<img alt="basket" src="{{url_for('static', filename='shopping cart.png')}}" width="32" height="32">
-				</button>
-			</div>
+			{% include 'parts/header_content.html' %}
 		</header>
-		
 		<main class="content-wrapper data-grid-block">
 			<h1>О нас</h1>
 			<p>	Сайт MStore представляет собой онлайн-магазин мерча.	<br>Здесь можно приобрести различные сувениры от множества производителей, в том числе и от любимых блоггеров.	<br>	Весь ассортимент товаров пополняется на нашем складе. При заказе товара мы возьмём его со склада и доставим вам. </p>
@@ -42,44 +26,7 @@
 			<p>	<a href="/contacts/" class="in-text">Вся контактная информация</a>.</p>
 		</main>
 		<footer>
-			<h2>Контакты</h2>
-			<div class="contact">
-				<p>Разработчик стажёр: Голуб Захар Владимирович</p>
-				<p>Группа: <strong>ИС-33</strong></p>
-			</div>
-			<div class="social">
-				<a href="https://github.com/ClassZak" target="_blank">ClassZak</a>
-			</div>
-			<p>&copy; 2025 MStore. Все права защищены.</p>
-			
-			<!-- Описание проекта -->
-			<h2>Описание проекта</h2>
-			<div class="contact">
-				<p>Тема: <strong>"Магазин мерчевой продукции"</strong></p>
-				<p>Версия: <strong>0.0.1.a</strong></p>
-			</div>
-			<h3>Список изменений</h3>
-			
-			<ul style="margin-left: 20px;">
-				<li>Админ панель
-					<ol>
-						<li>Таблица производителей
-							<ul>
-								<li>минимальные размеры для карточки</li>
-								<li>кнопка добавить	(+)</li>
-								<li>кнопка удалить	(🗑)</li>
-								<li>кнопка изменить	(✎)</li>
-							</ul>
-						</li>
-						<li>Таблица производителей
-							<ul>
-								<li>CRUD операции</li>
-								<li>пофикшенные размеры изображения</li>
-							</ul>
-						</li>
-					</ol>
-				</li>
-			</ul>
+			{% include 'parts/footer_content.html' %}
 		</footer>
 	</body>
 </html>
