@@ -64,11 +64,14 @@ async function createGoodCard(element) {
 			<h4 class="card-price">
 				${Intl.NumberFormat('ru-RU', {style: 'currency', currency: 'RUB'}).format(element.price)}
 			</h4>
-			<p class="card-desc">${escapeHtml(element.description)}</p>
-			<p class="card-bottom">Производитель:</p>
-			<h4 class="card-title card-manufacturer">${manufacturer && manufacturer.name ? manufacturer.name: 'Незвестен'}</h4>
-			<p>Дата появления в ассортименте:</p>
-			<h4 class="card-title card-date">${element.appearance_date}</h4>
+			
+			<div class="secondary-info">
+				<p class="card-desc">${escapeHtml(element.description)}</p>
+				<p class="card-bottom">Производитель:</p>
+				<h4 class="card-title card-manufacturer">${manufacturer && manufacturer.name ? manufacturer.name: 'Незвестен'}</h4>
+				<p>Дата появления в ассортименте:</p>
+				<h4 class="card-title card-date">${element.appearance_date}</h4>
+			</div>
 		</div>
 	`;
 
