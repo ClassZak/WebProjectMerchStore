@@ -4,49 +4,60 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flexboxgrid2@7.2.1/flexboxgrid2.min.css">
+
 	<link rel="stylesheet" href="{{url_for('static', filename='styles/style.css')}}">
 	<link rel="stylesheet" href="{{url_for('static', filename='styles/good_frame.css')}}">
+	<link rel="stylesheet" href="{{url_for('static', filename='styles/modal_form.css')}}">
 	<link rel="stylesheet" href="{{url_for('static', filename='styles/error_window.css')}}">
+	<link rel="stylesheet" href="{{url_for('static', filename='styles/shadow_card.css')}}">
 	<link rel="icon" href="{{url_for('static', filename='favicon.ico')}}" type="image/x-icon">
 	<script src="{{url_for('static',filename='scripts/error_message.js')}}"></script>
 	<script src="{{url_for('static',filename='scripts/base_scripts/escape.js')}}"></script>
+	<script src="{{url_for('static',filename='scripts/goods_scripts.js')}}"></script>
+	<link rel="stylesheet" href="https://unpkg.com/flexboxgrid2@7.2.0/flexboxgrid2.css">
 	<title>MStore — Поиск</title>
 </head>
 <body>
 	<header>
 		{% include 'parts/header_content.html' %}
 	</header>
-	<main class="content-wrapper data-grid-block">
+	<main class="content-wrapper">
 		<h1>Результаты поиска по запросу "{{ query }}":</h1>
-		<div class="image-grid data-grid" id="goods_grid">
-			{% if goods %}
-				{% for good in goods %}
-				<a href="/good/{{ good.id }}" class="card good-card">
+		{% if goods %}
+		<div class="row" id="goods_grid" style="padding: 10px;">
+			{% for good in goods %}
+			<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
+				<a href="/good/{{ good.id }}"
+					class="card good-card shadow-card"
+					style="display: flex; flex-direction: column; height: 100%;"
+					>
+					<div class="image-container">
+						<img src="data:image/*;base64,{{ good.image[2:-1] }}" alt="{{ good.name }}">
+					</div>
 					<div class="card-content">
-						<div class="one-image">
-							<img src="data:image/*;base64,{{ good.image[2:-1] }}" alt="{{ good.name }}">
-						</div>
-						<div class="card-description">
-							<h4 class="card-title">{{ good.name }}</h4>
-							<h4 class="card-title">
-								{{ good.price }} ₽
-							</h4>
-							<h5 class="card-title">{{ good.description }}</h5>
+						<h4 class="card-title">{{ good.name }}</h4>
+						<h4 class="card-price">
+							{{ good.price }} ₽
+						</h4>
+						
+						<p class="card-desc">{{ good.description }}</p>
+						<div class="secondary-info  card-bottom">
 							<p>Производитель:</p>
-							<h4 class="card-title">{{ good.id_manufacturer }}</h4>
-							<p>Дата появления:</p>
-							<h4 class="card-title">{{ good.appearance_date }}</h4>
+							<h4 class="card-title card-manufacturer">{{ good.manufacturer }}</h4>
+							<p>Дата появления в ассортименте:</p>
+							<h4 class="card-title card-date">{{ good.appearance_date }}</h4>
 						</div>
 					</div>
 				</a>
-				{% endfor %}
-			{% else %}
-				<div class="no-results">
-					<p>По вашему запросу "{{ query }}" ничего не найдено</p>
-					<a href="{{ url_for('render_goods') }}" class="btn-browse">Посмотреть все товары</a>
-				</div>
-			{% endif %}
+			</div>
+			{% endfor %}
 		</div>
+		{% else %}
+		<div class="no-results">
+			<p>По вашему запросу "{{ query }}" ничего не найдено</p>
+			<a href="{{ url_for('render_goods') }}" class="btn-browse">Посмотреть все товары</a>
+		</div>
+		{% endif %}
 	</main>
 	<footer>
 		{% include 'parts/footer_content.html' %}

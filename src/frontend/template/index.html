@@ -14,6 +14,7 @@
 		<script src="{{url_for('static',filename='scripts/error_message.js')}}"></script>
 		<script src="{{url_for('static',filename='scripts/base_scripts/escape.js')}}"></script>
 		<script src="{{url_for('static',filename='scripts/goods_scripts.js')}}"></script>
+		<link rel="stylesheet" href="https://unpkg.com/flexboxgrid2@7.2.0/flexboxgrid2.css">
 		<title>MStore — Главная</title>
 	</head>
 	<script>
@@ -30,7 +31,7 @@
 		<header>
 			{% include 'parts/header_content.html' %}
 		</header>
-		<main class="content-wrapper data-grid-block">
+		<main class="content-wrapper">
 			<h1>Добро пожаловать в магазин мерча MStore!</h1>
 			<h2>О нас</h2>
 			<p>	На дворе праздники и нечего подарить? Хочется купить что-то <em><strong>оригинальное</strong></em> и <em><strong>интересное</strong></em>? Устали от <em><strong>скушных</strong></em> вещей? <br>	Если да, то вы пришли <em><strong>по адресу</strong></em>. Здесь вы найдёте <em><strong>всё</strong></em>: футболки, шапки, джинсы, толстовки, тарелки, вилки, ложки, мечи, ножи, подарочные упаковки и <em><strong>многое другое</strong></em>, <em><strong>всё</strong></em> что вам нужно есть <strong>только у нас</strong>!</p>

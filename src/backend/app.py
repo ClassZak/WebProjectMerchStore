@@ -107,6 +107,11 @@ def goods_search():
 	# Извлекаем данные из JSON-ответа
 	data = response.get_json()
 	goods_list = data['goods']
+	for good in goods_list:
+		response_manufacturer, satus =\
+			manufacturer_service.read_manufacturer_by_id(good['id_manufacturer'])
+		manufacturer = response_manufacturer.get_json()
+		good['manufacturer']=manufacturer['name']
 	
 	# Рендерим страницу с результатами
 	return render_template(

@@ -85,7 +85,7 @@
 	align-items: center;
 	height: 200px;
 	padding: 10px;
-	background: rgba(0, 0, 0, 0.2);
+	background: color-mix(in srgb, var(--secondary-green) 50%, transparent);
 }
 
 .image-container img {
@@ -122,6 +122,7 @@
 .card-bottom {
 	margin-top: auto; /* Прижимаем к низу */
 	padding-top: 10px;
+	justify-content: end;
 }
 .card-manufacturer,
 .card-date {
@@ -147,7 +148,7 @@
 	}
 }
 
-@media screen and (width<768px) {
+@media screen and (width<950px) {
 	.col-sm-4 {
 		flex: 0 0 33.333%;
 		max-width: 33.333%;
