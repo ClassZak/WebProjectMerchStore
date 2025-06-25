@@ -1,15 +1,16 @@
 # MStore
 
+<div align="center">
+[![Version](https://img.shields.io/badge/version-1.0.1.b-blue.svg)](#)
+</div>
 MStore - это учебный проект онлайн магазина мерчевой продукции.
 
 Данный проект разрабатывается при помощи mysql 80 в python 3.11.8 через mysql-connector-python       9.3.0 и при помощи фреймворка Flask 3.1.0 и библиотеки Flask-WTF 1.2.2. 
 
 ## Внешний вид сайта
-<div align="center">
 ![Image alt](https://github.com/ClassZak/WebProjectMerchStore/blob/master/screenshot1.png)
 ![Image alt](https://github.com/ClassZak/WebProjectMerchStore/blob/master/screenshot2.png)
 ![Image alt](https://github.com/ClassZak/WebProjectMerchStore/blob/master/screenshot3.png)
-</div>
 
 ## 🛠 Запуск сайта
 
