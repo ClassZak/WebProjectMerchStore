@@ -67,10 +67,14 @@ async function createGoodCard(element) {
 			
 			<p class="card-desc">${escapeHtml(element.description)}</p>
 			<div class="secondary-info card-bottom">
-				<p>Производитель:</p>
-				<h4 class="card-title card-manufacturer">${manufacturer && manufacturer.name ? manufacturer.name: 'Незвестен'}</h4>
-				<p>Дата появления в ассортименте:</p>
-				<h4 class="card-title card-date">${element.appearance_date}</h4>
+				<div>
+					<p style="display:inline-block">Производитель:</p>
+					<h4 class="card-title card-manufacturer" style="display:inline-block">${manufacturer && manufacturer.name ? manufacturer.name: 'Незвестен'}</h4>
+				</div>
+				<div>
+					<p style="display:inline-block">Дата появления:</p>
+					<h4 class="card-title card-date" style="display:inline-block">${element.appearance_date}</h4>
+				</div>
 			</div>
 		</div>
 	`;

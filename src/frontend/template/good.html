@@ -39,7 +39,7 @@
 							<!--Отрендерится при загрузке DOM-->
 							<p class="card-title formatted-price card-price" data-price="{{ good.price }}"></p>
 							<p class="card-manufacturer">Производитель: {{ good.manufacturer }}</p>
-							<p class="card-date">Дата появления в ассортименте: {{ good.appearance_date }}</p>
+							<p class="card-date">Дата появления в ассортименте: <em>{{ good.appearance_date }}</em></p>
 							
 							<!-- Форма добавления в корзину -->
 							<form class="cart-form" action="/add_to_cart" method="post">

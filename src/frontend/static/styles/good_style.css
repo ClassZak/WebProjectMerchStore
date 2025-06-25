@@ -60,9 +60,10 @@
 	font-weight: bold;
 	transition: background-color 0.3s;
 }
-
-.cart-form button:hover {
-	background-color: #a88d05;
+@media (hover: hover) and (pointer: fine) {	
+	.cart-form button:hover {
+		background-color: #a88d05;
+	}
 }
 
 @media (max-width: 770px) {

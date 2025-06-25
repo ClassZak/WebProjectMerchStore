@@ -253,8 +253,6 @@ class GoodService(AService):
 			self.connect()
 			query = f"SELECT EXISTS(SELECT 1 FROM {GoodService.TABLE_NAME} WHERE {Good.DB_COLUMNS['columns']['id']} = %s) AS exist"
 			self.cursor.execute(query, (int(id),))
-			print("SQL:", self.cursor.statement)  # или ._executed
-			# вернёт (1,) или (0,)
 			result = self.cursor.fetchone()
 			return bool(result['exist']) if result else False
 		finally:
