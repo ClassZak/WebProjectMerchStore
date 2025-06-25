@@ -43,7 +43,7 @@ chmod +x *.sh
 	"secret_key": "<ключ для CRTF токенов>"
 }
 ```
-7) Выполнить sql код для создания БД
+7) Выполнить sql код из файла DBCrearionScript.sql для создания БД
 8) Запустить проект
 ```bash
 python3 src/backend/app.py
