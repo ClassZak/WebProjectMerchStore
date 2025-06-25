@@ -7,14 +7,6 @@ CREATE TABLE Manufacturer(
 	Name	VARCHAR(100) NOT NULL
 );
 ALTER TABLE Manufacturer ADD CONSTRAINT UC_Name UNIQUE (Name);
-SELECT * FROM Manufacturer;
-SELECT Id, Name, Description, Image, Price, AppearanceDate, IdManufacturer
-FROM Good
-WHERE AppearanceDate = (
-	SELECT MAX(AppearanceDate)
-    FROM Good
-);
-
 
 
 
@@ -81,11 +73,3 @@ ALTER TABLE OrderTable
 ADD CONSTRAINT goodRefForTable
 FOREIGN KEY(IdGood)
 REFERENCES Good(Id);
-
-
-
-
-SELECT * FROM Manufacturer;
-SELECT * FROM Good;
-
-SELECT EXISTS(SELECT 1 FROM Manufacturer WHERE Id = 48) AS exist UNION ALL SELECT 1; 
