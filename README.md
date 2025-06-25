@@ -49,21 +49,21 @@ chmod +x *.sh
 }
 ```
 7) Выполнить sql код из файла DBCrearionScript.sql для создания БД:
-	- Зайти в mysql
+- Зайти в mysql
 ```bash
 sudo mysql -u root
 ```
-	- Проверить метод аутентификации
+- Проверить метод аутентификации
 ```sql
 SELECT user, plugin FROM mysql.user WHERE user = '<пользователь для БД>';
 ```
-	- Установить пароль
+- Установить пароль
 ```sql
 ALTER USER '<пользователь для БД>'@'localhost' IDENTIFIED WITH mysql_native_password BY '<пароль>';
 FLUSH PRIVILEGES;
 EXIT;
 ```
-	- Выполнить скрипт создания БД:
+- Выполнить скрипт создания БД:
 ```sql
 SOURCE /root/repositories/WebProjectMerchStore/DBCrearionScript.sql
 ```
