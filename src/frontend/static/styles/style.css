@@ -31,7 +31,7 @@ body {
 .no-results {
     text-align: center;
     padding: 2rem;
-    background: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(295deg,var(--primary-accent),var(--secondary-green),var(--secondary-olive));
     border-radius: 10px;
     margin-top: 2rem;
 }

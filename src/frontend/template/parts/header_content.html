@@ -3,9 +3,9 @@
             <img src="{{ url_for('static', filename='Merch Store small.png') }}" alt="MStore">
         </a>
         <a href="/">Главная</a>
-        <a href="/about/" target="_blank">О нас</a>
-        <a href="/contacts/" target="_blank">Контакты</a>
-        <a href="/goods/" target="_blank">Товары</a>
+        <a href="/about/"		>О нас</a>
+        <a href="/contacts/"	>Контакты</a>
+        <a href="/goods/"		>Товары</a>
         <form action="{{ url_for('goods_search') }}" method="GET" class="search-form">
             <input name="q" class="item" placeholder="Поиск..." type="text" value="{{ request.args.get('q', '') }}">
             <button type="submit" class="image-button">
