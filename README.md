@@ -44,7 +44,7 @@ chmod +x *.sh
 	"host": "localhost",
 	"user": "<пользователь для БД>",
 	"password": "<пароль пользователя для БД>",
-	"database": "MerchstoreWebPract",
+	"database": "MerchStoreWebPract",
 	"secret_key": "<ключ для CSRT токенов>"
 }
 ```
