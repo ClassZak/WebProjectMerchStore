@@ -169,51 +169,6 @@
 
 
 
-/* 270px - 649px (2 колонки) */
-@media (width<650px) {
-    .col-xs-6 {
-        flex: 0 0 50%;
-        max-width: 50%;
-    }
-    .image-container {
-        height: 125px;
-    }
-}
-
-/* 650px - 829px (3 колонки) */
-@media (width<830px) {
-    .col-sm-4 {
-        flex: 0 0 33.333%;
-        max-width: 33.333%;
-    }
-    .image-container {
-        height: 150px;
-    }
-}
-
-/* 830px - 1199px (4 колонки) */
-@media (width<1200px) {
-    .col-md-3 {
-        flex: 0 0 25%;
-        max-width: 25%;
-    }
-    .image-container {
-        height: 170px;
-    }
-}
-
-/* 1200px и больше (6 колонок) */
-@media (width>1199px) {
-    .col-xs-6 {
-        flex: 0 0 16.666%;
-        max-width: 16.666%;
-    }
-    .image-container {
-        height: 200px;
-    }
-}
-
-
 
 
 
