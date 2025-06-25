@@ -161,6 +161,28 @@ class GoodService(AService):
 			return jsonify({'error': f'Ошибка БД: {str(e)}'}), 500
 		finally:
 			self.disconnect()
+	def read_goods_by_ids(self, id:int) -> Tuple[Response, int]:
+		try:
+			if not self.exists(id):
+				return jsonify({'error': 'Не найден объект для чтения'}), 404
+
+			self.connect()
+			columns=[Good.DB_COLUMNS['columns'][field]
+				for field in Good.FIELDS_META.keys()]
+			self.cursor.execute(
+				f"""
+				SELECT {', '.join(columns)} 
+				FROM {GoodService.TABLE_NAME} 
+					WHERE {Good.DB_COLUMNS['columns']['id']} = %s
+				""",(id,))
+			obj=self.cursor.fetchone()
+			return jsonify(self.sql_data_to_json_list(obj)), 200
+		except ValueError as e:
+			return jsonify({'error':str(e)}), 400
+		except Error as e:
+			return jsonify({'error': f'Ошибка БД: {str(e)}'}), 500
+		finally:
+			self.disconnect()
 		
 	def read_new_goods(self) -> Tuple[Response, int]:
 		try:
@@ -207,7 +229,7 @@ class GoodService(AService):
 			
 			# Build query with proper placeholders
 			query = f"""
-				SELECT {', '.join(columns)}
+				SELECT {Good.DB_COLUMNS['columns']['id']}
 				FROM {GoodService.TABLE_NAME}
 				WHERE {' OR '.join(f"LOWER({col}) LIKE %s" for col in columns_for_check)}
 					OR (SELECT LOWER({Manufacturer.DB_COLUMNS['columns']['name']})
@@ -226,7 +248,7 @@ class GoodService(AService):
 			# Convert DB data to model format
 			return jsonify({'goods': [{
 					field: str(row[Good.DB_COLUMNS['columns'][field]])
-					for field in Good.FIELDS_META.keys()
+					for field in Good.FIELDS_META.keys() if Good.DB_COLUMNS['columns'][field] in row.keys()
 				}
 				for row in raw_data
 			]}), 200

@@ -85,6 +85,6 @@ python3 src/backend/app.py
 5) Страница поиска (search.html):
 	- поиск по всем полям;
 	- сообщение об отсутствии результатов поиска;
-6) Панель администратора с CRUD операциями над таблицами (Create, Read, Update, Delete) (admin_panel.html):
+6) Панель администратора с CRUD операциями над таблицами (Create, Read, Update, Delete) (admin_panel.html) /admin/:
 	- CRUD операции для таблицы "Производители";
 	- CRUD операции для таблицы "Товары";

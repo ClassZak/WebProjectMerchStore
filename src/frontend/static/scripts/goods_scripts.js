@@ -83,20 +83,55 @@ async function createGoodCard(element) {
 }
 
 async function loadGoods(elementId, apiRoute = '') {
-    try {
-        const container = document.getElementById(elementId);
-        container.innerHTML = '';
-        await loadGoodsToArray(apiRoute);
-        
-        goods.forEach(async element => {
-            const col = document.createElement('div');
-            col.className = "col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12";
-            
-            const card = await createGoodCard(element);
-            col.appendChild(card);
-            container.appendChild(col);
-        });
-    } catch (error) {
-        console.log(error);
-    }
+	try {
+		const container = document.getElementById(elementId);
+		container.innerHTML = '';
+		await loadGoodsToArray(apiRoute);
+		
+		goods.forEach(async element => {
+			const col = document.createElement('div');
+			col.className = "col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12";
+			
+			const card = await createGoodCard(element);
+			col.appendChild(card);
+			container.appendChild(col);
+		});
+	} catch (error) {
+		console.log(error);
+		showError(error)
+	}
 }
+
+function createGoodsCards(elementId){
+	const container = document.getElementById(elementId);
+	container.innerHTML = '';
+	goods.forEach(async element => {
+		const col = document.createElement('div');
+		col.className = "col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12";
+		
+		const card = await createGoodCard(element);
+		col.appendChild(card);
+		container.appendChild(col);
+	});
+}
+
+async function loadGoodsByIds(elementId, goodsIdsToLoad){
+	let message = '';
+	try{
+		const container = document.getElementById(elementId);
+		goods = new Array();
+		for(i=0;i!=goodsIdsToLoad.length;++i){
+			let response = await fetch(`/api/goods/${goodsIdsToLoad[i].id}`);
+			if(!response.ok){
+				message = (await response.json()).error;
+				throw new Error(`Статус запроса: ${response.status}\nОшибка: ${message}`);
+			}
+			
+			goods.push(await response.json())
+		}
+	} catch (error) {
+		console.log(error);
+		showError(message);
+	}
+}
+	

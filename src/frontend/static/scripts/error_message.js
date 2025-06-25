@@ -11,6 +11,8 @@ function hideError(){
 function showError(error){
 	errorWindow.style.visibility='visible';
 	/*Экранирование не требуется, т.к. устанавливается textContent*/
+	if(error === undefined || error === null)
+		error = 'Неизвестная ошибка';
 	document.getElementById('error-message').textContent=error;
 }
 

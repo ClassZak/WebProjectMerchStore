@@ -17,50 +17,38 @@
 	<link rel="stylesheet" href="https://unpkg.com/flexboxgrid2@7.2.0/flexboxgrid2.css">
 	<title>MStore — Поиск</title>
 </head>
+<script>
+	var goodsIdsToLoad = {{ goods_ids | tojson }};
+</script>
 <body>
 	<header>
 		{% include 'parts/header_content.html' %}
 	</header>
 	<main class="content-wrapper">
 		<h1>Результаты поиска по запросу "{{ query }}":</h1>
-		{% if goods %}
-		<div class="row" id="goods_grid" style="padding: 10px;">
-			{% for good in goods %}
-			<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-				<a href="/good/{{ good.id }}"
-					class="card good-card shadow-card"
-					style="display: flex; flex-direction: column; height: 100%;"
-					>
-					<div class="image-container">
-						<img src="data:image/*;base64,{{ good.image[2:-1] }}" alt="{{ good.name }}">
-					</div>
-					<div class="card-content">
-						<h4 class="card-title">{{ good.name }}</h4>
-						<h4 class="card-price">
-							{{ good.price }} ₽
-						</h4>
-						
-						<p class="card-desc">{{ good.description }}</p>
-						<div class="secondary-info  card-bottom">
-							<p>Производитель:</p>
-							<h4 class="card-title card-manufacturer">{{ good.manufacturer }}</h4>
-							<p>Дата появления в ассортименте:</p>
-							<h4 class="card-title card-date">{{ good.appearance_date }}</h4>
-						</div>
-					</div>
-				</a>
-			</div>
-			{% endfor %}
-		</div>
-		{% else %}
-		<div class="no-results shadow-card">
-			<p>По вашему запросу "{{ query }}" ничего не найдено</p>
-			<a href="{{ url_for('render_goods') }}" class="btn-browse shadow-card">Посмотреть все товары</a>
-		</div>
-		{% endif %}
+		<div class="row" id="goods_grid" style="padding: 10px;"></div>
 	</main>
 	<footer>
 		{% include 'parts/footer_content.html' %}
 	</footer>
+	<script>
+		document.addEventListener('DOMContentLoaded', async function() {
+			setTimeout(async function(){
+				// Загружаем производителей
+				await loadManufacturersToArray();
+				if(goodsIdsToLoad.length > 0) {
+					await loadGoodsByIds('goods_grid', goodsIdsToLoad);
+					createGoodsCards('goods_grid')
+				} else {
+					document.getElementById('goods_grid').innerHTML = `
+					<div class="no-results">
+						<p>По вашему запросу "{{ query }}" ничего не найдено</p>
+						<a href="{{ url_for('render_goods') }}" class="btn-browse">Посмотреть все товары</a>
+						</div>
+					`;
+				}
+			},500)
+		});
+	</script>
 </body>
 </html>
