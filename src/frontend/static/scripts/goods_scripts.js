@@ -86,7 +86,7 @@ async function loadGoods(elementId, apiRoute = '') {
         
         goods.forEach(async element => {
             const col = document.createElement('div');
-            col.className = 'col-xs-6 col-sm-4 col-md-3 col-lg-2';
+            col.className = "col-xs-6 col-sm-4 col-md-3 col-lg-2";
             
             const card = await createGoodCard(element);
             col.appendChild(card);
