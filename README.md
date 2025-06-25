@@ -9,6 +9,11 @@ MStore - это учебный проект онлайн магазина мер
 ![Image alt](https://github.com/ClassZak/WebProjectMerchStore/blob/master/screenshot2.png)
 ![Image alt](https://github.com/ClassZak/WebProjectMerchStore/blob/master/screenshot3.png)
 
+### ❌ Пример появления сообщения об ошибке
+
+![Image alt](https://github.com/ClassZak/WebProjectMerchStore/blob/master/screenshot4.png)
+
+
 ## 🛠 Запуск сайта
 
 Для запуска необходимо выполнить следующие действия:
@@ -38,12 +43,31 @@ chmod +x *.sh
 {
 	"host": "localhost",
 	"user": "<пользователь для БД>",
-	"password": "<пароль>",
+	"password": "<пароль пользователя для БД>",
 	"database": "merchstorewebpract",
-	"secret_key": "<ключ для CRTF токенов>"
+	"secret_key": "<ключ для CSRT токенов>"
 }
 ```
-7) Выполнить sql код из файла DBCrearionScript.sql для создания БД
+7) Выполнить sql код из файла DBCrearionScript.sql для создания БД:
+	- Зайти в mysql
+```bash
+sudo mysql -u root
+```
+	- Проверить метод аутентификации
+```sql
+SELECT user, plugin FROM mysql.user WHERE user = '<пользователь для БД>';
+```
+	- Установить пароль
+```sql
+ALTER USER '<пользователь для БД>'@'localhost' IDENTIFIED WITH mysql_native_password BY '<пароль>';
+FLUSH PRIVILEGES;
+EXIT;
+```
+	- Выполнить скрипт создания БД:
+```sql
+SOURCE /root/repositories/WebProjectMerchStore/DBCrearionScript.sql
+```
+
 8) Запустить проект
 ```bash
 python3 src/backend/app.py
