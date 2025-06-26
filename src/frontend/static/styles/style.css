@@ -29,9 +29,10 @@ body {
 /* Шапка */
 /* Стили для страницы поиска */
 .no-results {
+	margin: auto;
     text-align: center;
     padding: 2rem;
-    background: linear-gradient(295deg,var(--primary-accent),var(--secondary-green),var(--secondary-olive));
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     margin-top: 2rem;
 }
@@ -48,6 +49,13 @@ body {
     text-decoration: none;
     font-weight: bold;
     transition: 0.3s;
+}
+.btn-browse:hover {
+    background: #a58a05;
+    text-decoration: none;
+}
+.btn-browse{
+	background: var(--accent-gold);
 }
 .btn-browse:hover {
     background: #a58a05;
