@@ -28,13 +28,20 @@ body {
 
 /* Шапка */
 /* Стили для страницы поиска */
+.row > div.no-results {
+  margin-bottom: 20px;
+  display: block;
+}
 .no-results {
-	margin: auto;
+	display: inline;
+	margin-left: auto;
+	margin-right: auto;
     text-align: center;
-    padding: 2rem;
-    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+	 background: linear-gradient(295deg,var(--primary-accent),var(--secondary-green),var(--secondary-olive));
     border-radius: 10px;
     margin-top: 2rem;
+	margin: 1rem;
 }
 .no-results p {
     font-size: 1.2rem;
@@ -45,6 +52,7 @@ body {
     background: var(--accent-gold);
     color: white;
     padding: 0.5rem 1rem;
+	margin-left: 0.5rem;
     border-radius: 5px;
     text-decoration: none;
     font-weight: bold;
