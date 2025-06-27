@@ -101,19 +101,23 @@ def goods_search():
 	response, status_code = good_service.search_goods(safe_query)
 	
 	# Проверяем статус ответа
-	if status_code != 200:
-		return render_template(f'error/{status_code}.html'), status_code
+	
 	
 	# Извлекаем данные из JSON-ответа
 	data = response.get_json()
-	goods_ids = data['goods']
+	
+	if status_code == 200:
+		goods_ids = data['goods']
+	else:
+		goods_ids = {};
 	
 	
 	# Рендерим страницу с результатами
 	return render_template(
 		'search.html', 
 		goods_ids=goods_ids, 
-		query=safe_query
+		query=safe_query,
+		error_json = data
 	)
 
 
