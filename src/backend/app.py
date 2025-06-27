@@ -4,6 +4,7 @@ from flask import Flask, Request, json, render_template, request, jsonify
 from markupsafe import escape
 import mysql.connector
 import base64
+from datetime import datetime
 
 from goodservice import GoodService
 from manufacturerservice import ManufacturerService
@@ -25,6 +26,34 @@ app = Flask(
 )
 app.secret_key = get_app_config()['secret_key']
 csrf = CSRFProtect(app)
+
+
+
+
+
+
+
+
+
+
+# Логи
+log_path = ''
+def log_visit(ip, path):
+    """Записывает посещение в лог-файл"""
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with open(log_path, "a") as f:
+        f.write(f"{timestamp} - IP: {ip} - Path: {path}\n")
+
+@app.before_request
+def track_visit():
+    """Регистрирует посещение перед обработкой запроса"""
+    # Определяем реальный IP клиента
+    client_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    if ',' in client_ip:
+        client_ip = client_ip.split(',')[0].strip()
+    
+    log_visit(client_ip, request.path)
+
 
 
 
@@ -175,6 +204,13 @@ def new_goods_route():
 # Точка входа
 def main():
 	try:
+		global log_path
+		with open('src/backend/.password.json', 'r', encoding='UTF-8') as file:
+			config=json.load(file)
+			
+			log_path = config['log_file'] if 'log_file' in config.keys() else 'visits.log'
+
+		
 		app.run(debug=True, host='0.0.0.0', port=5000)
 	except Exception as e:
 		pass

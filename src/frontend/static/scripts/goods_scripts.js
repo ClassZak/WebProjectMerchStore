@@ -88,6 +88,7 @@ async function loadGoods(elementId, apiRoute = '') {
 		container.innerHTML = '';
 		await loadGoodsToArray(apiRoute);
 		
+		if (goods)
 		goods.forEach(async element => {
 			const col = document.createElement('div');
 			col.className = "col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12";
