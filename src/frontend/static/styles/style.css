@@ -33,6 +33,13 @@ body {
 	display: block;
 	width: 100%;
 }
+@media screen and (width>1000px) {
+	.row > div.no-results{
+		width: 70%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
 .no-results {
 	display: inline;
 	margin-left: auto;
