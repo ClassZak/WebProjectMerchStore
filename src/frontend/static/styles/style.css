@@ -29,8 +29,9 @@ body {
 /* Шапка */
 /* Стили для страницы поиска */
 .row > div.no-results {
-  margin-bottom: 20px;
-  display: block;
+	margin-bottom: 20px;
+	display: block;
+	width: 100%;
 }
 .no-results {
 	display: inline;
